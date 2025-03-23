@@ -1,0 +1,166 @@
+ARM GAS  /tmp/ccbeKUn2.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/src/main.c"
+  18              		.section	.text.main,"ax",%progbits
+  19              		.align	1
+  20              		.global	main
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	main:
+  26              	.LFB65:
+   1:Core/src/main.c **** /**
+   2:Core/src/main.c ****  **************************************************************************************************
+   3:Core/src/main.c ****  * @file        main.c
+   4:Core/src/main.c ****  * @author      正点原子团队(ALIENTEK)
+   5:Core/src/main.c ****  * @version     V1.0
+   6:Core/src/main.c ****  * @date        2020-04-17
+   7:Core/src/main.c ****  * @brief       跑马灯 实验
+   8:Core/src/main.c ****  * @license     Copyright (c) 2020-2032, 广州市星翼电子科技有限公司
+   9:Core/src/main.c ****  **************************************************************************************************
+  10:Core/src/main.c ****  * @attention
+  11:Core/src/main.c ****  *
+  12:Core/src/main.c ****  * 实验平台:正点原子 STM32F103开发板
+  13:Core/src/main.c ****  * 在线视频:www.yuanzige.com
+  14:Core/src/main.c ****  * 技术论坛:www.openedv.com
+  15:Core/src/main.c ****  * 公司网址:www.alientek.com
+  16:Core/src/main.c ****  * 购买地址:openedv.taobao.com
+  17:Core/src/main.c ****  *
+  18:Core/src/main.c ****  **************************************************************************************************
+  19:Core/src/main.c ****  */
+  20:Core/src/main.c **** 
+  21:Core/src/main.c **** #include "sys.h"
+  22:Core/src/main.c **** // #include "usart.h"
+  23:Core/src/main.c **** #include "delay.h"
+  24:Core/src/main.c **** #include "led.h"
+  25:Core/src/main.c **** 
+  26:Core/src/main.c **** 
+  27:Core/src/main.c **** int main(void)
+  28:Core/src/main.c **** {
+  27              		.loc 1 28 1 view -0
+  28              		.cfi_startproc
+  29              		@ Volatile: function does not return.
+  30              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccbeKUn2.s 			page 2
+
+
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+  29:Core/src/main.c ****     sys_stm32_clock_init(9);    /* 设置时钟, 72Mhz */
+  37              		.loc 1 29 5 view .LVU1
+  38 0002 0920     		movs	r0, #9
+  39 0004 FFF7FEFF 		bl	sys_stm32_clock_init
+  40              	.LVL0:
+  30:Core/src/main.c ****     delay_init(72);             /* 延时初始化 */
+  41              		.loc 1 30 5 view .LVU2
+  42 0008 4820     		movs	r0, #72
+  43 000a FFF7FEFF 		bl	delay_init
+  44              	.LVL1:
+  31:Core/src/main.c ****     led_init();                 /* 初始化LED */
+  45              		.loc 1 31 5 view .LVU3
+  46 000e FFF7FEFF 		bl	led_init
+  47              	.LVL2:
+  48              	.L2:
+  32:Core/src/main.c **** 
+  33:Core/src/main.c ****     while (1)
+  49              		.loc 1 33 5 discriminator 1 view .LVU4
+  34:Core/src/main.c ****     {
+  35:Core/src/main.c ****         LED0(0);                /* LED0 亮 */
+  50              		.loc 1 35 9 discriminator 1 view .LVU5
+  51 0012 0E4D     		ldr	r5, .L4
+  52 0014 0022     		movs	r2, #0
+  53 0016 2021     		movs	r1, #32
+  54 0018 2846     		mov	r0, r5
+  55 001a FFF7FEFF 		bl	sys_gpio_pin_set
+  56              	.LVL3:
+  36:Core/src/main.c ****         LED1(1);                /* LED1 灭 */
+  57              		.loc 1 36 9 discriminator 1 view .LVU6
+  58 001e 0C4C     		ldr	r4, .L4+4
+  59 0020 0122     		movs	r2, #1
+  60 0022 2021     		movs	r1, #32
+  61 0024 2046     		mov	r0, r4
+  62 0026 FFF7FEFF 		bl	sys_gpio_pin_set
+  63              	.LVL4:
+  37:Core/src/main.c ****         delay_ms(1000);
+  64              		.loc 1 37 9 discriminator 1 view .LVU7
+  65 002a 4FF47A70 		mov	r0, #1000
+  66 002e FFF7FEFF 		bl	delay_ms
+  67              	.LVL5:
+  38:Core/src/main.c ****         // LED0_TOGGLE();             /* LED0 灭 */
+  39:Core/src/main.c ****         // LED1_TOGGLE();                /* LED1 亮 */
+  40:Core/src/main.c ****                 LED0_TOGGLE();             /* LED0 灭 */
+  68              		.loc 1 40 17 discriminator 1 view .LVU8
+  69              		.loc 1 40 17 discriminator 1 view .LVU9
+  70 0032 EB68     		ldr	r3, [r5, #12]
+  71 0034 83F02003 		eor	r3, r3, #32
+  72 0038 EB60     		str	r3, [r5, #12]
+  73              		.loc 1 40 17 discriminator 1 view .LVU10
+  41:Core/src/main.c ****         LED1_TOGGLE();                /* LED1 亮 */
+  74              		.loc 1 41 9 discriminator 1 view .LVU11
+ARM GAS  /tmp/ccbeKUn2.s 			page 3
+
+
+  75              		.loc 1 41 9 discriminator 1 view .LVU12
+  76 003a E368     		ldr	r3, [r4, #12]
+  77 003c 83F02003 		eor	r3, r3, #32
+  78 0040 E360     		str	r3, [r4, #12]
+  79              		.loc 1 41 9 discriminator 1 view .LVU13
+  42:Core/src/main.c ****         delay_ms(1000);
+  80              		.loc 1 42 9 discriminator 1 view .LVU14
+  81 0042 4FF47A70 		mov	r0, #1000
+  82 0046 FFF7FEFF 		bl	delay_ms
+  83              	.LVL6:
+  33:Core/src/main.c ****     {
+  84              		.loc 1 33 11 discriminator 1 view .LVU15
+  85 004a E2E7     		b	.L2
+  86              	.L5:
+  87              		.align	2
+  88              	.L4:
+  89 004c 000C0140 		.word	1073810432
+  90 0050 00180140 		.word	1073813504
+  91              		.cfi_endproc
+  92              	.LFE65:
+  94              		.text
+  95              	.Letext0:
+  96              		.file 2 "/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+  97              		.file 3 "/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+  98              		.file 4 "CMSIS/Device/stm32f103xe.h"
+  99              		.file 5 "Core/Include/delay.h"
+ 100              		.file 6 "Core/Include/sys.h"
+ 101              		.file 7 "Core/Include/led.h"
+ARM GAS  /tmp/ccbeKUn2.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+     /tmp/ccbeKUn2.s:19     .text.main:00000000 $t
+     /tmp/ccbeKUn2.s:25     .text.main:00000000 main
+     /tmp/ccbeKUn2.s:89     .text.main:0000004c $d
+
+UNDEFINED SYMBOLS
+sys_stm32_clock_init
+delay_init
+led_init
+sys_gpio_pin_set
+delay_ms

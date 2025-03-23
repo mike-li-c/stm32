@@ -1,0 +1,171 @@
+ARM GAS  /tmp/ccl3whe8.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"led.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/bsp/led.c"
+  18              		.section	.text.led_init,"ax",%progbits
+  19              		.align	1
+  20              		.global	led_init
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	led_init:
+  26              	.LFB65:
+   1:Core/bsp/led.c **** /**
+   2:Core/bsp/led.c ****  **************************************************************************************************
+   3:Core/bsp/led.c ****  * @file        led.c
+   4:Core/bsp/led.c ****  * @author      正点原子团队(ALIENTEK)
+   5:Core/bsp/led.c ****  * @version     V1.0
+   6:Core/bsp/led.c ****  * @date        2020-04-17
+   7:Core/bsp/led.c ****  * @brief       LED 驱动代码
+   8:Core/bsp/led.c ****  * @license     Copyright (c) 2020-2032, 广州市星翼电子科技有限公司
+   9:Core/bsp/led.c ****  **************************************************************************************************
+  10:Core/bsp/led.c ****  * @attention
+  11:Core/bsp/led.c ****  *
+  12:Core/bsp/led.c ****  * 实验平台:正点原子 STM32F103开发板
+  13:Core/bsp/led.c ****  * 在线视频:www.yuanzige.com
+  14:Core/bsp/led.c ****  * 技术论坛:www.openedv.com
+  15:Core/bsp/led.c ****  * 公司网址:www.alientek.com
+  16:Core/bsp/led.c ****  * 购买地址:openedv.taobao.com
+  17:Core/bsp/led.c ****  *
+  18:Core/bsp/led.c ****  * 修改说明
+  19:Core/bsp/led.c ****  * V1.0 20200417
+  20:Core/bsp/led.c ****  * 第一次发布
+  21:Core/bsp/led.c ****  *
+  22:Core/bsp/led.c ****  **************************************************************************************************
+  23:Core/bsp/led.c ****  */
+  24:Core/bsp/led.c **** 
+  25:Core/bsp/led.c **** #include "led.h"
+  26:Core/bsp/led.c **** 
+  27:Core/bsp/led.c **** /**
+  28:Core/bsp/led.c ****  * @brief       初始化LED相关IO口, 并使能时钟
+  29:Core/bsp/led.c ****  * @param       无
+  30:Core/bsp/led.c ****  * @retval      无
+  31:Core/bsp/led.c ****  */
+  32:Core/bsp/led.c **** void led_init(void)
+ARM GAS  /tmp/ccl3whe8.s 			page 2
+
+
+  33:Core/bsp/led.c **** {
+  27              		.loc 1 33 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 70B5     		push	{r4, r5, r6, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 16
+  34              		.cfi_offset 4, -16
+  35              		.cfi_offset 5, -12
+  36              		.cfi_offset 6, -8
+  37              		.cfi_offset 14, -4
+  38 0002 82B0     		sub	sp, sp, #8
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 24
+  34:Core/bsp/led.c ****     LED0_GPIO_CLK_ENABLE(); /* LED0时钟使能 */
+  41              		.loc 1 34 5 view .LVU1
+  42              		.loc 1 34 5 view .LVU2
+  43 0004 134B     		ldr	r3, .L3
+  44 0006 9A69     		ldr	r2, [r3, #24]
+  45 0008 42F00802 		orr	r2, r2, #8
+  46 000c 9A61     		str	r2, [r3, #24]
+  47              		.loc 1 34 5 view .LVU3
+  35:Core/bsp/led.c ****     LED1_GPIO_CLK_ENABLE(); /* LED1时钟使能 */
+  48              		.loc 1 35 5 view .LVU4
+  49              		.loc 1 35 5 view .LVU5
+  50 000e 9A69     		ldr	r2, [r3, #24]
+  51 0010 42F04002 		orr	r2, r2, #64
+  52 0014 9A61     		str	r2, [r3, #24]
+  53              		.loc 1 35 5 view .LVU6
+  36:Core/bsp/led.c **** 
+  37:Core/bsp/led.c ****     sys_gpio_set(LED0_GPIO_PORT, LED0_GPIO_PIN,
+  54              		.loc 1 37 5 view .LVU7
+  55 0016 104E     		ldr	r6, .L3+4
+  56 0018 0124     		movs	r4, #1
+  57 001a 0194     		str	r4, [sp, #4]
+  58 001c 0094     		str	r4, [sp]
+  59 001e 0023     		movs	r3, #0
+  60 0020 2246     		mov	r2, r4
+  61 0022 2021     		movs	r1, #32
+  62 0024 3046     		mov	r0, r6
+  63 0026 FFF7FEFF 		bl	sys_gpio_set
+  64              	.LVL0:
+  38:Core/bsp/led.c ****                  SYS_GPIO_MODE_OUT, SYS_GPIO_OTYPE_PP, SYS_GPIO_SPEED_MID, SYS_GPIO_PUPD_PU);   /* 
+  39:Core/bsp/led.c **** 
+  40:Core/bsp/led.c ****     sys_gpio_set(LED1_GPIO_PORT, LED1_GPIO_PIN,
+  65              		.loc 1 40 5 view .LVU8
+  66 002a 0C4D     		ldr	r5, .L3+8
+  67 002c 0194     		str	r4, [sp, #4]
+  68 002e 0094     		str	r4, [sp]
+  69 0030 0023     		movs	r3, #0
+  70 0032 2246     		mov	r2, r4
+  71 0034 2021     		movs	r1, #32
+  72 0036 2846     		mov	r0, r5
+  73 0038 FFF7FEFF 		bl	sys_gpio_set
+  74              	.LVL1:
+  41:Core/bsp/led.c ****                  SYS_GPIO_MODE_OUT, SYS_GPIO_OTYPE_PP, SYS_GPIO_SPEED_MID, SYS_GPIO_PUPD_PU);   /* 
+ARM GAS  /tmp/ccl3whe8.s 			page 3
+
+
+  42:Core/bsp/led.c **** 
+  43:Core/bsp/led.c ****     LED0(1);    /* 关闭 LED0 */
+  75              		.loc 1 43 5 view .LVU9
+  76 003c 2246     		mov	r2, r4
+  77 003e 2021     		movs	r1, #32
+  78 0040 3046     		mov	r0, r6
+  79 0042 FFF7FEFF 		bl	sys_gpio_pin_set
+  80              	.LVL2:
+  44:Core/bsp/led.c ****     LED1(1);    /* 关闭 LED1 */
+  81              		.loc 1 44 5 view .LVU10
+  82 0046 2246     		mov	r2, r4
+  83 0048 2021     		movs	r1, #32
+  84 004a 2846     		mov	r0, r5
+  85 004c FFF7FEFF 		bl	sys_gpio_pin_set
+  86              	.LVL3:
+  45:Core/bsp/led.c **** }
+  87              		.loc 1 45 1 is_stmt 0 view .LVU11
+  88 0050 02B0     		add	sp, sp, #8
+  89              	.LCFI2:
+  90              		.cfi_def_cfa_offset 16
+  91              		@ sp needed
+  92 0052 70BD     		pop	{r4, r5, r6, pc}
+  93              	.L4:
+  94              		.align	2
+  95              	.L3:
+  96 0054 00100240 		.word	1073876992
+  97 0058 000C0140 		.word	1073810432
+  98 005c 00180140 		.word	1073813504
+  99              		.cfi_endproc
+ 100              	.LFE65:
+ 102              		.text
+ 103              	.Letext0:
+ 104              		.file 2 "/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 105              		.file 3 "/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 106              		.file 4 "CMSIS/Device/stm32f103xe.h"
+ 107              		.file 5 "Core/system/sys.h"
+ARM GAS  /tmp/ccl3whe8.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 led.c
+     /tmp/ccl3whe8.s:19     .text.led_init:00000000 $t
+     /tmp/ccl3whe8.s:25     .text.led_init:00000000 led_init
+     /tmp/ccl3whe8.s:96     .text.led_init:00000054 $d
+
+UNDEFINED SYMBOLS
+sys_gpio_set
+sys_gpio_pin_set

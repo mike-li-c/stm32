@@ -1,0 +1,1995 @@
+ARM GAS  /tmp/ccqFO6Uv.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"sys.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/system/sys.c"
+  18              		.section	.text.sys_nvic_priority_group_config,"ax",%progbits
+  19              		.align	1
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	sys_nvic_priority_group_config:
+  25              	.LVL0:
+  26              	.LFB66:
+   1:Core/system/sys.c **** #include "sys.h"
+   2:Core/system/sys.c **** 
+   3:Core/system/sys.c **** /*∫Ø ˝…Í√˜*****************************************************************************************
+   4:Core/system/sys.c **** /* æ≤Ã¨∫Ø ˝(Ωˆ‘⁄sys.c¿Ô√Ê”√µΩ) */
+   5:Core/system/sys.c **** static void sys_nvic_priority_group_config(uint8_t group);                      /* …Ë÷√NVIC∑÷◊È */
+   6:Core/system/sys.c **** 
+   7:Core/system/sys.c **** /**
+   8:Core/system/sys.c ****  * @brief       …Ë÷√÷–∂œœÚ¡ø±Ì∆´“∆µÿ÷∑
+   9:Core/system/sys.c ****  * @param       baseaddr: ª˘÷∑
+  10:Core/system/sys.c ****  * @param       offset: ∆´“∆¡ø(±ÿ–Î «0, ªÚ’ﬂ0X100µƒ±∂ ˝)
+  11:Core/system/sys.c ****  * @retval      Œﬁ
+  12:Core/system/sys.c ****  */
+  13:Core/system/sys.c **** void sys_nvic_set_vector_table(uint32_t baseaddr, uint32_t offset)
+  14:Core/system/sys.c **** {
+  15:Core/system/sys.c ****     /* …Ë÷√NVICµƒœÚ¡ø±Ì∆´“∆ºƒ¥Ê∆˜,VTORµÕ9Œª±£¡Ù,º¥[8:0]±£¡Ù */
+  16:Core/system/sys.c ****     SCB->VTOR = baseaddr | (offset & (uint32_t)0xFFFFFE00);
+  17:Core/system/sys.c **** }
+  18:Core/system/sys.c **** 
+  19:Core/system/sys.c **** /**
+  20:Core/system/sys.c ****  * @brief       …Ë÷√NVIC∑÷◊È
+  21:Core/system/sys.c ****  * @param       group: 0~4,π≤5◊È, œÍœ∏Ω‚ Õº˚: sys_nvic_init∫Ø ˝≤Œ ˝Àµ√˜
+  22:Core/system/sys.c ****  * @retval      Œﬁ
+  23:Core/system/sys.c ****  */
+  24:Core/system/sys.c **** static void sys_nvic_priority_group_config(uint8_t group)
+  25:Core/system/sys.c **** {
+  27              		.loc 1 25 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  26:Core/system/sys.c ****     uint32_t temp, temp1;
+  32              		.loc 1 26 5 view .LVU1
+ARM GAS  /tmp/ccqFO6Uv.s 			page 2
+
+
+  27:Core/system/sys.c ****     temp1 = (~group) & 0x07;/* »°∫Û»˝Œª */
+  33              		.loc 1 27 5 view .LVU2
+  34              		.loc 1 27 14 is_stmt 0 view .LVU3
+  35 0000 C343     		mvns	r3, r0
+  36              	.LVL1:
+  28:Core/system/sys.c ****     temp1 <<= 8;
+  37              		.loc 1 28 5 is_stmt 1 view .LVU4
+  38              		.loc 1 28 11 is_stmt 0 view .LVU5
+  39 0002 1B02     		lsls	r3, r3, #8
+  40              	.LVL2:
+  41              		.loc 1 28 11 view .LVU6
+  42 0004 03F4E063 		and	r3, r3, #1792
+  43              	.LVL3:
+  29:Core/system/sys.c ****     temp = SCB->AIRCR;      /* ∂¡»°œ»«∞µƒ…Ë÷√ */
+  44              		.loc 1 29 5 is_stmt 1 view .LVU7
+  45              		.loc 1 29 10 is_stmt 0 view .LVU8
+  46 0008 0649     		ldr	r1, .L2
+  47 000a CA68     		ldr	r2, [r1, #12]
+  48              	.LVL4:
+  30:Core/system/sys.c ****     temp &= 0X0000F8FF;     /* «Âø’œ»«∞∑÷◊È */
+  49              		.loc 1 30 5 is_stmt 1 view .LVU9
+  50              		.loc 1 30 10 is_stmt 0 view .LVU10
+  51 000c 22F4E062 		bic	r2, r2, #1792
+  52              	.LVL5:
+  53              		.loc 1 30 10 view .LVU11
+  54 0010 1204     		lsls	r2, r2, #16
+  55 0012 120C     		lsrs	r2, r2, #16
+  56              	.LVL6:
+  31:Core/system/sys.c ****     temp |= 0X05FA0000;     /* –¥»Î‘ø≥◊ */
+  57              		.loc 1 31 5 is_stmt 1 view .LVU12
+  58              		.loc 1 31 10 is_stmt 0 view .LVU13
+  59 0014 42F0BF62 		orr	r2, r2, #100139008
+  60              	.LVL7:
+  61              		.loc 1 31 10 view .LVU14
+  62 0018 42F40032 		orr	r2, r2, #131072
+  63              	.LVL8:
+  32:Core/system/sys.c ****     temp |= temp1;
+  64              		.loc 1 32 5 is_stmt 1 view .LVU15
+  65              		.loc 1 32 10 is_stmt 0 view .LVU16
+  66 001c 1343     		orrs	r3, r3, r2
+  67              	.LVL9:
+  33:Core/system/sys.c ****     SCB->AIRCR = temp;      /* …Ë÷√∑÷◊È */
+  68              		.loc 1 33 5 is_stmt 1 view .LVU17
+  69              		.loc 1 33 16 is_stmt 0 view .LVU18
+  70 001e CB60     		str	r3, [r1, #12]
+  34:Core/system/sys.c **** }
+  71              		.loc 1 34 1 view .LVU19
+  72 0020 7047     		bx	lr
+  73              	.L3:
+  74 0022 00BF     		.align	2
+  75              	.L2:
+  76 0024 00ED00E0 		.word	-536810240
+  77              		.cfi_endproc
+  78              	.LFE66:
+  80              		.section	.text.sys_nvic_set_vector_table,"ax",%progbits
+  81              		.align	1
+  82              		.global	sys_nvic_set_vector_table
+ARM GAS  /tmp/ccqFO6Uv.s 			page 3
+
+
+  83              		.syntax unified
+  84              		.thumb
+  85              		.thumb_func
+  87              	sys_nvic_set_vector_table:
+  88              	.LVL10:
+  89              	.LFB65:
+  14:Core/system/sys.c ****     /* …Ë÷√NVICµƒœÚ¡ø±Ì∆´“∆ºƒ¥Ê∆˜,VTORµÕ9Œª±£¡Ù,º¥[8:0]±£¡Ù */
+  90              		.loc 1 14 1 is_stmt 1 view -0
+  91              		.cfi_startproc
+  92              		@ args = 0, pretend = 0, frame = 0
+  93              		@ frame_needed = 0, uses_anonymous_args = 0
+  94              		@ link register save eliminated.
+  16:Core/system/sys.c **** }
+  95              		.loc 1 16 5 view .LVU21
+  16:Core/system/sys.c **** }
+  96              		.loc 1 16 36 is_stmt 0 view .LVU22
+  97 0000 21F4FF71 		bic	r1, r1, #510
+  98              	.LVL11:
+  16:Core/system/sys.c **** }
+  99              		.loc 1 16 36 view .LVU23
+ 100 0004 21F00101 		bic	r1, r1, #1
+  16:Core/system/sys.c **** }
+ 101              		.loc 1 16 26 view .LVU24
+ 102 0008 0143     		orrs	r1, r1, r0
+  16:Core/system/sys.c **** }
+ 103              		.loc 1 16 15 view .LVU25
+ 104 000a 014B     		ldr	r3, .L5
+ 105 000c 9960     		str	r1, [r3, #8]
+  17:Core/system/sys.c **** 
+ 106              		.loc 1 17 1 view .LVU26
+ 107 000e 7047     		bx	lr
+ 108              	.L6:
+ 109              		.align	2
+ 110              	.L5:
+ 111 0010 00ED00E0 		.word	-536810240
+ 112              		.cfi_endproc
+ 113              	.LFE65:
+ 115              		.section	.text.sys_nvic_init,"ax",%progbits
+ 116              		.align	1
+ 117              		.global	sys_nvic_init
+ 118              		.syntax unified
+ 119              		.thumb
+ 120              		.thumb_func
+ 122              	sys_nvic_init:
+ 123              	.LVL12:
+ 124              	.LFB67:
+  35:Core/system/sys.c **** 
+  36:Core/system/sys.c **** /**
+  37:Core/system/sys.c ****  * @brief       …Ë÷√NVIC(∞¸¿®∑÷◊È/«¿’º”≈œ»º∂/◊””≈œ»º∂µ»)
+  38:Core/system/sys.c ****  * @param       pprio: «¿’º”≈œ»º∂(PreemptionPriority)
+  39:Core/system/sys.c ****  * @param       sprio: ◊””≈œ»º∂(SubPriority)
+  40:Core/system/sys.c ****  * @param       ch: ÷–∂œ±‡∫≈(Channel)
+  41:Core/system/sys.c ****  * @param       group: ÷–∂œ∑÷◊È
+  42:Core/system/sys.c ****  *   @arg       0, ◊È0: 0Œª«¿’º”≈œ»º∂, 4Œª◊””≈œ»º∂
+  43:Core/system/sys.c ****  *   @arg       1, ◊È1: 1Œª«¿’º”≈œ»º∂, 3Œª◊””≈œ»º∂
+  44:Core/system/sys.c ****  *   @arg       2, ◊È2: 2Œª«¿’º”≈œ»º∂, 2Œª◊””≈œ»º∂
+  45:Core/system/sys.c ****  *   @arg       3, ◊È3: 3Œª«¿’º”≈œ»º∂, 1Œª◊””≈œ»º∂
+ARM GAS  /tmp/ccqFO6Uv.s 			page 4
+
+
+  46:Core/system/sys.c ****  *   @arg       4, ◊È4: 4Œª«¿’º”≈œ»º∂, 0Œª◊””≈œ»º∂
+  47:Core/system/sys.c ****  * @note        ◊¢“‚”≈œ»º∂≤ªƒ‹≥¨π˝…Ë∂®µƒ◊Èµƒ∑∂Œß! ∑Ò‘Úª·”–“‚œÎ≤ªµΩµƒ¥ÌŒÛ
+  48:Core/system/sys.c ****  * @retval      Œﬁ
+  49:Core/system/sys.c ****  */
+  50:Core/system/sys.c **** void sys_nvic_init(uint8_t pprio, uint8_t sprio, uint8_t ch, uint8_t group)
+  51:Core/system/sys.c **** {
+ 125              		.loc 1 51 1 is_stmt 1 view -0
+ 126              		.cfi_startproc
+ 127              		@ args = 0, pretend = 0, frame = 0
+ 128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129              		.loc 1 51 1 is_stmt 0 view .LVU28
+ 130 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 131              	.LCFI0:
+ 132              		.cfi_def_cfa_offset 24
+ 133              		.cfi_offset 3, -24
+ 134              		.cfi_offset 4, -20
+ 135              		.cfi_offset 5, -16
+ 136              		.cfi_offset 6, -12
+ 137              		.cfi_offset 7, -8
+ 138              		.cfi_offset 14, -4
+ 139 0002 0746     		mov	r7, r0
+ 140 0004 0C46     		mov	r4, r1
+ 141 0006 1646     		mov	r6, r2
+ 142 0008 1D46     		mov	r5, r3
+  52:Core/system/sys.c ****     uint32_t temp;
+ 143              		.loc 1 52 5 is_stmt 1 view .LVU29
+  53:Core/system/sys.c ****     sys_nvic_priority_group_config(group);  /* …Ë÷√∑÷◊È */
+ 144              		.loc 1 53 5 view .LVU30
+ 145 000a 1846     		mov	r0, r3
+ 146              	.LVL13:
+ 147              		.loc 1 53 5 is_stmt 0 view .LVU31
+ 148 000c FFF7FEFF 		bl	sys_nvic_priority_group_config
+ 149              	.LVL14:
+  54:Core/system/sys.c ****     temp = pprio << (4 - group);
+ 150              		.loc 1 54 5 is_stmt 1 view .LVU32
+ 151              		.loc 1 54 24 is_stmt 0 view .LVU33
+ 152 0010 C5F10403 		rsb	r3, r5, #4
+ 153              		.loc 1 54 18 view .LVU34
+ 154 0014 07FA03F1 		lsl	r1, r7, r3
+ 155              	.LVL15:
+  55:Core/system/sys.c ****     temp |= sprio & (0x0f >> group);
+ 156              		.loc 1 55 5 is_stmt 1 view .LVU35
+ 157              		.loc 1 55 27 is_stmt 0 view .LVU36
+ 158 0018 0F23     		movs	r3, #15
+ 159 001a 2B41     		asrs	r3, r3, r5
+ 160              		.loc 1 55 19 view .LVU37
+ 161 001c 04EA0305 		and	r5, r4, r3
+ 162              	.LVL16:
+  56:Core/system/sys.c ****     temp &= 0xf;                            /* »°µÕÀƒŒª */
+ 163              		.loc 1 56 5 is_stmt 1 view .LVU38
+  57:Core/system/sys.c ****     NVIC->ISER[ch / 32] |= (1 << (ch % 32));  /*  πƒ‹÷–∂œŒª(“™«Â≥˝µƒª∞,…Ë÷√ICER∂‘”¶ŒªŒ™1º¥ø…) */
+ 164              		.loc 1 57 5 view .LVU39
+ 165              		.loc 1 57 15 is_stmt 0 view .LVU40
+ 166 0020 7009     		lsrs	r0, r6, #5
+ 167 0022 0A4C     		ldr	r4, .L9
+ 168 0024 54F82030 		ldr	r3, [r4, r0, lsl #2]
+ 169              		.loc 1 57 38 view .LVU41
+ARM GAS  /tmp/ccqFO6Uv.s 			page 5
+
+
+ 170 0028 06F01F07 		and	r7, r6, #31
+ 171              		.loc 1 57 31 view .LVU42
+ 172 002c 0122     		movs	r2, #1
+ 173 002e BA40     		lsls	r2, r2, r7
+ 174              		.loc 1 57 25 view .LVU43
+ 175 0030 1343     		orrs	r3, r3, r2
+ 176 0032 44F82030 		str	r3, [r4, r0, lsl #2]
+  58:Core/system/sys.c ****     NVIC->IP[ch] |= temp << 4;              /* …Ë÷√œÏ”¶”≈œ»º∂∫Õ«¿∂œ”≈œ»º∂ */
+ 177              		.loc 1 58 5 is_stmt 1 view .LVU44
+ 178              		.loc 1 58 13 is_stmt 0 view .LVU45
+ 179 0036 3444     		add	r4, r4, r6
+ 180 0038 94F80033 		ldrb	r3, [r4, #768]	@ zero_extendqisi2
+ 181              		.loc 1 58 26 view .LVU46
+ 182 003c 2943     		orrs	r1, r1, r5
+ 183              	.LVL17:
+ 184              		.loc 1 58 26 view .LVU47
+ 185 003e 01F00F01 		and	r1, r1, #15
+ 186              	.LVL18:
+ 187              		.loc 1 58 18 view .LVU48
+ 188 0042 43EA0113 		orr	r3, r3, r1, lsl #4
+ 189 0046 84F80033 		strb	r3, [r4, #768]
+  59:Core/system/sys.c **** }
+ 190              		.loc 1 59 1 view .LVU49
+ 191 004a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 192              	.L10:
+ 193              		.align	2
+ 194              	.L9:
+ 195 004c 00E100E0 		.word	-536813312
+ 196              		.cfi_endproc
+ 197              	.LFE67:
+ 199              		.section	.text.sys_nvic_ex_config,"ax",%progbits
+ 200              		.align	1
+ 201              		.global	sys_nvic_ex_config
+ 202              		.syntax unified
+ 203              		.thumb
+ 204              		.thumb_func
+ 206              	sys_nvic_ex_config:
+ 207              	.LVL19:
+ 208              	.LFB68:
+  60:Core/system/sys.c **** 
+  61:Core/system/sys.c **** /**
+  62:Core/system/sys.c ****  * @brief       Õ‚≤ø÷–∂œ≈‰÷√∫Ø ˝, ÷ª’Î∂‘GPIOA~GPIOG
+  63:Core/system/sys.c ****  * @note        ∏√∫Ø ˝ª·◊‘∂Øø™∆Ù∂‘”¶÷–∂œ, “‘º∞∆¡±Œœﬂ
+  64:Core/system/sys.c ****  * @param       p_gpiox: GPIOA~GPIOG, GPIO÷∏’Î
+  65:Core/system/sys.c ****  * @param       pinx: 0X0000~0XFFFF, “˝Ω≈Œª÷√, √ø∏ˆŒª¥˙±Ì“ª∏ˆIO, µ⁄0Œª¥˙±ÌPx0, µ⁄1Œª¥˙±ÌPx1, “¿¥Œ¿‡
+  66:Core/system/sys.c ****  *   @arg       SYS_GPIO_PIN0~SYS_GPIO_PIN15, 1<<0 ~ 1<<15
+  67:Core/system/sys.c ****  * @param       tmode: 1~3, ¥•∑¢ƒ£ Ω
+  68:Core/system/sys.c ****  *   @arg       SYS_GPIO_FTIR, 1, œ¬Ωµ—ÿ¥•∑¢
+  69:Core/system/sys.c ****  *   @arg       SYS_GPIO_RTIR, 2, …œ…˝—ÿ¥•∑¢
+  70:Core/system/sys.c ****  *   @arg       SYS_GPIO_BTIR, 3, »Œ“‚µÁ∆Ω¥•∑¢
+  71:Core/system/sys.c ****  * @retval      Œﬁ
+  72:Core/system/sys.c ****  */
+  73:Core/system/sys.c **** void sys_nvic_ex_config(GPIO_TypeDef *p_gpiox, uint16_t pinx, uint8_t tmode)
+  74:Core/system/sys.c **** {
+ 209              		.loc 1 74 1 is_stmt 1 view -0
+ 210              		.cfi_startproc
+ 211              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccqFO6Uv.s 			page 6
+
+
+ 212              		@ frame_needed = 0, uses_anonymous_args = 0
+ 213              		.loc 1 74 1 is_stmt 0 view .LVU51
+ 214 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 215              	.LCFI1:
+ 216              		.cfi_def_cfa_offset 20
+ 217              		.cfi_offset 4, -20
+ 218              		.cfi_offset 5, -16
+ 219              		.cfi_offset 6, -12
+ 220              		.cfi_offset 7, -8
+ 221              		.cfi_offset 14, -4
+  75:Core/system/sys.c ****     uint8_t offset;
+ 222              		.loc 1 75 5 is_stmt 1 view .LVU52
+  76:Core/system/sys.c ****     uint32_t gpio_num = 0;      /* gpio±‡∫≈, 0~10, ¥˙±ÌGPIOA~GPIOG */
+ 223              		.loc 1 76 5 view .LVU53
+ 224              	.LVL20:
+  77:Core/system/sys.c ****     uint32_t pinpos = 0, pos = 0, curpin = 0;
+ 225              		.loc 1 77 5 view .LVU54
+  78:Core/system/sys.c **** 
+  79:Core/system/sys.c ****     gpio_num = ((uint32_t)p_gpiox - (uint32_t)GPIOA) / 0X400 ;/* µ√µΩgpio±‡∫≈ */
+ 226              		.loc 1 79 5 view .LVU55
+ 227              		.loc 1 79 35 is_stmt 0 view .LVU56
+ 228 0002 00F14046 		add	r6, r0, #-1073741824
+ 229 0006 A6F58436 		sub	r6, r6, #67584
+ 230              		.loc 1 79 14 view .LVU57
+ 231 000a B60A     		lsrs	r6, r6, #10
+ 232              	.LVL21:
+  80:Core/system/sys.c ****     RCC->APB2ENR |= 1 << 0;     /* AFIO = 1, πƒ‹AFIO ±÷” */
+ 233              		.loc 1 80 5 is_stmt 1 view .LVU58
+ 234              		.loc 1 80 8 is_stmt 0 view .LVU59
+ 235 000c 1D48     		ldr	r0, .L18
+ 236              	.LVL22:
+ 237              		.loc 1 80 8 view .LVU60
+ 238 000e 8369     		ldr	r3, [r0, #24]
+ 239              		.loc 1 80 18 view .LVU61
+ 240 0010 43F00103 		orr	r3, r3, #1
+ 241 0014 8361     		str	r3, [r0, #24]
+  81:Core/system/sys.c **** 
+  82:Core/system/sys.c ****     for (pinpos = 0; pinpos < 16; pinpos++)
+ 242              		.loc 1 82 5 is_stmt 1 view .LVU62
+ 243              		.loc 1 82 17 is_stmt 0 view .LVU63
+ 244 0016 0023     		movs	r3, #0
+ 245              		.loc 1 82 5 view .LVU64
+ 246 0018 00E0     		b	.L12
+ 247              	.LVL23:
+ 248              	.L13:
+ 249              		.loc 1 82 41 is_stmt 1 discriminator 2 view .LVU65
+ 250 001a 0133     		adds	r3, r3, #1
+ 251              	.LVL24:
+ 252              	.L12:
+ 253              		.loc 1 82 29 discriminator 1 view .LVU66
+ 254 001c 0F2B     		cmp	r3, #15
+ 255 001e 30D8     		bhi	.L17
+  83:Core/system/sys.c ****     {
+  84:Core/system/sys.c ****         pos = 1 << pinpos;      /* “ª∏ˆ∏ˆŒªºÏ≤È */
+ 256              		.loc 1 84 9 view .LVU67
+ 257              		.loc 1 84 17 is_stmt 0 view .LVU68
+ 258 0020 0120     		movs	r0, #1
+ARM GAS  /tmp/ccqFO6Uv.s 			page 7
+
+
+ 259 0022 9840     		lsls	r0, r0, r3
+ 260              	.LVL25:
+  85:Core/system/sys.c ****         curpin = pinx & pos;    /* ºÏ≤È“˝Ω≈ «∑Ò“™…Ë÷√ */
+ 261              		.loc 1 85 9 is_stmt 1 view .LVU69
+  86:Core/system/sys.c **** 
+  87:Core/system/sys.c ****         if (curpin == pos)      /* –Ë“™…Ë÷√ */
+ 262              		.loc 1 87 9 view .LVU70
+ 263              		.loc 1 87 12 is_stmt 0 view .LVU71
+ 264 0024 30EA0104 		bics	r4, r0, r1
+ 265 0028 F7D1     		bne	.L13
+  88:Core/system/sys.c ****         {
+  89:Core/system/sys.c ****             offset = (pinpos % 4) * 4;
+ 266              		.loc 1 89 13 is_stmt 1 view .LVU72
+ 267              		.loc 1 89 20 is_stmt 0 view .LVU73
+ 268 002a 03F0030E 		and	lr, r3, #3
+ 269 002e 4FEA8E0E 		lsl	lr, lr, #2
+ 270              	.LVL26:
+  90:Core/system/sys.c ****             AFIO->EXTICR[pinpos / 4] &= ~(0x000F << offset);    /* «Â≥˝‘≠¿¥…Ë÷√£°£°£° */
+ 271              		.loc 1 90 13 is_stmt 1 view .LVU74
+ 272              		.loc 1 90 33 is_stmt 0 view .LVU75
+ 273 0032 4FEA930C 		lsr	ip, r3, #2
+ 274              		.loc 1 90 25 view .LVU76
+ 275 0036 144C     		ldr	r4, .L18+4
+ 276 0038 0CF1020C 		add	ip, ip, #2
+ 277 003c 54F82C50 		ldr	r5, [r4, ip, lsl #2]
+ 278              		.loc 1 90 50 view .LVU77
+ 279 0040 0F27     		movs	r7, #15
+ 280 0042 07FA0EF7 		lsl	r7, r7, lr
+ 281              		.loc 1 90 38 view .LVU78
+ 282 0046 25EA0705 		bic	r5, r5, r7
+ 283 004a 44F82C50 		str	r5, [r4, ip, lsl #2]
+  91:Core/system/sys.c ****             AFIO->EXTICR[pinpos / 4] |= gpio_num << offset;     /* EXTI.BITx”≥…‰µΩgpiox.bitx */
+ 284              		.loc 1 91 13 is_stmt 1 view .LVU79
+ 285              		.loc 1 91 25 is_stmt 0 view .LVU80
+ 286 004e 54F82C50 		ldr	r5, [r4, ip, lsl #2]
+ 287              		.loc 1 91 50 view .LVU81
+ 288 0052 06FA0EFE 		lsl	lr, r6, lr
+ 289              	.LVL27:
+ 290              		.loc 1 91 38 view .LVU82
+ 291 0056 45EA0E05 		orr	r5, r5, lr
+ 292 005a 44F82C50 		str	r5, [r4, ip, lsl #2]
+  92:Core/system/sys.c **** 
+  93:Core/system/sys.c ****             EXTI->IMR |= 1 << pinpos;   /* ø™∆Ùline BITx…œµƒ÷–∂œ(»Áπ˚“™Ω˚÷π÷–∂œ£¨‘Ú∑¥≤Ÿ◊˜º¥ø…) */
+ 293              		.loc 1 93 13 is_stmt 1 view .LVU83
+ 294              		.loc 1 93 17 is_stmt 0 view .LVU84
+ 295 005e 0B4D     		ldr	r5, .L18+8
+ 296 0060 2C68     		ldr	r4, [r5]
+ 297              		.loc 1 93 23 view .LVU85
+ 298 0062 0443     		orrs	r4, r4, r0
+ 299 0064 2C60     		str	r4, [r5]
+  94:Core/system/sys.c **** 
+  95:Core/system/sys.c ****             if (tmode & 0x01) EXTI->FTSR |= 1 << pinpos;        /* line bitx…œ ¬º˛œ¬Ωµ—ÿ¥•∑¢ */
+ 300              		.loc 1 95 13 is_stmt 1 view .LVU86
+ 301              		.loc 1 95 16 is_stmt 0 view .LVU87
+ 302 0066 12F0010F 		tst	r2, #1
+ 303 006a 02D0     		beq	.L14
+ 304              		.loc 1 95 31 is_stmt 1 discriminator 1 view .LVU88
+ARM GAS  /tmp/ccqFO6Uv.s 			page 8
+
+
+ 305              		.loc 1 95 35 is_stmt 0 discriminator 1 view .LVU89
+ 306 006c EC68     		ldr	r4, [r5, #12]
+ 307              		.loc 1 95 42 discriminator 1 view .LVU90
+ 308 006e 0443     		orrs	r4, r4, r0
+ 309 0070 EC60     		str	r4, [r5, #12]
+ 310              	.L14:
+  96:Core/system/sys.c **** 
+  97:Core/system/sys.c ****             if (tmode & 0x02) EXTI->RTSR |= 1 << pinpos;        /* line bitx…œ ¬º˛…œ…˝Ωµ—ÿ¥•∑¢ */
+ 311              		.loc 1 97 13 is_stmt 1 view .LVU91
+ 312              		.loc 1 97 16 is_stmt 0 view .LVU92
+ 313 0072 12F0020F 		tst	r2, #2
+ 314 0076 D0D0     		beq	.L13
+ 315              		.loc 1 97 31 is_stmt 1 discriminator 1 view .LVU93
+ 316              		.loc 1 97 35 is_stmt 0 discriminator 1 view .LVU94
+ 317 0078 044D     		ldr	r5, .L18+8
+ 318 007a AC68     		ldr	r4, [r5, #8]
+ 319              		.loc 1 97 42 discriminator 1 view .LVU95
+ 320 007c 2043     		orrs	r0, r0, r4
+ 321              	.LVL28:
+ 322              		.loc 1 97 42 discriminator 1 view .LVU96
+ 323 007e A860     		str	r0, [r5, #8]
+ 324 0080 CBE7     		b	.L13
+ 325              	.LVL29:
+ 326              	.L17:
+  98:Core/system/sys.c ****         }
+  99:Core/system/sys.c ****     }
+ 100:Core/system/sys.c **** }
+ 327              		.loc 1 100 1 view .LVU97
+ 328 0082 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 329              	.LVL30:
+ 330              	.L19:
+ 331              		.loc 1 100 1 view .LVU98
+ 332              		.align	2
+ 333              	.L18:
+ 334 0084 00100240 		.word	1073876992
+ 335 0088 00000140 		.word	1073807360
+ 336 008c 00040140 		.word	1073808384
+ 337              		.cfi_endproc
+ 338              	.LFE68:
+ 340              		.section	.text.sys_gpio_remap_set,"ax",%progbits
+ 341              		.align	1
+ 342              		.global	sys_gpio_remap_set
+ 343              		.syntax unified
+ 344              		.thumb
+ 345              		.thumb_func
+ 347              	sys_gpio_remap_set:
+ 348              	.LVL31:
+ 349              	.LFB69:
+ 101:Core/system/sys.c **** 
+ 102:Core/system/sys.c **** /**
+ 103:Core/system/sys.c ****  * @brief       GPIO÷ÿ”≥…‰π¶ƒ‹—°‘Ò…Ë÷√
+ 104:Core/system/sys.c ****  *   @note      ’‚¿ÔΩˆ÷ß≥÷∂‘MAPRºƒ¥Ê∆˜µƒ≈‰÷√, ≤ª÷ß≥÷∂‘MAPR2ºƒ¥Ê∆˜µƒ≈‰÷√!!!
+ 105:Core/system/sys.c ****  * @param       pos: ‘⁄AFIO_MAPRºƒ¥Ê∆˜¿Ô√Êµƒ∆ ºŒª÷√, 0~24
+ 106:Core/system/sys.c ****  *   @arg       [0]    , SPI1_REMAP;         [1]    , I2C1_REMAP;         [2]    , USART1_REMAP;   
+ 107:Core/system/sys.c ****  *   @arg       [5:4]  , USART3_REMAP;       [7:6]  , TIM1_REMAP;         [9:8]  , TIM2_REMAP;     
+ 108:Core/system/sys.c ****  *   @arg       [12]   , TIM4_REMAP;         [14:13], CAN_REMAP;          [15]   , PD01_REMAP;     
+ 109:Core/system/sys.c ****  *   @arg       [17]   , ADC1_ETRGINJ_REMAP; [18]   , ADC1_ETRGREG_REMAP; [19]   , ADC2_ETRGINJ_REM
+ARM GAS  /tmp/ccqFO6Uv.s 			page 9
+
+
+ 110:Core/system/sys.c ****  *   @arg       [26:24], SWJ_CFG;
+ 111:Core/system/sys.c ****  * @param       bit: ’º”√∂‡…ŸŒª, 1 ~ 3, œÍº˚pos≤Œ ˝Àµ√˜
+ 112:Core/system/sys.c ****  * @param       val: “™…Ë÷√µƒ∏¥”√π¶ƒ‹, 0 ~ 4, µ√∏˘æ›posŒª ˝æˆ∂®, œÍœ∏µƒ…Ë÷√÷µ, ≤Œº˚: <<STM32÷–Œƒ≤Œø
+ 113:Core/system/sys.c ****  *              »Á: sys_gpio_remap_set(24, 3, 2); ‘Ú «…Ë÷√SWJ_CFG[2:0]    = 2, —°‘Òπÿ±’JTAG, ø™∆ÙSW
+ 114:Core/system/sys.c ****  *                  sys_gpio_remap_set(10, 2, 2); ‘Ú «…Ë÷√TIM3_REMAP[1:0] = 2, TIM3—°‘Ò≤ø∑÷÷ÿ”≥…‰, 
+ 115:Core/system/sys.c ****  * @retval      Œﬁ
+ 116:Core/system/sys.c ****  */
+ 117:Core/system/sys.c **** void sys_gpio_remap_set(uint8_t pos, uint8_t bit, uint8_t val)
+ 118:Core/system/sys.c **** {
+ 350              		.loc 1 118 1 is_stmt 1 view -0
+ 351              		.cfi_startproc
+ 352              		@ args = 0, pretend = 0, frame = 0
+ 353              		@ frame_needed = 0, uses_anonymous_args = 0
+ 354              		@ link register save eliminated.
+ 355              		.loc 1 118 1 is_stmt 0 view .LVU100
+ 356 0000 10B4     		push	{r4}
+ 357              	.LCFI2:
+ 358              		.cfi_def_cfa_offset 4
+ 359              		.cfi_offset 4, -4
+ 119:Core/system/sys.c ****     uint32_t temp = 0;
+ 360              		.loc 1 119 5 is_stmt 1 view .LVU101
+ 361              	.LVL32:
+ 120:Core/system/sys.c ****     uint8_t i = 0;
+ 362              		.loc 1 120 5 view .LVU102
+ 121:Core/system/sys.c ****     RCC->APB2ENR |= 1 << 0;     /* ø™∆Ù∏®÷˙ ±÷” */
+ 363              		.loc 1 121 5 view .LVU103
+ 364              		.loc 1 121 8 is_stmt 0 view .LVU104
+ 365 0002 0E4C     		ldr	r4, .L24
+ 366 0004 A369     		ldr	r3, [r4, #24]
+ 367              		.loc 1 121 18 view .LVU105
+ 368 0006 43F00103 		orr	r3, r3, #1
+ 369 000a A361     		str	r3, [r4, #24]
+ 122:Core/system/sys.c **** 
+ 123:Core/system/sys.c ****     for (i = 0; i < bit; i++)   /* ÃÓ≥‰bit∏ˆ1 */
+ 370              		.loc 1 123 5 is_stmt 1 view .LVU106
+ 371              		.loc 1 123 12 is_stmt 0 view .LVU107
+ 372 000c 0023     		movs	r3, #0
+ 119:Core/system/sys.c ****     uint8_t i = 0;
+ 373              		.loc 1 119 14 view .LVU108
+ 374 000e 9C46     		mov	ip, r3
+ 375              		.loc 1 123 5 view .LVU109
+ 376 0010 05E0     		b	.L21
+ 377              	.LVL33:
+ 378              	.L22:
+ 124:Core/system/sys.c ****     {
+ 125:Core/system/sys.c ****         temp <<= 1;
+ 379              		.loc 1 125 9 is_stmt 1 discriminator 3 view .LVU110
+ 380              		.loc 1 125 14 is_stmt 0 discriminator 3 view .LVU111
+ 381 0012 4FEA4C0C 		lsl	ip, ip, #1
+ 382              	.LVL34:
+ 126:Core/system/sys.c ****         temp += 1;
+ 383              		.loc 1 126 9 is_stmt 1 discriminator 3 view .LVU112
+ 384              		.loc 1 126 14 is_stmt 0 discriminator 3 view .LVU113
+ 385 0016 0CF1010C 		add	ip, ip, #1
+ 386              	.LVL35:
+ 123:Core/system/sys.c ****     {
+ 387              		.loc 1 123 27 is_stmt 1 discriminator 3 view .LVU114
+ARM GAS  /tmp/ccqFO6Uv.s 			page 10
+
+
+ 388 001a 0133     		adds	r3, r3, #1
+ 389              	.LVL36:
+ 123:Core/system/sys.c ****     {
+ 390              		.loc 1 123 27 is_stmt 0 discriminator 3 view .LVU115
+ 391 001c DBB2     		uxtb	r3, r3
+ 392              	.LVL37:
+ 393              	.L21:
+ 123:Core/system/sys.c ****     {
+ 394              		.loc 1 123 19 is_stmt 1 discriminator 1 view .LVU116
+ 395 001e 8B42     		cmp	r3, r1
+ 396 0020 F7D3     		bcc	.L22
+ 127:Core/system/sys.c ****     }
+ 128:Core/system/sys.c **** 
+ 129:Core/system/sys.c ****     AFIO->MAPR &= ~(temp << pos);       /* «Â≥˝MAPR∂‘”¶Œª÷√‘≠¿¥µƒ…Ë÷√ */
+ 397              		.loc 1 129 5 view .LVU117
+ 398              		.loc 1 129 9 is_stmt 0 view .LVU118
+ 399 0022 074B     		ldr	r3, .L24+4
+ 400              	.LVL38:
+ 401              		.loc 1 129 9 view .LVU119
+ 402 0024 5968     		ldr	r1, [r3, #4]
+ 403              	.LVL39:
+ 404              		.loc 1 129 26 view .LVU120
+ 405 0026 0CFA00FC 		lsl	ip, ip, r0
+ 406              	.LVL40:
+ 407              		.loc 1 129 16 view .LVU121
+ 408 002a 21EA0C01 		bic	r1, r1, ip
+ 409 002e 5960     		str	r1, [r3, #4]
+ 130:Core/system/sys.c ****     AFIO->MAPR |= (uint32_t)val << pos; /* …Ë÷√MAPR∂‘”¶Œª÷√µƒ÷µ */
+ 410              		.loc 1 130 5 is_stmt 1 view .LVU122
+ 411              		.loc 1 130 9 is_stmt 0 view .LVU123
+ 412 0030 5968     		ldr	r1, [r3, #4]
+ 413              		.loc 1 130 33 view .LVU124
+ 414 0032 8240     		lsls	r2, r2, r0
+ 415              	.LVL41:
+ 416              		.loc 1 130 16 view .LVU125
+ 417 0034 0A43     		orrs	r2, r2, r1
+ 418 0036 5A60     		str	r2, [r3, #4]
+ 131:Core/system/sys.c **** }
+ 419              		.loc 1 131 1 view .LVU126
+ 420 0038 10BC     		pop	{r4}
+ 421              	.LCFI3:
+ 422              		.cfi_restore 4
+ 423              		.cfi_def_cfa_offset 0
+ 424 003a 7047     		bx	lr
+ 425              	.L25:
+ 426              		.align	2
+ 427              	.L24:
+ 428 003c 00100240 		.word	1073876992
+ 429 0040 00000140 		.word	1073807360
+ 430              		.cfi_endproc
+ 431              	.LFE69:
+ 433              		.section	.text.sys_gpio_set,"ax",%progbits
+ 434              		.align	1
+ 435              		.global	sys_gpio_set
+ 436              		.syntax unified
+ 437              		.thumb
+ 438              		.thumb_func
+ARM GAS  /tmp/ccqFO6Uv.s 			page 11
+
+
+ 440              	sys_gpio_set:
+ 441              	.LVL42:
+ 442              	.LFB70:
+ 132:Core/system/sys.c **** 
+ 133:Core/system/sys.c **** /**
+ 134:Core/system/sys.c ****  * @brief       GPIOÕ®”√…Ë÷√
+ 135:Core/system/sys.c ****  * @param       p_gpiox: GPIOA~GPIOG, GPIO÷∏’Î
+ 136:Core/system/sys.c ****  * @param       pinx: 0X0000~0XFFFF, “˝Ω≈Œª÷√, √ø∏ˆŒª¥˙±Ì“ª∏ˆIO, µ⁄0Œª¥˙±ÌPx0, µ⁄1Œª¥˙±ÌPx1, “¿¥Œ¿‡
+ 137:Core/system/sys.c ****  *   @arg       SYS_GPIO_PIN0~SYS_GPIO_PIN15, 1<<0 ~ 1<<15
+ 138:Core/system/sys.c ****  *
+ 139:Core/system/sys.c ****  * @param       mode: 0~3; ƒ£ Ω—°‘Ò, …Ë÷√»Áœ¬:
+ 140:Core/system/sys.c ****  *   @arg       SYS_GPIO_MODE_IN,  0,  ‰»Îƒ£ Ω(œµÕ≥∏¥Œªƒ¨»œ◊¥Ã¨)
+ 141:Core/system/sys.c ****  *   @arg       SYS_GPIO_MODE_OUT, 1,  ‰≥ˆƒ£ Ω
+ 142:Core/system/sys.c ****  *   @arg       SYS_GPIO_MODE_AF,  2, ∏¥”√π¶ƒ‹ƒ£ Ω
+ 143:Core/system/sys.c ****  *   @arg       SYS_GPIO_MODE_AIN, 3, ƒ£ƒ‚ ‰»Îƒ£ Ω
+ 144:Core/system/sys.c ****  *
+ 145:Core/system/sys.c ****  * @param       otype: 0 / 1;  ‰≥ˆ¿‡–Õ—°‘Ò, …Ë÷√»Áœ¬:
+ 146:Core/system/sys.c ****  *   @arg       SYS_GPIO_OTYPE_PP, 0, Õ∆ÕÏ ‰≥ˆ
+ 147:Core/system/sys.c ****  *   @arg       SYS_GPIO_OTYPE_OD, 1, ø™¬© ‰≥ˆ
+ 148:Core/system/sys.c ****  *
+ 149:Core/system/sys.c ****  * @param       ospeed: 0~2;  ‰≥ˆÀŸ∂», …Ë÷√»Áœ¬(◊¢“‚: ≤ªƒ‹Œ™0!!):
+ 150:Core/system/sys.c ****  *   @arg       SYS_GPIO_SPEED_LOW,  2, µÕÀŸ
+ 151:Core/system/sys.c ****  *   @arg       SYS_GPIO_SPEED_MID,  1, ÷–ÀŸ
+ 152:Core/system/sys.c ****  *   @arg       SYS_GPIO_SPEED_HIGH, 3, ∏ﬂÀŸ
+ 153:Core/system/sys.c ****  *
+ 154:Core/system/sys.c ****  * @param       pupd: 0~3: …œœ¬¿≠…Ë÷√, …Ë÷√»Áœ¬:
+ 155:Core/system/sys.c ****  *   @arg       SYS_GPIO_PUPD_NONE, 0, ≤ª¥¯…œœ¬¿≠
+ 156:Core/system/sys.c ****  *   @arg       SYS_GPIO_PUPD_PU,   1, …œ¿≠
+ 157:Core/system/sys.c ****  *   @arg       SYS_GPIO_PUPD_PD,   2, œ¬¿≠
+ 158:Core/system/sys.c ****  *   @arg       SYS_GPIO_PUPD_RES,  3, ±£¡Ù
+ 159:Core/system/sys.c ****  *
+ 160:Core/system/sys.c ****  * @note:       ◊¢“‚:
+ 161:Core/system/sys.c ****  *              1, ‘⁄ ‰»Îƒ£ Ω(∆’Õ® ‰»Î/ƒ£ƒ‚ ‰»Î)œ¬, otype ∫Õ ospeed ≤Œ ˝Œﬁ–ß!!
+ 162:Core/system/sys.c ****  *              2, ‘⁄ ‰≥ˆƒ£ Ωœ¬, pupd ≤Œ ˝Œﬁ–ß!!(ø™¬© ‰≥ˆŒﬁ∑® π”√ƒ⁄≤ø…œ¿≠µÁ◊Ë!!)
+ 163:Core/system/sys.c ****  * @retval      Œﬁ
+ 164:Core/system/sys.c ****  */
+ 165:Core/system/sys.c **** void sys_gpio_set(GPIO_TypeDef *p_gpiox, uint16_t pinx, uint32_t mode, uint32_t otype, uint32_t osp
+ 166:Core/system/sys.c **** {
+ 443              		.loc 1 166 1 is_stmt 1 view -0
+ 444              		.cfi_startproc
+ 445              		@ args = 8, pretend = 0, frame = 0
+ 446              		@ frame_needed = 0, uses_anonymous_args = 0
+ 447              		.loc 1 166 1 is_stmt 0 view .LVU128
+ 448 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 449              	.LCFI4:
+ 450              		.cfi_def_cfa_offset 24
+ 451              		.cfi_offset 4, -24
+ 452              		.cfi_offset 5, -20
+ 453              		.cfi_offset 6, -16
+ 454              		.cfi_offset 7, -12
+ 455              		.cfi_offset 8, -8
+ 456              		.cfi_offset 14, -4
+ 457 0004 069E     		ldr	r6, [sp, #24]
+ 458 0006 079D     		ldr	r5, [sp, #28]
+ 167:Core/system/sys.c ****     uint32_t pinpos = 0, pos = 0, curpin = 0;
+ 459              		.loc 1 167 5 is_stmt 1 view .LVU129
+ 460              	.LVL43:
+ARM GAS  /tmp/ccqFO6Uv.s 			page 12
+
+
+ 168:Core/system/sys.c ****     uint32_t config = 0;        /* ”√”⁄±£¥Êƒ≥“ª∏ˆIOµƒ…Ë÷√(CNF[1:0] + MODE[1:0]),÷ª”√¡À∆‰◊ÓµÕ4Œª */
+ 461              		.loc 1 168 5 view .LVU130
+ 169:Core/system/sys.c **** 
+ 170:Core/system/sys.c ****     for (pinpos = 0; pinpos < 16; pinpos++)
+ 462              		.loc 1 170 5 view .LVU131
+ 463              		.loc 1 170 17 is_stmt 0 view .LVU132
+ 464 0008 4FF0000C 		mov	ip, #0
+ 465              		.loc 1 170 5 view .LVU133
+ 466 000c 1DE0     		b	.L27
+ 467              	.LVL44:
+ 468              	.L37:
+ 171:Core/system/sys.c ****     {
+ 172:Core/system/sys.c ****         pos = 1 << pinpos;      /* “ª∏ˆ∏ˆŒªºÏ≤È */
+ 173:Core/system/sys.c ****         curpin = pinx & pos;    /* ºÏ≤È“˝Ω≈ «∑Ò“™…Ë÷√ */
+ 174:Core/system/sys.c **** 
+ 175:Core/system/sys.c ****         if (curpin == pos)      /* –Ë“™…Ë÷√ */
+ 176:Core/system/sys.c ****         {
+ 177:Core/system/sys.c ****             config = 0;         /* bit0~3∂º…Ë÷√Œ™0, º¥CNF[1:0] = 0; MODE[1:0] = 0;  ƒ¨»œ «ƒ£ƒ‚ ‰»Îƒ
+ 178:Core/system/sys.c **** 
+ 179:Core/system/sys.c ****             if ((mode == 0X01) || (mode == 0X02))   /* »Áπ˚ «∆’Õ® ‰≥ˆƒ£ Ω/∏¥”√π¶ƒ‹ƒ£ Ω */
+ 180:Core/system/sys.c ****             {
+ 181:Core/system/sys.c ****                 config = ospeed & 0X03;             /* …Ë÷√bit0/1 MODE[1:0] = 2/1/3 ÀŸ∂»≤Œ ˝ */
+ 469              		.loc 1 181 17 is_stmt 1 view .LVU134
+ 470              		.loc 1 181 24 is_stmt 0 view .LVU135
+ 471 000e 06F00307 		and	r7, r6, #3
+ 472              	.LVL45:
+ 182:Core/system/sys.c ****                 config |= (otype & 0X01) << 2;      /* …Ë÷√bit2   CNF[0]    = 0/1   Õ∆ÕÏ/ø™¬© ‰≥ˆ *
+ 473              		.loc 1 182 17 is_stmt 1 view .LVU136
+ 474              		.loc 1 182 42 is_stmt 0 view .LVU137
+ 475 0012 4FEA830E 		lsl	lr, r3, #2
+ 476              	.LVL46:
+ 477              		.loc 1 182 42 view .LVU138
+ 478 0016 0EF0040E 		and	lr, lr, #4
+ 479              		.loc 1 182 24 view .LVU139
+ 480 001a 4EEA070E 		orr	lr, lr, r7
+ 481              	.LVL47:
+ 183:Core/system/sys.c ****                 config |= (mode - 1) << 3;          /* …Ë÷√bit3   CNF[1]    = 0/1   ∆’Õ®/∏¥”√ ‰≥ˆ *
+ 482              		.loc 1 183 17 is_stmt 1 view .LVU140
+ 483              		.loc 1 183 24 is_stmt 0 view .LVU141
+ 484 001e 4EEAC40E 		orr	lr, lr, r4, lsl #3
+ 485              	.LVL48:
+ 486              	.L30:
+ 184:Core/system/sys.c ****             }
+ 185:Core/system/sys.c ****             else if (mode == 0)     /* »Áπ˚ «∆’Õ® ‰»Îƒ£ Ω */
+ 186:Core/system/sys.c ****             {
+ 187:Core/system/sys.c ****                 if (pupd == 0)   /* ≤ª¥¯…œœ¬¿≠,º¥∏°ø’ ‰»Îƒ£ Ω */
+ 188:Core/system/sys.c ****                 {
+ 189:Core/system/sys.c ****                     config = 1 << 2;               /* …Ë÷√bit2/3 CNF[1:0] = 01   ∏°ø’ ‰»Îƒ£ Ω */
+ 190:Core/system/sys.c ****                 }
+ 191:Core/system/sys.c ****                 else
+ 192:Core/system/sys.c ****                 {
+ 193:Core/system/sys.c ****                     config = 1 << 3;                            /* …Ë÷√bit2/3 CNF[1:0] = 10   …œœ¬¿
+ 194:Core/system/sys.c ****                     p_gpiox->ODR &= ~(1 << pinpos);             /* «Â≥˝‘≠¿¥µƒ…Ë÷√ */
+ 195:Core/system/sys.c ****                     p_gpiox->ODR |= (pupd & 0X01) << pinpos;    /* …Ë÷√ODR = 0/1 œ¬¿≠/…œ¿≠ */
+ 196:Core/system/sys.c ****                 }
+ 197:Core/system/sys.c ****             }
+ 198:Core/system/sys.c **** 
+ARM GAS  /tmp/ccqFO6Uv.s 			page 13
+
+
+ 199:Core/system/sys.c ****             /* ∏˘æ›IOø⁄Œª÷√ …Ë÷√CRL / CRHºƒ¥Ê∆˜ */
+ 200:Core/system/sys.c ****             if (pinpos <= 7)
+ 487              		.loc 1 200 13 is_stmt 1 view .LVU142
+ 488              		.loc 1 200 16 is_stmt 0 view .LVU143
+ 489 0022 BCF1070F 		cmp	ip, #7
+ 490 0026 33D8     		bhi	.L31
+ 201:Core/system/sys.c ****             {
+ 202:Core/system/sys.c ****                 p_gpiox->CRL &= ~(0X0F << (pinpos * 4));        /* «Â≥˝‘≠¿¥µƒ…Ë÷√ */
+ 491              		.loc 1 202 17 is_stmt 1 view .LVU144
+ 492              		.loc 1 202 24 is_stmt 0 view .LVU145
+ 493 0028 0768     		ldr	r7, [r0]
+ 494              		.loc 1 202 51 view .LVU146
+ 495 002a 4FEA8C04 		lsl	r4, ip, #2
+ 496              		.loc 1 202 40 view .LVU147
+ 497 002e 4FF00F08 		mov	r8, #15
+ 498 0032 08FA04F8 		lsl	r8, r8, r4
+ 499              		.loc 1 202 30 view .LVU148
+ 500 0036 27EA0807 		bic	r7, r7, r8
+ 501 003a 0760     		str	r7, [r0]
+ 203:Core/system/sys.c ****                 p_gpiox->CRL |= config << (pinpos * 4);         /* …Ë÷√CNFx[1:0] ∫Õ MODEx[1:0], x =
+ 502              		.loc 1 203 17 is_stmt 1 view .LVU149
+ 503              		.loc 1 203 24 is_stmt 0 view .LVU150
+ 504 003c 0768     		ldr	r7, [r0]
+ 505              		.loc 1 203 40 view .LVU151
+ 506 003e 0EFA04F4 		lsl	r4, lr, r4
+ 507              		.loc 1 203 30 view .LVU152
+ 508 0042 3C43     		orrs	r4, r4, r7
+ 509 0044 0460     		str	r4, [r0]
+ 510              	.LVL49:
+ 511              	.L28:
+ 170:Core/system/sys.c ****     {
+ 512              		.loc 1 170 41 is_stmt 1 discriminator 2 view .LVU153
+ 513 0046 0CF1010C 		add	ip, ip, #1
+ 514              	.LVL50:
+ 515              	.L27:
+ 170:Core/system/sys.c ****     {
+ 516              		.loc 1 170 29 discriminator 1 view .LVU154
+ 517 004a BCF10F0F 		cmp	ip, #15
+ 518 004e 31D8     		bhi	.L36
+ 172:Core/system/sys.c ****         curpin = pinx & pos;    /* ºÏ≤È“˝Ω≈ «∑Ò“™…Ë÷√ */
+ 519              		.loc 1 172 9 view .LVU155
+ 172:Core/system/sys.c ****         curpin = pinx & pos;    /* ºÏ≤È“˝Ω≈ «∑Ò“™…Ë÷√ */
+ 520              		.loc 1 172 17 is_stmt 0 view .LVU156
+ 521 0050 4FF0010E 		mov	lr, #1
+ 522 0054 0EFA0CFE 		lsl	lr, lr, ip
+ 523              	.LVL51:
+ 173:Core/system/sys.c **** 
+ 524              		.loc 1 173 9 is_stmt 1 view .LVU157
+ 175:Core/system/sys.c ****         {
+ 525              		.loc 1 175 9 view .LVU158
+ 175:Core/system/sys.c ****         {
+ 526              		.loc 1 175 12 is_stmt 0 view .LVU159
+ 527 0058 3EEA0104 		bics	r4, lr, r1
+ 528 005c F3D1     		bne	.L28
+ 177:Core/system/sys.c **** 
+ 529              		.loc 1 177 13 is_stmt 1 view .LVU160
+ 530              	.LVL52:
+ARM GAS  /tmp/ccqFO6Uv.s 			page 14
+
+
+ 179:Core/system/sys.c ****             {
+ 531              		.loc 1 179 13 view .LVU161
+ 179:Core/system/sys.c ****             {
+ 532              		.loc 1 179 32 is_stmt 0 view .LVU162
+ 533 005e 541E     		subs	r4, r2, #1
+ 179:Core/system/sys.c ****             {
+ 534              		.loc 1 179 16 view .LVU163
+ 535 0060 012C     		cmp	r4, #1
+ 536 0062 D4D9     		bls	.L37
+ 185:Core/system/sys.c ****             {
+ 537              		.loc 1 185 18 is_stmt 1 view .LVU164
+ 185:Core/system/sys.c ****             {
+ 538              		.loc 1 185 21 is_stmt 0 view .LVU165
+ 539 0064 72B9     		cbnz	r2, .L33
+ 187:Core/system/sys.c ****                 {
+ 540              		.loc 1 187 17 is_stmt 1 view .LVU166
+ 187:Core/system/sys.c ****                 {
+ 541              		.loc 1 187 20 is_stmt 0 view .LVU167
+ 542 0066 85B1     		cbz	r5, .L34
+ 193:Core/system/sys.c ****                     p_gpiox->ODR &= ~(1 << pinpos);             /* «Â≥˝‘≠¿¥µƒ…Ë÷√ */
+ 543              		.loc 1 193 21 is_stmt 1 view .LVU168
+ 544              	.LVL53:
+ 194:Core/system/sys.c ****                     p_gpiox->ODR |= (pupd & 0X01) << pinpos;    /* …Ë÷√ODR = 0/1 œ¬¿≠/…œ¿≠ */
+ 545              		.loc 1 194 21 view .LVU169
+ 194:Core/system/sys.c ****                     p_gpiox->ODR |= (pupd & 0X01) << pinpos;    /* …Ë÷√ODR = 0/1 œ¬¿≠/…œ¿≠ */
+ 546              		.loc 1 194 28 is_stmt 0 view .LVU170
+ 547 0068 C468     		ldr	r4, [r0, #12]
+ 194:Core/system/sys.c ****                     p_gpiox->ODR |= (pupd & 0X01) << pinpos;    /* …Ë÷√ODR = 0/1 œ¬¿≠/…œ¿≠ */
+ 548              		.loc 1 194 34 view .LVU171
+ 549 006a 24EA0E04 		bic	r4, r4, lr
+ 550 006e C460     		str	r4, [r0, #12]
+ 195:Core/system/sys.c ****                 }
+ 551              		.loc 1 195 21 is_stmt 1 view .LVU172
+ 195:Core/system/sys.c ****                 }
+ 552              		.loc 1 195 28 is_stmt 0 view .LVU173
+ 553 0070 C468     		ldr	r4, [r0, #12]
+ 195:Core/system/sys.c ****                 }
+ 554              		.loc 1 195 43 view .LVU174
+ 555 0072 05F00107 		and	r7, r5, #1
+ 195:Core/system/sys.c ****                 }
+ 556              		.loc 1 195 51 view .LVU175
+ 557 0076 07FA0CF7 		lsl	r7, r7, ip
+ 195:Core/system/sys.c ****                 }
+ 558              		.loc 1 195 34 view .LVU176
+ 559 007a 3C43     		orrs	r4, r4, r7
+ 560 007c C460     		str	r4, [r0, #12]
+ 193:Core/system/sys.c ****                     p_gpiox->ODR &= ~(1 << pinpos);             /* «Â≥˝‘≠¿¥µƒ…Ë÷√ */
+ 561              		.loc 1 193 28 view .LVU177
+ 562 007e 4FF0080E 		mov	lr, #8
+ 563              	.LVL54:
+ 193:Core/system/sys.c ****                     p_gpiox->ODR &= ~(1 << pinpos);             /* «Â≥˝‘≠¿¥µƒ…Ë÷√ */
+ 564              		.loc 1 193 28 view .LVU178
+ 565 0082 CEE7     		b	.L30
+ 566              	.LVL55:
+ 567              	.L33:
+ 177:Core/system/sys.c **** 
+ 568              		.loc 1 177 20 view .LVU179
+ARM GAS  /tmp/ccqFO6Uv.s 			page 15
+
+
+ 569 0084 4FF0000E 		mov	lr, #0
+ 570              	.LVL56:
+ 177:Core/system/sys.c **** 
+ 571              		.loc 1 177 20 view .LVU180
+ 572 0088 CBE7     		b	.L30
+ 573              	.LVL57:
+ 574              	.L34:
+ 189:Core/system/sys.c ****                 }
+ 575              		.loc 1 189 28 view .LVU181
+ 576 008a 4FF0040E 		mov	lr, #4
+ 577              	.LVL58:
+ 189:Core/system/sys.c ****                 }
+ 578              		.loc 1 189 28 view .LVU182
+ 579 008e C8E7     		b	.L30
+ 580              	.LVL59:
+ 581              	.L31:
+ 204:Core/system/sys.c ****             }
+ 205:Core/system/sys.c ****             else
+ 206:Core/system/sys.c ****             {
+ 207:Core/system/sys.c ****                 p_gpiox->CRH &= ~(0X0F << ((pinpos - 8) * 4));  /* «Â≥˝‘≠¿¥µƒ…Ë÷√ */
+ 582              		.loc 1 207 17 is_stmt 1 view .LVU183
+ 583              		.loc 1 207 24 is_stmt 0 view .LVU184
+ 584 0090 4768     		ldr	r7, [r0, #4]
+ 585              		.loc 1 207 52 view .LVU185
+ 586 0092 ACF10804 		sub	r4, ip, #8
+ 587              		.loc 1 207 57 view .LVU186
+ 588 0096 A400     		lsls	r4, r4, #2
+ 589              		.loc 1 207 40 view .LVU187
+ 590 0098 4FF00F08 		mov	r8, #15
+ 591 009c 08FA04F8 		lsl	r8, r8, r4
+ 592              		.loc 1 207 30 view .LVU188
+ 593 00a0 27EA0807 		bic	r7, r7, r8
+ 594 00a4 4760     		str	r7, [r0, #4]
+ 208:Core/system/sys.c ****                 p_gpiox->CRH |= config << ((pinpos - 8) * 4);   /* …Ë÷√CNFx[1:0] ∫Õ MODEx[1:0], x =
+ 595              		.loc 1 208 17 is_stmt 1 view .LVU189
+ 596              		.loc 1 208 24 is_stmt 0 view .LVU190
+ 597 00a6 4768     		ldr	r7, [r0, #4]
+ 598              		.loc 1 208 40 view .LVU191
+ 599 00a8 0EFA04FE 		lsl	lr, lr, r4
+ 600              	.LVL60:
+ 601              		.loc 1 208 30 view .LVU192
+ 602 00ac 47EA0E07 		orr	r7, r7, lr
+ 603 00b0 4760     		str	r7, [r0, #4]
+ 604 00b2 C8E7     		b	.L28
+ 605              	.LVL61:
+ 606              	.L36:
+ 209:Core/system/sys.c **** 
+ 210:Core/system/sys.c ****             }
+ 211:Core/system/sys.c ****         }
+ 212:Core/system/sys.c ****     }
+ 213:Core/system/sys.c **** }
+ 607              		.loc 1 213 1 view .LVU193
+ 608 00b4 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 609              		.loc 1 213 1 view .LVU194
+ 610              		.cfi_endproc
+ 611              	.LFE70:
+ 613              		.section	.text.sys_gpio_pin_set,"ax",%progbits
+ARM GAS  /tmp/ccqFO6Uv.s 			page 16
+
+
+ 614              		.align	1
+ 615              		.global	sys_gpio_pin_set
+ 616              		.syntax unified
+ 617              		.thumb
+ 618              		.thumb_func
+ 620              	sys_gpio_pin_set:
+ 621              	.LVL62:
+ 622              	.LFB71:
+ 214:Core/system/sys.c **** 
+ 215:Core/system/sys.c **** /**
+ 216:Core/system/sys.c ****  * @brief       …Ë÷√GPIOƒ≥∏ˆ“˝Ω≈µƒ ‰≥ˆ◊¥Ã¨
+ 217:Core/system/sys.c ****  * @param       p_gpiox: GPIOA~GPIOG, GPIO÷∏’Î
+ 218:Core/system/sys.c ****  * @param       0X0000~0XFFFF, “˝Ω≈Œª÷√, √ø∏ˆŒª¥˙±Ì“ª∏ˆIO, µ⁄0Œª¥˙±ÌPx0, µ⁄1Œª¥˙±ÌPx1, “¿¥Œ¿‡Õ∆. ±»
+ 219:Core/system/sys.c ****  *   @arg       SYS_GPIO_PIN0~SYS_GPIO_PIN15, 1<<0 ~ 1<<15
+ 220:Core/system/sys.c ****  * @param       status: 0/1, “˝Ω≈◊¥Ã¨(Ωˆ◊ÓµÕŒª”––ß), …Ë÷√»Áœ¬:
+ 221:Core/system/sys.c ****  *   @arg       0,  ‰≥ˆµÕµÁ∆Ω
+ 222:Core/system/sys.c ****  *   @arg       1,  ‰≥ˆ∏ﬂµÁ∆Ω
+ 223:Core/system/sys.c ****  * @retval      Œﬁ
+ 224:Core/system/sys.c ****  */
+ 225:Core/system/sys.c **** void sys_gpio_pin_set(GPIO_TypeDef *p_gpiox, uint16_t pinx, uint8_t status)
+ 226:Core/system/sys.c **** {
+ 623              		.loc 1 226 1 is_stmt 1 view -0
+ 624              		.cfi_startproc
+ 625              		@ args = 0, pretend = 0, frame = 0
+ 626              		@ frame_needed = 0, uses_anonymous_args = 0
+ 627              		@ link register save eliminated.
+ 227:Core/system/sys.c ****     if (status & 0X01)
+ 628              		.loc 1 227 5 view .LVU196
+ 629              		.loc 1 227 8 is_stmt 0 view .LVU197
+ 630 0000 12F0010F 		tst	r2, #1
+ 631 0004 03D0     		beq	.L39
+ 228:Core/system/sys.c ****     {
+ 229:Core/system/sys.c ****         p_gpiox->BSRR |= pinx;  /* …Ë÷√GPIOxµƒpinxŒ™1 */
+ 632              		.loc 1 229 9 is_stmt 1 view .LVU198
+ 633              		.loc 1 229 16 is_stmt 0 view .LVU199
+ 634 0006 0369     		ldr	r3, [r0, #16]
+ 635              		.loc 1 229 23 view .LVU200
+ 636 0008 1943     		orrs	r1, r1, r3
+ 637              	.LVL63:
+ 638              		.loc 1 229 23 view .LVU201
+ 639 000a 0161     		str	r1, [r0, #16]
+ 640 000c 7047     		bx	lr
+ 641              	.LVL64:
+ 642              	.L39:
+ 230:Core/system/sys.c ****     }
+ 231:Core/system/sys.c ****     else
+ 232:Core/system/sys.c ****     {
+ 233:Core/system/sys.c ****         p_gpiox->BSRR |= (uint32_t)pinx << 16;  /* …Ë÷√GPIOxµƒpinxŒ™0 */
+ 643              		.loc 1 233 9 is_stmt 1 view .LVU202
+ 644              		.loc 1 233 16 is_stmt 0 view .LVU203
+ 645 000e 0369     		ldr	r3, [r0, #16]
+ 646              		.loc 1 233 23 view .LVU204
+ 647 0010 43EA0143 		orr	r3, r3, r1, lsl #16
+ 648 0014 0361     		str	r3, [r0, #16]
+ 234:Core/system/sys.c ****     }
+ 235:Core/system/sys.c **** }
+ 649              		.loc 1 235 1 view .LVU205
+ARM GAS  /tmp/ccqFO6Uv.s 			page 17
+
+
+ 650 0016 7047     		bx	lr
+ 651              		.cfi_endproc
+ 652              	.LFE71:
+ 654              		.section	.text.sys_gpio_pin_get,"ax",%progbits
+ 655              		.align	1
+ 656              		.global	sys_gpio_pin_get
+ 657              		.syntax unified
+ 658              		.thumb
+ 659              		.thumb_func
+ 661              	sys_gpio_pin_get:
+ 662              	.LVL65:
+ 663              	.LFB72:
+ 236:Core/system/sys.c **** 
+ 237:Core/system/sys.c **** /**
+ 238:Core/system/sys.c ****  * @brief       ∂¡»°GPIOƒ≥∏ˆ“˝Ω≈µƒ◊¥Ã¨
+ 239:Core/system/sys.c ****  * @param       p_gpiox: GPIOA~GPIOG, GPIO÷∏’Î
+ 240:Core/system/sys.c ****  * @param       0X0000~0XFFFF, “˝Ω≈Œª÷√, √ø∏ˆŒª¥˙±Ì“ª∏ˆIO, µ⁄0Œª¥˙±ÌPx0, µ⁄1Œª¥˙±ÌPx1, “¿¥Œ¿‡Õ∆. ±»
+ 241:Core/system/sys.c ****  *   @arg       SYS_GPIO_PIN0~SYS_GPIO_PIN15, 1<<0 ~ 1<<15
+ 242:Core/system/sys.c ****  * @retval      ∑µªÿ“˝Ω≈◊¥Ã¨, 0, µÕµÁ∆Ω; 1, ∏ﬂµÁ∆Ω
+ 243:Core/system/sys.c ****  */
+ 244:Core/system/sys.c **** uint8_t sys_gpio_pin_get(GPIO_TypeDef *p_gpiox, uint16_t pinx)
+ 245:Core/system/sys.c **** {
+ 664              		.loc 1 245 1 is_stmt 1 view -0
+ 665              		.cfi_startproc
+ 666              		@ args = 0, pretend = 0, frame = 0
+ 667              		@ frame_needed = 0, uses_anonymous_args = 0
+ 668              		@ link register save eliminated.
+ 246:Core/system/sys.c ****     if (p_gpiox->IDR & pinx)
+ 669              		.loc 1 246 5 view .LVU207
+ 670              		.loc 1 246 16 is_stmt 0 view .LVU208
+ 671 0000 8368     		ldr	r3, [r0, #8]
+ 672              		.loc 1 246 8 view .LVU209
+ 673 0002 1942     		tst	r1, r3
+ 674 0004 01D0     		beq	.L43
+ 247:Core/system/sys.c ****     {
+ 248:Core/system/sys.c ****         return 1;   /* pinxµƒ◊¥Ã¨Œ™1 */
+ 675              		.loc 1 248 16 view .LVU210
+ 676 0006 0120     		movs	r0, #1
+ 677              	.LVL66:
+ 678              		.loc 1 248 16 view .LVU211
+ 679 0008 7047     		bx	lr
+ 680              	.LVL67:
+ 681              	.L43:
+ 249:Core/system/sys.c ****     }
+ 250:Core/system/sys.c ****     else
+ 251:Core/system/sys.c ****     {
+ 252:Core/system/sys.c ****         return 0;   /* pinxµƒ◊¥Ã¨Œ™0 */
+ 682              		.loc 1 252 16 view .LVU212
+ 683 000a 0020     		movs	r0, #0
+ 684              	.LVL68:
+ 253:Core/system/sys.c ****     }
+ 254:Core/system/sys.c **** }
+ 685              		.loc 1 254 1 view .LVU213
+ 686 000c 7047     		bx	lr
+ 687              		.cfi_endproc
+ 688              	.LFE72:
+ 690              		.section	.text.sys_wfi_set,"ax",%progbits
+ARM GAS  /tmp/ccqFO6Uv.s 			page 18
+
+
+ 691              		.align	1
+ 692              		.global	sys_wfi_set
+ 693              		.syntax unified
+ 694              		.thumb
+ 695              		.thumb_func
+ 697              	sys_wfi_set:
+ 698              	.LFB73:
+ 255:Core/system/sys.c **** 
+ 256:Core/system/sys.c **** /**
+ 257:Core/system/sys.c ****  * @brief       ÷¥––: WFI÷∏¡Ó(÷¥––ÕÍ∏√÷∏¡ÓΩ¯»ÎµÕπ¶∫ƒ◊¥Ã¨, µ»¥˝÷–∂œªΩ–—)
+ 258:Core/system/sys.c ****  * @param       Œﬁ
+ 259:Core/system/sys.c ****  * @retval      Œﬁ
+ 260:Core/system/sys.c ****  */
+ 261:Core/system/sys.c **** void sys_wfi_set(void)
+ 262:Core/system/sys.c **** {
+ 699              		.loc 1 262 1 is_stmt 1 view -0
+ 700              		.cfi_startproc
+ 701              		@ args = 0, pretend = 0, frame = 0
+ 702              		@ frame_needed = 0, uses_anonymous_args = 0
+ 703              		@ link register save eliminated.
+ 263:Core/system/sys.c ****     __asm__ volatile("wfi");
+ 704              		.loc 1 263 5 view .LVU215
+ 705              		.syntax unified
+ 706              	@ 263 "Core/system/sys.c" 1
+ 707 0000 30BF     		wfi
+ 708              	@ 0 "" 2
+ 264:Core/system/sys.c **** }
+ 709              		.loc 1 264 1 is_stmt 0 view .LVU216
+ 710              		.thumb
+ 711              		.syntax unified
+ 712 0002 7047     		bx	lr
+ 713              		.cfi_endproc
+ 714              	.LFE73:
+ 716              		.section	.text.sys_intx_disable,"ax",%progbits
+ 717              		.align	1
+ 718              		.global	sys_intx_disable
+ 719              		.syntax unified
+ 720              		.thumb
+ 721              		.thumb_func
+ 723              	sys_intx_disable:
+ 724              	.LFB74:
+ 265:Core/system/sys.c **** 
+ 266:Core/system/sys.c **** /**
+ 267:Core/system/sys.c ****  * @brief       πÿ±’À˘”–÷–∂œ(µ´ «≤ª∞¸¿®fault∫ÕNMI÷–∂œ)
+ 268:Core/system/sys.c ****  * @param       Œﬁ
+ 269:Core/system/sys.c ****  * @retval      Œﬁ
+ 270:Core/system/sys.c ****  */
+ 271:Core/system/sys.c **** void sys_intx_disable(void)
+ 272:Core/system/sys.c **** {
+ 725              		.loc 1 272 1 is_stmt 1 view -0
+ 726              		.cfi_startproc
+ 727              		@ args = 0, pretend = 0, frame = 0
+ 728              		@ frame_needed = 0, uses_anonymous_args = 0
+ 729              		@ link register save eliminated.
+ 273:Core/system/sys.c ****     __asm__ volatile("cpsid i");
+ 730              		.loc 1 273 5 view .LVU218
+ 731              		.syntax unified
+ARM GAS  /tmp/ccqFO6Uv.s 			page 19
+
+
+ 732              	@ 273 "Core/system/sys.c" 1
+ 733 0000 72B6     		cpsid i
+ 734              	@ 0 "" 2
+ 274:Core/system/sys.c **** }
+ 735              		.loc 1 274 1 is_stmt 0 view .LVU219
+ 736              		.thumb
+ 737              		.syntax unified
+ 738 0002 7047     		bx	lr
+ 739              		.cfi_endproc
+ 740              	.LFE74:
+ 742              		.section	.text.sys_intx_enable,"ax",%progbits
+ 743              		.align	1
+ 744              		.global	sys_intx_enable
+ 745              		.syntax unified
+ 746              		.thumb
+ 747              		.thumb_func
+ 749              	sys_intx_enable:
+ 750              	.LFB75:
+ 275:Core/system/sys.c **** 
+ 276:Core/system/sys.c **** /**
+ 277:Core/system/sys.c ****  * @brief       ø™∆ÙÀ˘”–÷–∂œ
+ 278:Core/system/sys.c ****  * @param       Œﬁ
+ 279:Core/system/sys.c ****  * @retval      Œﬁ
+ 280:Core/system/sys.c ****  */
+ 281:Core/system/sys.c **** void sys_intx_enable(void)
+ 282:Core/system/sys.c **** {
+ 751              		.loc 1 282 1 is_stmt 1 view -0
+ 752              		.cfi_startproc
+ 753              		@ args = 0, pretend = 0, frame = 0
+ 754              		@ frame_needed = 0, uses_anonymous_args = 0
+ 755              		@ link register save eliminated.
+ 283:Core/system/sys.c ****     __asm__ volatile("cpsie i");
+ 756              		.loc 1 283 5 view .LVU221
+ 757              		.syntax unified
+ 758              	@ 283 "Core/system/sys.c" 1
+ 759 0000 62B6     		cpsie i
+ 760              	@ 0 "" 2
+ 284:Core/system/sys.c **** }
+ 761              		.loc 1 284 1 is_stmt 0 view .LVU222
+ 762              		.thumb
+ 763              		.syntax unified
+ 764 0002 7047     		bx	lr
+ 765              		.cfi_endproc
+ 766              	.LFE75:
+ 768              		.section	.text.sys_msr_msp,"ax",%progbits
+ 769              		.align	1
+ 770              		.global	sys_msr_msp
+ 771              		.syntax unified
+ 772              		.thumb
+ 773              		.thumb_func
+ 775              	sys_msr_msp:
+ 776              	.LVL69:
+ 777              	.LFB76:
+ 285:Core/system/sys.c **** 
+ 286:Core/system/sys.c **** /**
+ 287:Core/system/sys.c ****  * @brief       …Ë÷√’ª∂•µÿ÷∑
+ 288:Core/system/sys.c ****  * @param       addr: ’ª∂•µÿ÷∑
+ARM GAS  /tmp/ccqFO6Uv.s 			page 20
+
+
+ 289:Core/system/sys.c ****  * @retval      Œﬁ
+ 290:Core/system/sys.c ****  */
+ 291:Core/system/sys.c **** void sys_msr_msp(uint32_t addr)
+ 292:Core/system/sys.c **** {
+ 778              		.loc 1 292 1 is_stmt 1 view -0
+ 779              		.cfi_startproc
+ 780              		@ args = 0, pretend = 0, frame = 0
+ 781              		@ frame_needed = 0, uses_anonymous_args = 0
+ 782              		@ link register save eliminated.
+ 293:Core/system/sys.c ****     __set_MSP(addr);    /* …Ë÷√’ª∂•µÿ÷∑ */
+ 783              		.loc 1 293 5 view .LVU224
+ 784              	.LBB4:
+ 785              	.LBI4:
+ 786              		.file 2 "CMSIS/Include/cmsis_gcc.h"
+   1:CMSIS/Include/cmsis_gcc.h **** /**************************************************************************//**
+   2:CMSIS/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:CMSIS/Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
+   4:CMSIS/Include/cmsis_gcc.h ****  * @version  V5.0.4
+   5:CMSIS/Include/cmsis_gcc.h ****  * @date     09. April 2018
+   6:CMSIS/Include/cmsis_gcc.h ****  ******************************************************************************/
+   7:CMSIS/Include/cmsis_gcc.h **** /*
+   8:CMSIS/Include/cmsis_gcc.h ****  * Copyright (c) 2009-2018 Arm Limited. All rights reserved.
+   9:CMSIS/Include/cmsis_gcc.h ****  *
+  10:CMSIS/Include/cmsis_gcc.h ****  * SPDX-License-Identifier: Apache-2.0
+  11:CMSIS/Include/cmsis_gcc.h ****  *
+  12:CMSIS/Include/cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  13:CMSIS/Include/cmsis_gcc.h ****  * not use this file except in compliance with the License.
+  14:CMSIS/Include/cmsis_gcc.h ****  * You may obtain a copy of the License at
+  15:CMSIS/Include/cmsis_gcc.h ****  *
+  16:CMSIS/Include/cmsis_gcc.h ****  * www.apache.org/licenses/LICENSE-2.0
+  17:CMSIS/Include/cmsis_gcc.h ****  *
+  18:CMSIS/Include/cmsis_gcc.h ****  * Unless required by applicable law or agreed to in writing, software
+  19:CMSIS/Include/cmsis_gcc.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  20:CMSIS/Include/cmsis_gcc.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  21:CMSIS/Include/cmsis_gcc.h ****  * See the License for the specific language governing permissions and
+  22:CMSIS/Include/cmsis_gcc.h ****  * limitations under the License.
+  23:CMSIS/Include/cmsis_gcc.h ****  */
+  24:CMSIS/Include/cmsis_gcc.h **** 
+  25:CMSIS/Include/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  26:CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_H
+  27:CMSIS/Include/cmsis_gcc.h **** 
+  28:CMSIS/Include/cmsis_gcc.h **** /* ignore some GCC warnings */
+  29:CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic push
+  30:CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+  31:CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  32:CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  33:CMSIS/Include/cmsis_gcc.h **** 
+  34:CMSIS/Include/cmsis_gcc.h **** /* Fallback for __has_builtin */
+  35:CMSIS/Include/cmsis_gcc.h **** #ifndef __has_builtin
+  36:CMSIS/Include/cmsis_gcc.h ****   #define __has_builtin(x) (0)
+  37:CMSIS/Include/cmsis_gcc.h **** #endif
+  38:CMSIS/Include/cmsis_gcc.h **** 
+  39:CMSIS/Include/cmsis_gcc.h **** /* CMSIS compiler specific defines */
+  40:CMSIS/Include/cmsis_gcc.h **** #ifndef   __ASM
+  41:CMSIS/Include/cmsis_gcc.h ****   #define __ASM                                  __asm
+  42:CMSIS/Include/cmsis_gcc.h **** #endif
+  43:CMSIS/Include/cmsis_gcc.h **** #ifndef   __INLINE
+ARM GAS  /tmp/ccqFO6Uv.s 			page 21
+
+
+  44:CMSIS/Include/cmsis_gcc.h ****   #define __INLINE                               inline
+  45:CMSIS/Include/cmsis_gcc.h **** #endif
+  46:CMSIS/Include/cmsis_gcc.h **** #ifndef   __STATIC_INLINE
+  47:CMSIS/Include/cmsis_gcc.h ****   #define __STATIC_INLINE                        static inline
+  48:CMSIS/Include/cmsis_gcc.h **** #endif
+  49:CMSIS/Include/cmsis_gcc.h **** #ifndef   __STATIC_FORCEINLINE                 
+  50:CMSIS/Include/cmsis_gcc.h ****   #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static inline
+  51:CMSIS/Include/cmsis_gcc.h **** #endif                                           
+  52:CMSIS/Include/cmsis_gcc.h **** #ifndef   __NO_RETURN
+  53:CMSIS/Include/cmsis_gcc.h ****   #define __NO_RETURN                            __attribute__((__noreturn__))
+  54:CMSIS/Include/cmsis_gcc.h **** #endif
+  55:CMSIS/Include/cmsis_gcc.h **** #ifndef   __USED
+  56:CMSIS/Include/cmsis_gcc.h ****   #define __USED                                 __attribute__((used))
+  57:CMSIS/Include/cmsis_gcc.h **** #endif
+  58:CMSIS/Include/cmsis_gcc.h **** #ifndef   __WEAK
+  59:CMSIS/Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
+  60:CMSIS/Include/cmsis_gcc.h **** #endif
+  61:CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED
+  62:CMSIS/Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
+  63:CMSIS/Include/cmsis_gcc.h **** #endif
+  64:CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
+  65:CMSIS/Include/cmsis_gcc.h ****   #define __PACKED_STRUCT                        struct __attribute__((packed, aligned(1)))
+  66:CMSIS/Include/cmsis_gcc.h **** #endif
+  67:CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED_UNION
+  68:CMSIS/Include/cmsis_gcc.h ****   #define __PACKED_UNION                         union __attribute__((packed, aligned(1)))
+  69:CMSIS/Include/cmsis_gcc.h **** #endif
+  70:CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32        /* deprecated */
+  71:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  72:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  73:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  74:CMSIS/Include/cmsis_gcc.h ****   struct __attribute__((packed)) T_UINT32 { uint32_t v; };
+  75:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  76:CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32(x)                  (((struct T_UINT32 *)(x))->v)
+  77:CMSIS/Include/cmsis_gcc.h **** #endif
+  78:CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_WRITE
+  79:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  80:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  81:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  82:CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_WRITE { uint16_t v; };
+  83:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  84:CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_WRITE(addr, val)    (void)((((struct T_UINT16_WRITE *)(void *)(addr))-
+  85:CMSIS/Include/cmsis_gcc.h **** #endif
+  86:CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_READ
+  87:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  88:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  89:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  90:CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_READ { uint16_t v; };
+  91:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  92:CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_READ(addr)          (((const struct T_UINT16_READ *)(const void *)(add
+  93:CMSIS/Include/cmsis_gcc.h **** #endif
+  94:CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_WRITE
+  95:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  96:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  97:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  98:CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_WRITE { uint32_t v; };
+  99:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 100:CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_WRITE(addr, val)    (void)((((struct T_UINT32_WRITE *)(void *)(addr))-
+ARM GAS  /tmp/ccqFO6Uv.s 			page 22
+
+
+ 101:CMSIS/Include/cmsis_gcc.h **** #endif
+ 102:CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_READ
+ 103:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+ 104:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+ 105:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+ 106:CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
+ 107:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 108:CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
+ 109:CMSIS/Include/cmsis_gcc.h **** #endif
+ 110:CMSIS/Include/cmsis_gcc.h **** #ifndef   __ALIGNED
+ 111:CMSIS/Include/cmsis_gcc.h ****   #define __ALIGNED(x)                           __attribute__((aligned(x)))
+ 112:CMSIS/Include/cmsis_gcc.h **** #endif
+ 113:CMSIS/Include/cmsis_gcc.h **** #ifndef   __RESTRICT
+ 114:CMSIS/Include/cmsis_gcc.h ****   #define __RESTRICT                             __restrict
+ 115:CMSIS/Include/cmsis_gcc.h **** #endif
+ 116:CMSIS/Include/cmsis_gcc.h **** 
+ 117:CMSIS/Include/cmsis_gcc.h **** 
+ 118:CMSIS/Include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
+ 119:CMSIS/Include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+ 120:CMSIS/Include/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
+ 121:CMSIS/Include/cmsis_gcc.h ****   @{
+ 122:CMSIS/Include/cmsis_gcc.h ****  */
+ 123:CMSIS/Include/cmsis_gcc.h **** 
+ 124:CMSIS/Include/cmsis_gcc.h **** /**
+ 125:CMSIS/Include/cmsis_gcc.h ****   \brief   Enable IRQ Interrupts
+ 126:CMSIS/Include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
+ 127:CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 128:CMSIS/Include/cmsis_gcc.h ****  */
+ 129:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_irq(void)
+ 130:CMSIS/Include/cmsis_gcc.h **** {
+ 131:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
+ 132:CMSIS/Include/cmsis_gcc.h **** }
+ 133:CMSIS/Include/cmsis_gcc.h **** 
+ 134:CMSIS/Include/cmsis_gcc.h **** 
+ 135:CMSIS/Include/cmsis_gcc.h **** /**
+ 136:CMSIS/Include/cmsis_gcc.h ****   \brief   Disable IRQ Interrupts
+ 137:CMSIS/Include/cmsis_gcc.h ****   \details Disables IRQ interrupts by setting the I-bit in the CPSR.
+ 138:CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 139:CMSIS/Include/cmsis_gcc.h ****  */
+ 140:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_irq(void)
+ 141:CMSIS/Include/cmsis_gcc.h **** {
+ 142:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
+ 143:CMSIS/Include/cmsis_gcc.h **** }
+ 144:CMSIS/Include/cmsis_gcc.h **** 
+ 145:CMSIS/Include/cmsis_gcc.h **** 
+ 146:CMSIS/Include/cmsis_gcc.h **** /**
+ 147:CMSIS/Include/cmsis_gcc.h ****   \brief   Get Control Register
+ 148:CMSIS/Include/cmsis_gcc.h ****   \details Returns the content of the Control Register.
+ 149:CMSIS/Include/cmsis_gcc.h ****   \return               Control Register value
+ 150:CMSIS/Include/cmsis_gcc.h ****  */
+ 151:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_CONTROL(void)
+ 152:CMSIS/Include/cmsis_gcc.h **** {
+ 153:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 154:CMSIS/Include/cmsis_gcc.h **** 
+ 155:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, control" : "=r" (result) );
+ 156:CMSIS/Include/cmsis_gcc.h ****   return(result);
+ 157:CMSIS/Include/cmsis_gcc.h **** }
+ARM GAS  /tmp/ccqFO6Uv.s 			page 23
+
+
+ 158:CMSIS/Include/cmsis_gcc.h **** 
+ 159:CMSIS/Include/cmsis_gcc.h **** 
+ 160:CMSIS/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 161:CMSIS/Include/cmsis_gcc.h **** /**
+ 162:CMSIS/Include/cmsis_gcc.h ****   \brief   Get Control Register (non-secure)
+ 163:CMSIS/Include/cmsis_gcc.h ****   \details Returns the content of the non-secure Control Register when in secure mode.
+ 164:CMSIS/Include/cmsis_gcc.h ****   \return               non-secure Control Register value
+ 165:CMSIS/Include/cmsis_gcc.h ****  */
+ 166:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_CONTROL_NS(void)
+ 167:CMSIS/Include/cmsis_gcc.h **** {
+ 168:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 169:CMSIS/Include/cmsis_gcc.h **** 
+ 170:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, control_ns" : "=r" (result) );
+ 171:CMSIS/Include/cmsis_gcc.h ****   return(result);
+ 172:CMSIS/Include/cmsis_gcc.h **** }
+ 173:CMSIS/Include/cmsis_gcc.h **** #endif
+ 174:CMSIS/Include/cmsis_gcc.h **** 
+ 175:CMSIS/Include/cmsis_gcc.h **** 
+ 176:CMSIS/Include/cmsis_gcc.h **** /**
+ 177:CMSIS/Include/cmsis_gcc.h ****   \brief   Set Control Register
+ 178:CMSIS/Include/cmsis_gcc.h ****   \details Writes the given value to the Control Register.
+ 179:CMSIS/Include/cmsis_gcc.h ****   \param [in]    control  Control Register value to set
+ 180:CMSIS/Include/cmsis_gcc.h ****  */
+ 181:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_CONTROL(uint32_t control)
+ 182:CMSIS/Include/cmsis_gcc.h **** {
+ 183:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MSR control, %0" : : "r" (control) : "memory");
+ 184:CMSIS/Include/cmsis_gcc.h **** }
+ 185:CMSIS/Include/cmsis_gcc.h **** 
+ 186:CMSIS/Include/cmsis_gcc.h **** 
+ 187:CMSIS/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 188:CMSIS/Include/cmsis_gcc.h **** /**
+ 189:CMSIS/Include/cmsis_gcc.h ****   \brief   Set Control Register (non-secure)
+ 190:CMSIS/Include/cmsis_gcc.h ****   \details Writes the given value to the non-secure Control Register when in secure state.
+ 191:CMSIS/Include/cmsis_gcc.h ****   \param [in]    control  Control Register value to set
+ 192:CMSIS/Include/cmsis_gcc.h ****  */
+ 193:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_CONTROL_NS(uint32_t control)
+ 194:CMSIS/Include/cmsis_gcc.h **** {
+ 195:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MSR control_ns, %0" : : "r" (control) : "memory");
+ 196:CMSIS/Include/cmsis_gcc.h **** }
+ 197:CMSIS/Include/cmsis_gcc.h **** #endif
+ 198:CMSIS/Include/cmsis_gcc.h **** 
+ 199:CMSIS/Include/cmsis_gcc.h **** 
+ 200:CMSIS/Include/cmsis_gcc.h **** /**
+ 201:CMSIS/Include/cmsis_gcc.h ****   \brief   Get IPSR Register
+ 202:CMSIS/Include/cmsis_gcc.h ****   \details Returns the content of the IPSR Register.
+ 203:CMSIS/Include/cmsis_gcc.h ****   \return               IPSR Register value
+ 204:CMSIS/Include/cmsis_gcc.h ****  */
+ 205:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_IPSR(void)
+ 206:CMSIS/Include/cmsis_gcc.h **** {
+ 207:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 208:CMSIS/Include/cmsis_gcc.h **** 
+ 209:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, ipsr" : "=r" (result) );
+ 210:CMSIS/Include/cmsis_gcc.h ****   return(result);
+ 211:CMSIS/Include/cmsis_gcc.h **** }
+ 212:CMSIS/Include/cmsis_gcc.h **** 
+ 213:CMSIS/Include/cmsis_gcc.h **** 
+ 214:CMSIS/Include/cmsis_gcc.h **** /**
+ARM GAS  /tmp/ccqFO6Uv.s 			page 24
+
+
+ 215:CMSIS/Include/cmsis_gcc.h ****   \brief   Get APSR Register
+ 216:CMSIS/Include/cmsis_gcc.h ****   \details Returns the content of the APSR Register.
+ 217:CMSIS/Include/cmsis_gcc.h ****   \return               APSR Register value
+ 218:CMSIS/Include/cmsis_gcc.h ****  */
+ 219:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_APSR(void)
+ 220:CMSIS/Include/cmsis_gcc.h **** {
+ 221:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 222:CMSIS/Include/cmsis_gcc.h **** 
+ 223:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, apsr" : "=r" (result) );
+ 224:CMSIS/Include/cmsis_gcc.h ****   return(result);
+ 225:CMSIS/Include/cmsis_gcc.h **** }
+ 226:CMSIS/Include/cmsis_gcc.h **** 
+ 227:CMSIS/Include/cmsis_gcc.h **** 
+ 228:CMSIS/Include/cmsis_gcc.h **** /**
+ 229:CMSIS/Include/cmsis_gcc.h ****   \brief   Get xPSR Register
+ 230:CMSIS/Include/cmsis_gcc.h ****   \details Returns the content of the xPSR Register.
+ 231:CMSIS/Include/cmsis_gcc.h ****   \return               xPSR Register value
+ 232:CMSIS/Include/cmsis_gcc.h ****  */
+ 233:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_xPSR(void)
+ 234:CMSIS/Include/cmsis_gcc.h **** {
+ 235:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 236:CMSIS/Include/cmsis_gcc.h **** 
+ 237:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, xpsr" : "=r" (result) );
+ 238:CMSIS/Include/cmsis_gcc.h ****   return(result);
+ 239:CMSIS/Include/cmsis_gcc.h **** }
+ 240:CMSIS/Include/cmsis_gcc.h **** 
+ 241:CMSIS/Include/cmsis_gcc.h **** 
+ 242:CMSIS/Include/cmsis_gcc.h **** /**
+ 243:CMSIS/Include/cmsis_gcc.h ****   \brief   Get Process Stack Pointer
+ 244:CMSIS/Include/cmsis_gcc.h ****   \details Returns the current value of the Process Stack Pointer (PSP).
+ 245:CMSIS/Include/cmsis_gcc.h ****   \return               PSP Register value
+ 246:CMSIS/Include/cmsis_gcc.h ****  */
+ 247:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_PSP(void)
+ 248:CMSIS/Include/cmsis_gcc.h **** {
+ 249:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 250:CMSIS/Include/cmsis_gcc.h **** 
+ 251:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, psp"  : "=r" (result) );
+ 252:CMSIS/Include/cmsis_gcc.h ****   return(result);
+ 253:CMSIS/Include/cmsis_gcc.h **** }
+ 254:CMSIS/Include/cmsis_gcc.h **** 
+ 255:CMSIS/Include/cmsis_gcc.h **** 
+ 256:CMSIS/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 257:CMSIS/Include/cmsis_gcc.h **** /**
+ 258:CMSIS/Include/cmsis_gcc.h ****   \brief   Get Process Stack Pointer (non-secure)
+ 259:CMSIS/Include/cmsis_gcc.h ****   \details Returns the current value of the non-secure Process Stack Pointer (PSP) when in secure s
+ 260:CMSIS/Include/cmsis_gcc.h ****   \return               PSP Register value
+ 261:CMSIS/Include/cmsis_gcc.h ****  */
+ 262:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_PSP_NS(void)
+ 263:CMSIS/Include/cmsis_gcc.h **** {
+ 264:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 265:CMSIS/Include/cmsis_gcc.h **** 
+ 266:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, psp_ns"  : "=r" (result) );
+ 267:CMSIS/Include/cmsis_gcc.h ****   return(result);
+ 268:CMSIS/Include/cmsis_gcc.h **** }
+ 269:CMSIS/Include/cmsis_gcc.h **** #endif
+ 270:CMSIS/Include/cmsis_gcc.h **** 
+ 271:CMSIS/Include/cmsis_gcc.h **** 
+ARM GAS  /tmp/ccqFO6Uv.s 			page 25
+
+
+ 272:CMSIS/Include/cmsis_gcc.h **** /**
+ 273:CMSIS/Include/cmsis_gcc.h ****   \brief   Set Process Stack Pointer
+ 274:CMSIS/Include/cmsis_gcc.h ****   \details Assigns the given value to the Process Stack Pointer (PSP).
+ 275:CMSIS/Include/cmsis_gcc.h ****   \param [in]    topOfProcStack  Process Stack Pointer value to set
+ 276:CMSIS/Include/cmsis_gcc.h ****  */
+ 277:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_PSP(uint32_t topOfProcStack)
+ 278:CMSIS/Include/cmsis_gcc.h **** {
+ 279:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MSR psp, %0" : : "r" (topOfProcStack) : );
+ 280:CMSIS/Include/cmsis_gcc.h **** }
+ 281:CMSIS/Include/cmsis_gcc.h **** 
+ 282:CMSIS/Include/cmsis_gcc.h **** 
+ 283:CMSIS/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 284:CMSIS/Include/cmsis_gcc.h **** /**
+ 285:CMSIS/Include/cmsis_gcc.h ****   \brief   Set Process Stack Pointer (non-secure)
+ 286:CMSIS/Include/cmsis_gcc.h ****   \details Assigns the given value to the non-secure Process Stack Pointer (PSP) when in secure sta
+ 287:CMSIS/Include/cmsis_gcc.h ****   \param [in]    topOfProcStack  Process Stack Pointer value to set
+ 288:CMSIS/Include/cmsis_gcc.h ****  */
+ 289:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_PSP_NS(uint32_t topOfProcStack)
+ 290:CMSIS/Include/cmsis_gcc.h **** {
+ 291:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MSR psp_ns, %0" : : "r" (topOfProcStack) : );
+ 292:CMSIS/Include/cmsis_gcc.h **** }
+ 293:CMSIS/Include/cmsis_gcc.h **** #endif
+ 294:CMSIS/Include/cmsis_gcc.h **** 
+ 295:CMSIS/Include/cmsis_gcc.h **** 
+ 296:CMSIS/Include/cmsis_gcc.h **** /**
+ 297:CMSIS/Include/cmsis_gcc.h ****   \brief   Get Main Stack Pointer
+ 298:CMSIS/Include/cmsis_gcc.h ****   \details Returns the current value of the Main Stack Pointer (MSP).
+ 299:CMSIS/Include/cmsis_gcc.h ****   \return               MSP Register value
+ 300:CMSIS/Include/cmsis_gcc.h ****  */
+ 301:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_MSP(void)
+ 302:CMSIS/Include/cmsis_gcc.h **** {
+ 303:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 304:CMSIS/Include/cmsis_gcc.h **** 
+ 305:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, msp" : "=r" (result) );
+ 306:CMSIS/Include/cmsis_gcc.h ****   return(result);
+ 307:CMSIS/Include/cmsis_gcc.h **** }
+ 308:CMSIS/Include/cmsis_gcc.h **** 
+ 309:CMSIS/Include/cmsis_gcc.h **** 
+ 310:CMSIS/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE ) && (__ARM_FEATURE_CMSE == 3))
+ 311:CMSIS/Include/cmsis_gcc.h **** /**
+ 312:CMSIS/Include/cmsis_gcc.h ****   \brief   Get Main Stack Pointer (non-secure)
+ 313:CMSIS/Include/cmsis_gcc.h ****   \details Returns the current value of the non-secure Main Stack Pointer (MSP) when in secure stat
+ 314:CMSIS/Include/cmsis_gcc.h ****   \return               MSP Register value
+ 315:CMSIS/Include/cmsis_gcc.h ****  */
+ 316:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_MSP_NS(void)
+ 317:CMSIS/Include/cmsis_gcc.h **** {
+ 318:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 319:CMSIS/Include/cmsis_gcc.h **** 
+ 320:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, msp_ns" : "=r" (result) );
+ 321:CMSIS/Include/cmsis_gcc.h ****   return(result);
+ 322:CMSIS/Include/cmsis_gcc.h **** }
+ 323:CMSIS/Include/cmsis_gcc.h **** #endif
+ 324:CMSIS/Include/cmsis_gcc.h **** 
+ 325:CMSIS/Include/cmsis_gcc.h **** 
+ 326:CMSIS/Include/cmsis_gcc.h **** /**
+ 327:CMSIS/Include/cmsis_gcc.h ****   \brief   Set Main Stack Pointer
+ 328:CMSIS/Include/cmsis_gcc.h ****   \details Assigns the given value to the Main Stack Pointer (MSP).
+ARM GAS  /tmp/ccqFO6Uv.s 			page 26
+
+
+ 329:CMSIS/Include/cmsis_gcc.h ****   \param [in]    topOfMainStack  Main Stack Pointer value to set
+ 330:CMSIS/Include/cmsis_gcc.h ****  */
+ 331:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_MSP(uint32_t topOfMainStack)
+ 787              		.loc 2 331 27 view .LVU225
+ 788              	.LBB5:
+ 332:CMSIS/Include/cmsis_gcc.h **** {
+ 333:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MSR msp, %0" : : "r" (topOfMainStack) : );
+ 789              		.loc 2 333 3 view .LVU226
+ 790              		.syntax unified
+ 791              	@ 333 "CMSIS/Include/cmsis_gcc.h" 1
+ 792 0000 80F30888 		MSR msp, r0
+ 793              	@ 0 "" 2
+ 794              	.LVL70:
+ 795              		.loc 2 333 3 is_stmt 0 view .LVU227
+ 796              		.thumb
+ 797              		.syntax unified
+ 798              	.LBE5:
+ 799              	.LBE4:
+ 294:Core/system/sys.c **** }
+ 800              		.loc 1 294 1 view .LVU228
+ 801 0004 7047     		bx	lr
+ 802              		.cfi_endproc
+ 803              	.LFE76:
+ 805              		.section	.text.sys_standby,"ax",%progbits
+ 806              		.align	1
+ 807              		.global	sys_standby
+ 808              		.syntax unified
+ 809              		.thumb
+ 810              		.thumb_func
+ 812              	sys_standby:
+ 813              	.LFB77:
+ 295:Core/system/sys.c **** 
+ 296:Core/system/sys.c **** /**
+ 297:Core/system/sys.c ****  * @brief       Ω¯»Î¥˝ª˙ƒ£ Ω
+ 298:Core/system/sys.c ****  * @param       Œﬁ
+ 299:Core/system/sys.c ****  * @retval      Œﬁ
+ 300:Core/system/sys.c ****  */
+ 301:Core/system/sys.c **** void sys_standby(void)
+ 302:Core/system/sys.c **** {
+ 814              		.loc 1 302 1 is_stmt 1 view -0
+ 815              		.cfi_startproc
+ 816              		@ args = 0, pretend = 0, frame = 0
+ 817              		@ frame_needed = 0, uses_anonymous_args = 0
+ 818 0000 08B5     		push	{r3, lr}
+ 819              	.LCFI5:
+ 820              		.cfi_def_cfa_offset 8
+ 821              		.cfi_offset 3, -8
+ 822              		.cfi_offset 14, -4
+ 303:Core/system/sys.c ****     RCC->APB1ENR |= 1 << 28;    /*  πƒ‹µÁ‘¥ ±÷” */
+ 823              		.loc 1 303 5 view .LVU230
+ 824              		.loc 1 303 8 is_stmt 0 view .LVU231
+ 825 0002 0D4A     		ldr	r2, .L50
+ 826 0004 D369     		ldr	r3, [r2, #28]
+ 827              		.loc 1 303 18 view .LVU232
+ 828 0006 43F08053 		orr	r3, r3, #268435456
+ 829 000a D361     		str	r3, [r2, #28]
+ 304:Core/system/sys.c ****     PWR->CSR |= 1 << 8;         /* …Ë÷√WKUP”√”⁄ªΩ–— */
+ARM GAS  /tmp/ccqFO6Uv.s 			page 27
+
+
+ 830              		.loc 1 304 5 is_stmt 1 view .LVU233
+ 831              		.loc 1 304 8 is_stmt 0 view .LVU234
+ 832 000c 0B4B     		ldr	r3, .L50+4
+ 833 000e 5A68     		ldr	r2, [r3, #4]
+ 834              		.loc 1 304 14 view .LVU235
+ 835 0010 42F48072 		orr	r2, r2, #256
+ 836 0014 5A60     		str	r2, [r3, #4]
+ 305:Core/system/sys.c ****     PWR->CR |= 1 << 2;          /* «Â≥˝WKUP ±Í÷æ */
+ 837              		.loc 1 305 5 is_stmt 1 view .LVU236
+ 838              		.loc 1 305 8 is_stmt 0 view .LVU237
+ 839 0016 1A68     		ldr	r2, [r3]
+ 840              		.loc 1 305 13 view .LVU238
+ 841 0018 42F00402 		orr	r2, r2, #4
+ 842 001c 1A60     		str	r2, [r3]
+ 306:Core/system/sys.c ****     PWR->CR |= 1 << 1;          /* PDDS = 1, ‘ –ÌΩ¯»Î…Ó∂»ÀØ√ﬂƒ£ Ω(PDDS) */
+ 843              		.loc 1 306 5 is_stmt 1 view .LVU239
+ 844              		.loc 1 306 8 is_stmt 0 view .LVU240
+ 845 001e 1A68     		ldr	r2, [r3]
+ 846              		.loc 1 306 13 view .LVU241
+ 847 0020 42F00202 		orr	r2, r2, #2
+ 848 0024 1A60     		str	r2, [r3]
+ 307:Core/system/sys.c ****     SCB->SCR |= 1 << 2;         /*  πƒ‹SLEEPDEEPŒª (SYS->CTRL) */
+ 849              		.loc 1 307 5 is_stmt 1 view .LVU242
+ 850              		.loc 1 307 8 is_stmt 0 view .LVU243
+ 851 0026 064A     		ldr	r2, .L50+8
+ 852 0028 1369     		ldr	r3, [r2, #16]
+ 853              		.loc 1 307 14 view .LVU244
+ 854 002a 43F00403 		orr	r3, r3, #4
+ 855 002e 1361     		str	r3, [r2, #16]
+ 308:Core/system/sys.c ****     sys_wfi_set();              /* ÷¥––WFI÷∏¡Ó, Ω¯»Î¥˝ª˙ƒ£ Ω */
+ 856              		.loc 1 308 5 is_stmt 1 view .LVU245
+ 857 0030 FFF7FEFF 		bl	sys_wfi_set
+ 858              	.LVL71:
+ 309:Core/system/sys.c **** }
+ 859              		.loc 1 309 1 is_stmt 0 view .LVU246
+ 860 0034 08BD     		pop	{r3, pc}
+ 861              	.L51:
+ 862 0036 00BF     		.align	2
+ 863              	.L50:
+ 864 0038 00100240 		.word	1073876992
+ 865 003c 00700040 		.word	1073770496
+ 866 0040 00ED00E0 		.word	-536810240
+ 867              		.cfi_endproc
+ 868              	.LFE77:
+ 870              		.section	.text.sys_soft_reset,"ax",%progbits
+ 871              		.align	1
+ 872              		.global	sys_soft_reset
+ 873              		.syntax unified
+ 874              		.thumb
+ 875              		.thumb_func
+ 877              	sys_soft_reset:
+ 878              	.LFB78:
+ 310:Core/system/sys.c **** 
+ 311:Core/system/sys.c **** /**
+ 312:Core/system/sys.c ****  * @brief       œµÕ≥»Ì∏¥Œª
+ 313:Core/system/sys.c ****  * @param       Œﬁ
+ 314:Core/system/sys.c ****  * @retval      Œﬁ
+ARM GAS  /tmp/ccqFO6Uv.s 			page 28
+
+
+ 315:Core/system/sys.c ****  */
+ 316:Core/system/sys.c **** void sys_soft_reset(void)
+ 317:Core/system/sys.c **** {
+ 879              		.loc 1 317 1 is_stmt 1 view -0
+ 880              		.cfi_startproc
+ 881              		@ args = 0, pretend = 0, frame = 0
+ 882              		@ frame_needed = 0, uses_anonymous_args = 0
+ 883              		@ link register save eliminated.
+ 318:Core/system/sys.c ****     SCB->AIRCR = 0X05FA0000 | (uint32_t)0x04;
+ 884              		.loc 1 318 5 view .LVU248
+ 885              		.loc 1 318 16 is_stmt 0 view .LVU249
+ 886 0000 014B     		ldr	r3, .L53
+ 887 0002 024A     		ldr	r2, .L53+4
+ 888 0004 DA60     		str	r2, [r3, #12]
+ 319:Core/system/sys.c **** }
+ 889              		.loc 1 319 1 view .LVU250
+ 890 0006 7047     		bx	lr
+ 891              	.L54:
+ 892              		.align	2
+ 893              	.L53:
+ 894 0008 00ED00E0 		.word	-536810240
+ 895 000c 0400FA05 		.word	100270084
+ 896              		.cfi_endproc
+ 897              	.LFE78:
+ 899              		.section	.text.sys_clock_set,"ax",%progbits
+ 900              		.align	1
+ 901              		.global	sys_clock_set
+ 902              		.syntax unified
+ 903              		.thumb
+ 904              		.thumb_func
+ 906              	sys_clock_set:
+ 907              	.LVL72:
+ 908              	.LFB79:
+ 320:Core/system/sys.c **** 
+ 321:Core/system/sys.c **** /**
+ 322:Core/system/sys.c ****  * @brief        ±÷”…Ë÷√∫Ø ˝
+ 323:Core/system/sys.c ****  * @param       plln: PLL±∂∆µœµ ˝(PLL±∂∆µ), »°÷µ∑∂Œß: 2~16
+ 324:Core/system/sys.c ****  * @note
+ 325:Core/system/sys.c ****  *
+ 326:Core/system/sys.c ****  *              PLLCLK: PLL ‰≥ˆ ±÷”
+ 327:Core/system/sys.c ****  *              PLLSRC: PLL ‰»Î ±÷”∆µ¬ , ø…“‘ « HSI/2, HSE/2, HSEµ», “ª∞„—°‘ÒHSE.
+ 328:Core/system/sys.c ****  *              SYSCLK: œµÕ≥ ±÷”, ø…—°¿¥◊‘ HSI/PLLCLK/HSE, “ª∞„—°‘Ò¿¥◊‘PLLCLK
+ 329:Core/system/sys.c ****  *              FCLK  : Cortex M3ƒ⁄∫À ±÷”, µ»”⁄HCLK
+ 330:Core/system/sys.c ****  *              HCLK  : AHB◊‹œﬂ ±÷”, ¿¥◊‘ SYSCLK µƒ∑÷∆µ, ø…“‘ «1...512∑÷∆µ, “ª∞„≤ª∑÷∆µ
+ 331:Core/system/sys.c ****  *              PCLK2 : APB2◊‹œﬂ ±÷”, ¿¥◊‘ HCLK µƒ∑÷∆µ(◊Ó¥Û72Mhz), ø…“‘ «1/2/4/8/16∑÷∆µ, “ª∞„≤ª∑÷∆µ
+ 332:Core/system/sys.c ****  *              PCLK1 : APB1◊‹œﬂ ±÷”, ¿¥◊‘ HCLK µƒ∑÷∆µ(◊Ó¥Û36Mhz), ø…“‘ «1/2/4/8/16∑÷∆µ, “ª∞„∂˛∑÷∆µ
+ 333:Core/system/sys.c ****  *
+ 334:Core/system/sys.c ****  *              PLLCLK = PLLSRC * plln;
+ 335:Core/system/sys.c ****  *              FCLK = HCLK = SYSCLK;
+ 336:Core/system/sys.c ****  *              PCLK2 = HCLK;
+ 337:Core/system/sys.c ****  *              PCLK1 = HCLK / 2;
+ 338:Core/system/sys.c ****  *
+ 339:Core/system/sys.c ****  *              Œ“√«“ª∞„—°‘ÒPLLSRC¿¥◊‘HSE, º¥¿¥◊‘Õ‚≤øæß’Ò.
+ 340:Core/system/sys.c ****  *              µ±Õ‚≤øæß’ÒŒ™ 8Mµƒ ±∫Ú, Õ∆ºˆ: plln = 9, AHB≤ª∑÷∆µ, µ√µΩ:
+ 341:Core/system/sys.c ****  *              PLLCLK = 8 * 9 = 72Mhz
+ 342:Core/system/sys.c ****  *              FCLK = HCLK = SYSCLK = PLLCLK / 1 = 72Mhz
+ 343:Core/system/sys.c ****  *              PCLK2 = HCLK = 72Mhz
+ARM GAS  /tmp/ccqFO6Uv.s 			page 29
+
+
+ 344:Core/system/sys.c ****  *              PCLK1 = HCLK / 2 = 36Mhz
+ 345:Core/system/sys.c ****  *
+ 346:Core/system/sys.c ****  *              πÿ”⁄STM32F103µƒPLLÀµ√˜œÍº˚: <<STM32÷–Œƒ≤Œøº ÷≤· V10>>µ⁄¡˘’¬œ‡πÿƒ⁄»›
+ 347:Core/system/sys.c ****  *
+ 348:Core/system/sys.c ****  * @retval      ¥ÌŒÛ¥˙¬Î: 0, ≥…π¶; 1, HSE¥ÌŒÛ;
+ 349:Core/system/sys.c ****  */
+ 350:Core/system/sys.c **** uint8_t sys_clock_set(uint32_t plln)
+ 351:Core/system/sys.c **** {
+ 909              		.loc 1 351 1 is_stmt 1 view -0
+ 910              		.cfi_startproc
+ 911              		@ args = 0, pretend = 0, frame = 0
+ 912              		@ frame_needed = 0, uses_anonymous_args = 0
+ 913              		@ link register save eliminated.
+ 352:Core/system/sys.c ****     RCC->CR |= 1 << 16;    			 			// Õ‚≤ø∏ﬂÀŸ ±÷” πƒ‹HSEON
+ 914              		.loc 1 352 5 view .LVU252
+ 915              		.loc 1 352 8 is_stmt 0 view .LVU253
+ 916 0000 194A     		ldr	r2, .L59
+ 917 0002 1368     		ldr	r3, [r2]
+ 918              		.loc 1 352 13 view .LVU254
+ 919 0004 43F48033 		orr	r3, r3, #65536
+ 920 0008 1360     		str	r3, [r2]
+ 353:Core/system/sys.c ****     // ‘⁄’˝µ„‘≠◊”µƒ¿˝≥Ã÷–’‚¿Ôª·”–“ª∏ˆ—” ±£¨”√¿¥–ﬁ∏ƒMDKµƒbug£¨”…”⁄Œ“≤ª «”√µƒMDKø™∑¢£¨À˘“‘…æ≥˝—” ±µƒ¥
+ 354:Core/system/sys.c ****     while ((RCC->CR & (1 << 17)) == 0);    		//µ»¥˝Õ‚≤ø’Òµ¥∆˜Œ»∂®
+ 921              		.loc 1 354 5 is_stmt 1 view .LVU255
+ 922              	.L56:
+ 923              		.loc 1 354 34 discriminator 1 view .LVU256
+ 924              		.loc 1 354 16 is_stmt 0 discriminator 1 view .LVU257
+ 925 000a 174B     		ldr	r3, .L59
+ 926 000c 1B68     		ldr	r3, [r3]
+ 927              		.loc 1 354 34 discriminator 1 view .LVU258
+ 928 000e 13F4003F 		tst	r3, #131072
+ 929 0012 FAD0     		beq	.L56
+ 355:Core/system/sys.c ****     RCC->CFGR = 0B100 << 10;              		// APB1◊‹œﬂ‘§∑÷∆µŒ™2£¨APB2≤ª∑÷∆µ
+ 930              		.loc 1 355 5 is_stmt 1 view .LVU259
+ 931              		.loc 1 355 15 is_stmt 0 view .LVU260
+ 932 0014 144B     		ldr	r3, .L59
+ 933 0016 4FF48052 		mov	r2, #4096
+ 934 001a 5A60     		str	r2, [r3, #4]
+ 356:Core/system/sys.c ****     plln -= 2;                           		// µ÷œ˚2∏ˆµ•Œª(“ÚŒ™ «¥”2ø™ ºµƒ, …Ë÷√0æÕ «2)
+ 935              		.loc 1 356 5 is_stmt 1 view .LVU261
+ 936              		.loc 1 356 10 is_stmt 0 view .LVU262
+ 937 001c 0238     		subs	r0, r0, #2
+ 938              	.LVL73:
+ 357:Core/system/sys.c ****     RCC->CFGR |= plln << 18;    		 		// …Ë÷√PLL÷µ 2~16
+ 939              		.loc 1 357 5 is_stmt 1 view .LVU263
+ 940              		.loc 1 357 8 is_stmt 0 view .LVU264
+ 941 001e 5A68     		ldr	r2, [r3, #4]
+ 942              		.loc 1 357 15 view .LVU265
+ 943 0020 42EA8042 		orr	r2, r2, r0, lsl #18
+ 944 0024 5A60     		str	r2, [r3, #4]
+ 358:Core/system/sys.c ****     RCC->CFGR |= 1 << 16;                		// —°‘ÒÕ‚≤ø∏ﬂÀŸ ±÷”HSE◊˜Œ™À¯œ‡ª∑PLL ‰»Î ±÷”
+ 945              		.loc 1 358 5 is_stmt 1 view .LVU266
+ 946              		.loc 1 358 8 is_stmt 0 view .LVU267
+ 947 0026 5A68     		ldr	r2, [r3, #4]
+ 948              		.loc 1 358 15 view .LVU268
+ 949 0028 42F48032 		orr	r2, r2, #65536
+ 950 002c 5A60     		str	r2, [r3, #4]
+ARM GAS  /tmp/ccqFO6Uv.s 			page 30
+
+
+ 359:Core/system/sys.c **** 
+ 360:Core/system/sys.c ****     // FLASH_ACRºƒ¥Ê∆˜µƒ√Ë ˆœÍº˚: <<STM32F10xx…¡¥Ê±‡≥Ã ÷≤·>>
+ 361:Core/system/sys.c ****     FLASH->ACR = 1 << 4;        		 		// PRFTBE = 1 ø™∆Ù‘§»°ª∫≥Â«¯
+ 951              		.loc 1 361 5 is_stmt 1 view .LVU269
+ 952              		.loc 1 361 16 is_stmt 0 view .LVU270
+ 953 002e 0F4A     		ldr	r2, .L59+4
+ 954 0030 1021     		movs	r1, #16
+ 955 0032 1160     		str	r1, [r2]
+ 362:Core/system/sys.c ****     FLASH->ACR |= 2 << 0;       		 		// LATENCY[2:0] = 2 FLASH¡Ω∏ˆµ»¥˝÷‹∆⁄
+ 956              		.loc 1 362 5 is_stmt 1 view .LVU271
+ 957              		.loc 1 362 10 is_stmt 0 view .LVU272
+ 958 0034 1168     		ldr	r1, [r2]
+ 959              		.loc 1 362 16 view .LVU273
+ 960 0036 41F00201 		orr	r1, r1, #2
+ 961 003a 1160     		str	r1, [r2]
+ 363:Core/system/sys.c **** 
+ 364:Core/system/sys.c ****     RCC->CR |= 1 << 24;         		 		// PLLON = 1,  πƒ‹PLL
+ 962              		.loc 1 364 5 is_stmt 1 view .LVU274
+ 963              		.loc 1 364 8 is_stmt 0 view .LVU275
+ 964 003c 1A68     		ldr	r2, [r3]
+ 965              		.loc 1 364 13 view .LVU276
+ 966 003e 42F08072 		orr	r2, r2, #16777216
+ 967 0042 1A60     		str	r2, [r3]
+ 365:Core/system/sys.c ****     while (!(RCC->CR >> 25));   		 		// µ»¥˝PLLÀ¯∂®
+ 968              		.loc 1 365 5 is_stmt 1 view .LVU277
+ 969              	.L57:
+ 970              		.loc 1 365 12 discriminator 1 view .LVU278
+ 971              		.loc 1 365 17 is_stmt 0 discriminator 1 view .LVU279
+ 972 0044 084B     		ldr	r3, .L59
+ 973 0046 1B68     		ldr	r3, [r3]
+ 974              		.loc 1 365 12 discriminator 1 view .LVU280
+ 975 0048 5B0E     		lsrs	r3, r3, #25
+ 976 004a FBD0     		beq	.L57
+ 366:Core/system/sys.c ****     RCC->CFGR |= 2 << 0;                 		// SW[1:0] = 2, —°‘ÒPLL ‰≥ˆ◊˜Œ™œµÕ≥ ±÷”
+ 977              		.loc 1 366 5 is_stmt 1 view .LVU281
+ 978              		.loc 1 366 8 is_stmt 0 view .LVU282
+ 979 004c 064A     		ldr	r2, .L59
+ 980 004e 5368     		ldr	r3, [r2, #4]
+ 981              		.loc 1 366 15 view .LVU283
+ 982 0050 43F00203 		orr	r3, r3, #2
+ 983 0054 5360     		str	r3, [r2, #4]
+ 367:Core/system/sys.c ****     while (((RCC->CFGR >> 2) & 0X03) != 2); 	// µ»¥˝PLL◊˜Œ™œµÕ≥ ±÷”…Ë÷√≥…π¶
+ 984              		.loc 1 367 5 is_stmt 1 view .LVU284
+ 985              	.L58:
+ 986              		.loc 1 367 38 discriminator 1 view .LVU285
+ 987              		.loc 1 367 17 is_stmt 0 discriminator 1 view .LVU286
+ 988 0056 044B     		ldr	r3, .L59
+ 989 0058 5B68     		ldr	r3, [r3, #4]
+ 990              		.loc 1 367 30 discriminator 1 view .LVU287
+ 991 005a C3F38103 		ubfx	r3, r3, #2, #2
+ 992              		.loc 1 367 38 discriminator 1 view .LVU288
+ 993 005e 022B     		cmp	r3, #2
+ 994 0060 F9D1     		bne	.L58
+ 368:Core/system/sys.c ****     return 1;
+ 995              		.loc 1 368 5 is_stmt 1 view .LVU289
+ 369:Core/system/sys.c **** }
+ 996              		.loc 1 369 1 is_stmt 0 view .LVU290
+ARM GAS  /tmp/ccqFO6Uv.s 			page 31
+
+
+ 997 0062 0120     		movs	r0, #1
+ 998              	.LVL74:
+ 999              		.loc 1 369 1 view .LVU291
+ 1000 0064 7047     		bx	lr
+ 1001              	.L60:
+ 1002 0066 00BF     		.align	2
+ 1003              	.L59:
+ 1004 0068 00100240 		.word	1073876992
+ 1005 006c 00200240 		.word	1073881088
+ 1006              		.cfi_endproc
+ 1007              	.LFE79:
+ 1009              		.section	.text.sys_stm32_clock_init,"ax",%progbits
+ 1010              		.align	1
+ 1011              		.global	sys_stm32_clock_init
+ 1012              		.syntax unified
+ 1013              		.thumb
+ 1014              		.thumb_func
+ 1016              	sys_stm32_clock_init:
+ 1017              	.LVL75:
+ 1018              	.LFB80:
+ 370:Core/system/sys.c **** 
+ 371:Core/system/sys.c **** /**
+ 372:Core/system/sys.c ****  * @brief       œµÕ≥ ±÷”≥ı ºªØ∫Ø ˝
+ 373:Core/system/sys.c ****  * @param       plln: PLL±∂∆µœµ ˝(PLL±∂∆µ), »°÷µ∑∂Œß: 2~16
+ 374:Core/system/sys.c ****  * @retval      Œﬁ
+ 375:Core/system/sys.c ****  */
+ 376:Core/system/sys.c **** void sys_stm32_clock_init(uint32_t plln)
+ 377:Core/system/sys.c **** {
+ 1019              		.loc 1 377 1 is_stmt 1 view -0
+ 1020              		.cfi_startproc
+ 1021              		@ args = 0, pretend = 0, frame = 0
+ 1022              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1023              		.loc 1 377 1 is_stmt 0 view .LVU293
+ 1024 0000 10B5     		push	{r4, lr}
+ 1025              	.LCFI6:
+ 1026              		.cfi_def_cfa_offset 8
+ 1027              		.cfi_offset 4, -8
+ 1028              		.cfi_offset 14, -4
+ 378:Core/system/sys.c ****     RCC->APB1RSTR = 0x00000000;     /* ∏¥ŒªΩ· ¯ */
+ 1029              		.loc 1 378 5 is_stmt 1 view .LVU294
+ 1030              		.loc 1 378 19 is_stmt 0 view .LVU295
+ 1031 0002 144B     		ldr	r3, .L63
+ 1032 0004 0024     		movs	r4, #0
+ 1033 0006 1C61     		str	r4, [r3, #16]
+ 379:Core/system/sys.c ****     RCC->APB2RSTR = 0x00000000;
+ 1034              		.loc 1 379 5 is_stmt 1 view .LVU296
+ 1035              		.loc 1 379 19 is_stmt 0 view .LVU297
+ 1036 0008 DC60     		str	r4, [r3, #12]
+ 380:Core/system/sys.c ****     
+ 381:Core/system/sys.c ****     RCC->AHBENR = 0x00000014;       /* ÀØ√ﬂƒ£ Ω…¡¥Ê∫ÕSRAM ±÷” πƒ‹.∆‰À˚πÿ±’ */
+ 1037              		.loc 1 381 5 is_stmt 1 view .LVU298
+ 1038              		.loc 1 381 17 is_stmt 0 view .LVU299
+ 1039 000a 1422     		movs	r2, #20
+ 1040 000c 5A61     		str	r2, [r3, #20]
+ 382:Core/system/sys.c ****     RCC->APB2ENR = 0x00000000;      /* Õ‚…Ë ±÷”πÿ±’ */
+ 1041              		.loc 1 382 5 is_stmt 1 view .LVU300
+ 1042              		.loc 1 382 18 is_stmt 0 view .LVU301
+ARM GAS  /tmp/ccqFO6Uv.s 			page 32
+
+
+ 1043 000e 9C61     		str	r4, [r3, #24]
+ 383:Core/system/sys.c ****     RCC->APB1ENR = 0x00000000;
+ 1044              		.loc 1 383 5 is_stmt 1 view .LVU302
+ 1045              		.loc 1 383 18 is_stmt 0 view .LVU303
+ 1046 0010 DC61     		str	r4, [r3, #28]
+ 384:Core/system/sys.c ****     
+ 385:Core/system/sys.c ****     RCC->CR |= 0x00000001;          /*  πƒ‹ƒ⁄≤ø∏ﬂÀŸ ±÷”HSION */
+ 1047              		.loc 1 385 5 is_stmt 1 view .LVU304
+ 1048              		.loc 1 385 8 is_stmt 0 view .LVU305
+ 1049 0012 1A68     		ldr	r2, [r3]
+ 1050              		.loc 1 385 13 view .LVU306
+ 1051 0014 42F00102 		orr	r2, r2, #1
+ 1052 0018 1A60     		str	r2, [r3]
+ 386:Core/system/sys.c ****     RCC->CFGR &= 0xF8FF0000;        /* ∏¥ŒªSW[1:0], SWS[1:0], HPRE[3:0], PPRE1[2:0], PPRE2[2:0], AD
+ 1053              		.loc 1 386 5 is_stmt 1 view .LVU307
+ 1054              		.loc 1 386 8 is_stmt 0 view .LVU308
+ 1055 001a 5968     		ldr	r1, [r3, #4]
+ 1056              		.loc 1 386 15 view .LVU309
+ 1057 001c 0E4A     		ldr	r2, .L63+4
+ 1058 001e 0A40     		ands	r2, r2, r1
+ 1059 0020 5A60     		str	r2, [r3, #4]
+ 387:Core/system/sys.c ****     RCC->CR &= 0xFEF6FFFF;          /* ∏¥ŒªHSEON, CSSON, PLLON */
+ 1060              		.loc 1 387 5 is_stmt 1 view .LVU310
+ 1061              		.loc 1 387 8 is_stmt 0 view .LVU311
+ 1062 0022 1A68     		ldr	r2, [r3]
+ 1063              		.loc 1 387 13 view .LVU312
+ 1064 0024 22F08472 		bic	r2, r2, #17301504
+ 1065 0028 22F48032 		bic	r2, r2, #65536
+ 1066 002c 1A60     		str	r2, [r3]
+ 388:Core/system/sys.c ****     RCC->CR &= 0xFFFBFFFF;          /* ∏¥ŒªHSEBYP */
+ 1067              		.loc 1 388 5 is_stmt 1 view .LVU313
+ 1068              		.loc 1 388 8 is_stmt 0 view .LVU314
+ 1069 002e 1A68     		ldr	r2, [r3]
+ 1070              		.loc 1 388 13 view .LVU315
+ 1071 0030 22F48022 		bic	r2, r2, #262144
+ 1072 0034 1A60     		str	r2, [r3]
+ 389:Core/system/sys.c ****     RCC->CFGR &= 0xFF80FFFF;        /* ∏¥ŒªPLLSRC, PLLXTPRE, PLLMUL[3:0] ∫Õ USBPRE/OTGFSPRE */
+ 1073              		.loc 1 389 5 is_stmt 1 view .LVU316
+ 1074              		.loc 1 389 8 is_stmt 0 view .LVU317
+ 1075 0036 5A68     		ldr	r2, [r3, #4]
+ 1076              		.loc 1 389 15 view .LVU318
+ 1077 0038 22F4FE02 		bic	r2, r2, #8323072
+ 1078 003c 5A60     		str	r2, [r3, #4]
+ 390:Core/system/sys.c ****     RCC->CIR = 0x009F0000;          /* πÿ±’À˘”–RCC÷–∂œ≤¢«Â≥˝÷–∂œ±Í÷æ */
+ 1079              		.loc 1 390 5 is_stmt 1 view .LVU319
+ 1080              		.loc 1 390 14 is_stmt 0 view .LVU320
+ 1081 003e 4FF41F02 		mov	r2, #10420224
+ 1082 0042 9A60     		str	r2, [r3, #8]
+ 391:Core/system/sys.c **** 
+ 392:Core/system/sys.c ****     sys_clock_set(plln);            /* …Ë÷√ ±÷” */
+ 1083              		.loc 1 392 5 is_stmt 1 view .LVU321
+ 1084 0044 FFF7FEFF 		bl	sys_clock_set
+ 1085              	.LVL76:
+ 393:Core/system/sys.c **** 
+ 394:Core/system/sys.c ****     /* ≈‰÷√÷–∂œœÚ¡ø∆´“∆ */
+ 395:Core/system/sys.c **** #ifdef  VECT_TAB_RAM
+ 396:Core/system/sys.c ****     sys_nvic_set_vector_table(SRAM_BASE, 0x0);
+ARM GAS  /tmp/ccqFO6Uv.s 			page 33
+
+
+ 397:Core/system/sys.c **** #else
+ 398:Core/system/sys.c ****     sys_nvic_set_vector_table(FLASH_BASE, 0x0);
+ 1086              		.loc 1 398 5 view .LVU322
+ 1087 0048 2146     		mov	r1, r4
+ 1088 004a 4FF00060 		mov	r0, #134217728
+ 1089 004e FFF7FEFF 		bl	sys_nvic_set_vector_table
+ 1090              	.LVL77:
+ 399:Core/system/sys.c **** #endif
+ 400:Core/system/sys.c **** }...
+ 1091              		.loc 1 400 1 is_stmt 0 view .LVU323
+ 1092 0052 10BD     		pop	{r4, pc}
+ 1093              	.L64:
+ 1094              		.align	2
+ 1095              	.L63:
+ 1096 0054 00100240 		.word	1073876992
+ 1097 0058 0000FFF8 		.word	-117506048
+ 1098              		.cfi_endproc
+ 1099              	.LFE80:
+ 1101              		.text
+ 1102              	.Letext0:
+ 1103              		.file 3 "/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 1104              		.file 4 "/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 1105              		.file 5 "CMSIS/Include/core_cm3.h"
+ 1106              		.file 6 "CMSIS/Device/stm32f103xe.h"
+ARM GAS  /tmp/ccqFO6Uv.s 			page 34
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sys.c
+     /tmp/ccqFO6Uv.s:19     .text.sys_nvic_priority_group_config:00000000 $t
+     /tmp/ccqFO6Uv.s:24     .text.sys_nvic_priority_group_config:00000000 sys_nvic_priority_group_config
+     /tmp/ccqFO6Uv.s:76     .text.sys_nvic_priority_group_config:00000024 $d
+     /tmp/ccqFO6Uv.s:81     .text.sys_nvic_set_vector_table:00000000 $t
+     /tmp/ccqFO6Uv.s:87     .text.sys_nvic_set_vector_table:00000000 sys_nvic_set_vector_table
+     /tmp/ccqFO6Uv.s:111    .text.sys_nvic_set_vector_table:00000010 $d
+     /tmp/ccqFO6Uv.s:116    .text.sys_nvic_init:00000000 $t
+     /tmp/ccqFO6Uv.s:122    .text.sys_nvic_init:00000000 sys_nvic_init
+     /tmp/ccqFO6Uv.s:195    .text.sys_nvic_init:0000004c $d
+     /tmp/ccqFO6Uv.s:200    .text.sys_nvic_ex_config:00000000 $t
+     /tmp/ccqFO6Uv.s:206    .text.sys_nvic_ex_config:00000000 sys_nvic_ex_config
+     /tmp/ccqFO6Uv.s:334    .text.sys_nvic_ex_config:00000084 $d
+     /tmp/ccqFO6Uv.s:341    .text.sys_gpio_remap_set:00000000 $t
+     /tmp/ccqFO6Uv.s:347    .text.sys_gpio_remap_set:00000000 sys_gpio_remap_set
+     /tmp/ccqFO6Uv.s:428    .text.sys_gpio_remap_set:0000003c $d
+     /tmp/ccqFO6Uv.s:434    .text.sys_gpio_set:00000000 $t
+     /tmp/ccqFO6Uv.s:440    .text.sys_gpio_set:00000000 sys_gpio_set
+     /tmp/ccqFO6Uv.s:614    .text.sys_gpio_pin_set:00000000 $t
+     /tmp/ccqFO6Uv.s:620    .text.sys_gpio_pin_set:00000000 sys_gpio_pin_set
+     /tmp/ccqFO6Uv.s:655    .text.sys_gpio_pin_get:00000000 $t
+     /tmp/ccqFO6Uv.s:661    .text.sys_gpio_pin_get:00000000 sys_gpio_pin_get
+     /tmp/ccqFO6Uv.s:691    .text.sys_wfi_set:00000000 $t
+     /tmp/ccqFO6Uv.s:697    .text.sys_wfi_set:00000000 sys_wfi_set
+     /tmp/ccqFO6Uv.s:717    .text.sys_intx_disable:00000000 $t
+     /tmp/ccqFO6Uv.s:723    .text.sys_intx_disable:00000000 sys_intx_disable
+     /tmp/ccqFO6Uv.s:743    .text.sys_intx_enable:00000000 $t
+     /tmp/ccqFO6Uv.s:749    .text.sys_intx_enable:00000000 sys_intx_enable
+     /tmp/ccqFO6Uv.s:769    .text.sys_msr_msp:00000000 $t
+     /tmp/ccqFO6Uv.s:775    .text.sys_msr_msp:00000000 sys_msr_msp
+     /tmp/ccqFO6Uv.s:806    .text.sys_standby:00000000 $t
+     /tmp/ccqFO6Uv.s:812    .text.sys_standby:00000000 sys_standby
+     /tmp/ccqFO6Uv.s:864    .text.sys_standby:00000038 $d
+     /tmp/ccqFO6Uv.s:871    .text.sys_soft_reset:00000000 $t
+     /tmp/ccqFO6Uv.s:877    .text.sys_soft_reset:00000000 sys_soft_reset
+     /tmp/ccqFO6Uv.s:894    .text.sys_soft_reset:00000008 $d
+     /tmp/ccqFO6Uv.s:900    .text.sys_clock_set:00000000 $t
+     /tmp/ccqFO6Uv.s:906    .text.sys_clock_set:00000000 sys_clock_set
+     /tmp/ccqFO6Uv.s:1004   .text.sys_clock_set:00000068 $d
+     /tmp/ccqFO6Uv.s:1010   .text.sys_stm32_clock_init:00000000 $t
+     /tmp/ccqFO6Uv.s:1016   .text.sys_stm32_clock_init:00000000 sys_stm32_clock_init
+     /tmp/ccqFO6Uv.s:1096   .text.sys_stm32_clock_init:00000054 $d
+
+NO UNDEFINED SYMBOLS

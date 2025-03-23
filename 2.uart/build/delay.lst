@@ -1,0 +1,459 @@
+ARM GAS  /tmp/ccJxRaTE.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"delay.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/system/delay.c"
+  18              		.section	.text.delay_init,"ax",%progbits
+  19              		.align	1
+  20              		.global	delay_init
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	delay_init:
+  26              	.LVL0:
+  27              	.LFB65:
+   1:Core/system/delay.c **** /**
+   2:Core/system/delay.c ****  **************************************************************************************************
+   3:Core/system/delay.c ****  * @file        delay.c
+   4:Core/system/delay.c ****  * @author      ÕýµãÔ­×ÓÍÅ¶Ó(ALIENTEK)
+   5:Core/system/delay.c ****  * @version     V1.1
+   6:Core/system/delay.c ****  * @date        2023-02-25
+   7:Core/system/delay.c ****  * @brief       Ê¹ÓÃSysTickµÄÆÕÍ¨¼ÆÊýÄ£Ê½¶ÔÑÓ³Ù½øÐÐ¹ÜÀí(Ö§³Öucosii)
+   8:Core/system/delay.c ****  *              Ìá¹©delay_init³õÊ¼»¯º¯Êý£¬ delay_usºÍdelay_msµÈÑÓÊ±º¯Êý
+   9:Core/system/delay.c ****  * @license     Copyright (c) 2022-2032, ¹ãÖÝÊÐÐÇÒíµç×Ó¿Æ¼¼ÓÐÏÞ¹«Ë¾
+  10:Core/system/delay.c ****  **************************************************************************************************
+  11:Core/system/delay.c ****  * @attention
+  12:Core/system/delay.c ****  *
+  13:Core/system/delay.c ****  * ÊµÑéÆ½Ì¨:ÕýµãÔ­×Ó STM32F103¿ª·¢°å
+  14:Core/system/delay.c ****  * ÔÚÏßÊÓÆµ:www.yuanzige.com
+  15:Core/system/delay.c ****  * ¼¼ÊõÂÛÌ³:www.openedv.com
+  16:Core/system/delay.c ****  * ¹«Ë¾ÍøÖ·:www.alientek.com
+  17:Core/system/delay.c ****  * ¹ºÂòµØÖ·:openedv.taobao.com
+  18:Core/system/delay.c ****  *
+  19:Core/system/delay.c ****  * ÐÞ¸ÄËµÃ÷
+  20:Core/system/delay.c ****  * V1.0 20230206
+  21:Core/system/delay.c ****  * µÚÒ»´Î·¢²¼
+  22:Core/system/delay.c ****  * V1.1 20230225
+  23:Core/system/delay.c ****  * ÐÞ¸ÄSYS_SUPPORT_OS²¿·Ö´úÂë, Ä¬ÈÏ½öÖ§³ÖUCOSII 2.93.01°æ±¾, ÆäËûOSÇë²Î¿¼ÊµÏÖ
+  24:Core/system/delay.c ****  * ÐÞ¸Ädelay_init²»ÔÙÊ¹ÓÃ8·ÖÆµ,È«²¿Í³Ò»Ê¹ÓÃMCUÊ±ÖÓ
+  25:Core/system/delay.c ****  * ÐÞ¸Ädelay_usÊ¹ÓÃÊ±ÖÓÕªÈ¡·¨ÑÓÊ±, ¼æÈÝOS
+  26:Core/system/delay.c ****  * ÐÞ¸Ädelay_msÖ±½ÓÊ¹ÓÃdelay_usÑÓÊ±ÊµÏÖ.
+  27:Core/system/delay.c ****  *
+  28:Core/system/delay.c ****  **************************************************************************************************
+  29:Core/system/delay.c ****  */
+  30:Core/system/delay.c **** 
+  31:Core/system/delay.c **** #include "sys.h"
+ARM GAS  /tmp/ccJxRaTE.s 			page 2
+
+
+  32:Core/system/delay.c **** #include "delay.h"
+  33:Core/system/delay.c **** 
+  34:Core/system/delay.c **** 
+  35:Core/system/delay.c **** static uint32_t g_fac_us = 0;       /* usÑÓÊ±±¶³ËÊý */
+  36:Core/system/delay.c **** 
+  37:Core/system/delay.c **** /* Èç¹ûSYS_SUPPORT_OS¶¨ÒåÁË,ËµÃ÷ÒªÖ§³ÖOSÁË(²»ÏÞÓÚUCOS) */
+  38:Core/system/delay.c **** #if SYS_SUPPORT_OS
+  39:Core/system/delay.c **** 
+  40:Core/system/delay.c **** /* Ìí¼Ó¹«¹²Í·ÎÄ¼þ ( ucosÐèÒªÓÃµ½) */
+  41:Core/system/delay.c **** #include "os.h"
+  42:Core/system/delay.c **** 
+  43:Core/system/delay.c **** /* ¶¨Òåg_fac_ms±äÁ¿, ±íÊ¾msÑÓÊ±µÄ±¶³ËÊý, ´ú±íÃ¿¸ö½ÚÅÄµÄmsÊý, (½öÔÚÊ¹ÄÜosµÄÊ±ºò,ÐèÒªÓÃµ½) */
+  44:Core/system/delay.c **** static uint16_t g_fac_ms = 0;
+  45:Core/system/delay.c **** 
+  46:Core/system/delay.c **** /*
+  47:Core/system/delay.c ****  *  µ±delay_us/delay_msÐèÒªÖ§³ÖOSµÄÊ±ºòÐèÒªÈý¸öÓëOSÏà¹ØµÄºê¶¨ÒåºÍº¯ÊýÀ´Ö§³Ö
+  48:Core/system/delay.c ****  *  Ê×ÏÈÊÇ3¸öºê¶¨Òå:
+  49:Core/system/delay.c ****  *      delay_osrunning    :ÓÃÓÚ±íÊ¾OSµ±Ç°ÊÇ·ñÕýÔÚÔËÐÐ,ÒÔ¾ö¶¨ÊÇ·ñ¿ÉÒÔÊ¹ÓÃÏà¹Øº¯Êý
+  50:Core/system/delay.c ****  *      delay_ostickspersec:ÓÃÓÚ±íÊ¾OSÉè¶¨µÄÊ±ÖÓ½ÚÅÄ,delay_init½«¸ù¾ÝÕâ¸ö²ÎÊýÀ´³õÊ¼»¯systick
+  51:Core/system/delay.c ****  *      delay_osintnesting :ÓÃÓÚ±íÊ¾OSÖÐ¶ÏÇ¶Ì×¼¶±ð,ÒòÎªÖÐ¶ÏÀïÃæ²»¿ÉÒÔµ÷¶È,delay_msÊ¹ÓÃ¸Ã²ÎÊýÀ´¾ö¶¨È
+  52:Core/system/delay.c ****  *  È»ºóÊÇ3¸öº¯Êý:
+  53:Core/system/delay.c ****  *      delay_osschedlock  :ÓÃÓÚËø¶¨OSÈÎÎñµ÷¶È,½ûÖ¹µ÷¶È
+  54:Core/system/delay.c ****  *      delay_osschedunlock:ÓÃÓÚ½âËøOSÈÎÎñµ÷¶È,ÖØÐÂ¿ªÆôµ÷¶È
+  55:Core/system/delay.c ****  *      delay_ostimedly    :ÓÃÓÚOSÑÓÊ±,¿ÉÒÔÒýÆðÈÎÎñµ÷¶È.
+  56:Core/system/delay.c ****  *
+  57:Core/system/delay.c ****  *  ±¾Àý³Ì½ö×÷UCOSIIµÄÖ§³Ö,ÆäËûOS,Çë×ÔÐÐ²Î¿¼×ÅÒÆÖ²
+  58:Core/system/delay.c ****  */
+  59:Core/system/delay.c **** 
+  60:Core/system/delay.c **** /* Ö§³ÖUCOSII */
+  61:Core/system/delay.c **** #define delay_osrunning     OSRunning           /* OSÊÇ·ñÔËÐÐ±ê¼Ç,0,²»ÔËÐÐ;1,ÔÚÔËÐÐ */
+  62:Core/system/delay.c **** #define delay_ostickspersec OS_TICKS_PER_SEC    /* OSÊ±ÖÓ½ÚÅÄ,¼´Ã¿Ãëµ÷¶È´ÎÊý */
+  63:Core/system/delay.c **** #define delay_osintnesting  OSIntNesting        /* ÖÐ¶ÏÇ¶Ì×¼¶±ð,¼´ÖÐ¶ÏÇ¶Ì×´ÎÊý */
+  64:Core/system/delay.c **** 
+  65:Core/system/delay.c **** 
+  66:Core/system/delay.c **** /**
+  67:Core/system/delay.c ****  * @brief     us¼¶ÑÓÊ±Ê±,¹Ø±ÕÈÎÎñµ÷¶È(·ÀÖ¹´ò¶Ïus¼¶ÑÓ³Ù)
+  68:Core/system/delay.c ****  * @param     ÎÞ
+  69:Core/system/delay.c ****  * @retval    ÎÞ
+  70:Core/system/delay.c ****  */
+  71:Core/system/delay.c **** void delay_osschedlock(void)
+  72:Core/system/delay.c **** {
+  73:Core/system/delay.c ****     OSSchedLock();                      /* UCOSIIµÄ·½Ê½,½ûÖ¹µ÷¶È£¬·ÀÖ¹´ò¶ÏusÑÓÊ± */
+  74:Core/system/delay.c **** }
+  75:Core/system/delay.c **** 
+  76:Core/system/delay.c **** /**
+  77:Core/system/delay.c ****  * @brief     us¼¶ÑÓÊ±Ê±,»Ö¸´ÈÎÎñµ÷¶È
+  78:Core/system/delay.c ****  * @param     ÎÞ
+  79:Core/system/delay.c ****  * @retval    ÎÞ
+  80:Core/system/delay.c ****  */
+  81:Core/system/delay.c **** void delay_osschedunlock(void)
+  82:Core/system/delay.c **** {
+  83:Core/system/delay.c ****     OSSchedUnlock();                    /* UCOSIIµÄ·½Ê½,»Ö¸´µ÷¶È */
+  84:Core/system/delay.c **** }
+  85:Core/system/delay.c **** 
+  86:Core/system/delay.c **** /**
+  87:Core/system/delay.c ****  * @brief     us¼¶ÑÓÊ±Ê±,»Ö¸´ÈÎÎñµ÷¶È
+  88:Core/system/delay.c ****  * @param     ticks: ÑÓÊ±µÄ½ÚÅÄÊý
+ARM GAS  /tmp/ccJxRaTE.s 			page 3
+
+
+  89:Core/system/delay.c ****  * @retval    ÎÞ
+  90:Core/system/delay.c ****  */
+  91:Core/system/delay.c **** void delay_ostimedly(uint32_t ticks)
+  92:Core/system/delay.c **** {
+  93:Core/system/delay.c ****     OSTimeDly(ticks);                               /* UCOSIIÑÓÊ± */
+  94:Core/system/delay.c **** }
+  95:Core/system/delay.c **** 
+  96:Core/system/delay.c **** /**
+  97:Core/system/delay.c ****  * @brief     systickÖÐ¶Ï·þÎñº¯Êý,Ê¹ÓÃOSÊ±ÓÃµ½
+  98:Core/system/delay.c ****  * @param     ticks: ÑÓÊ±µÄ½ÚÅÄÊý
+  99:Core/system/delay.c ****  * @retval    ÎÞ
+ 100:Core/system/delay.c ****  */
+ 101:Core/system/delay.c **** void SysTick_Handler(void)
+ 102:Core/system/delay.c **** {
+ 103:Core/system/delay.c ****     if (delay_osrunning == OS_TRUE) /* OS¿ªÊ¼ÅÜÁË,²ÅÖ´ÐÐÕý³£µÄµ÷¶È´¦Àí */
+ 104:Core/system/delay.c ****     {
+ 105:Core/system/delay.c ****         OS_CPU_SysTickHandler();    /* µ÷ÓÃ uC/OS-II µÄ SysTick ÖÐ¶Ï·þÎñº¯Êý */
+ 106:Core/system/delay.c ****     }
+ 107:Core/system/delay.c **** }
+ 108:Core/system/delay.c **** 
+ 109:Core/system/delay.c **** #endif
+ 110:Core/system/delay.c **** 
+ 111:Core/system/delay.c **** /**
+ 112:Core/system/delay.c ****  * @brief     ³õÊ¼»¯ÑÓ³Ùº¯Êý
+ 113:Core/system/delay.c ****  * @param     sysclk: ÏµÍ³Ê±ÖÓÆµÂÊ, ¼´CPUÆµÂÊ(HCLK), 72Mhz
+ 114:Core/system/delay.c ****  * @retval    ÎÞ
+ 115:Core/system/delay.c ****  */
+ 116:Core/system/delay.c **** void delay_init(uint16_t sysclk)
+ 117:Core/system/delay.c **** {
+  28              		.loc 1 117 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+ 118:Core/system/delay.c **** #if SYS_SUPPORT_OS                          /* Èç¹ûÐèÒªÖ§³ÖOS. */
+ 119:Core/system/delay.c ****     uint32_t reload;
+ 120:Core/system/delay.c **** #endif
+ 121:Core/system/delay.c ****     SysTick->CTRL |= (1 << 2);              /* SYSTICKÊ¹ÓÃÄÚ²¿Ê±ÖÓÔ´,ÆµÂÊÎªHCLK*/
+  33              		.loc 1 121 5 view .LVU1
+  34              		.loc 1 121 12 is_stmt 0 view .LVU2
+  35 0000 4FF0E023 		mov	r3, #-536813568
+  36 0004 1A69     		ldr	r2, [r3, #16]
+  37              		.loc 1 121 19 view .LVU3
+  38 0006 42F00402 		orr	r2, r2, #4
+  39 000a 1A61     		str	r2, [r3, #16]
+ 122:Core/system/delay.c ****     g_fac_us = sysclk;                      /* ²»ÂÛÊÇ·ñÊ¹ÓÃOS,g_fac_us¶¼ÐèÒªÊ¹ÓÃ */
+  40              		.loc 1 122 5 is_stmt 1 view .LVU4
+  41              		.loc 1 122 14 is_stmt 0 view .LVU5
+  42 000c 044A     		ldr	r2, .L2
+  43 000e 1060     		str	r0, [r2]
+ 123:Core/system/delay.c ****     SysTick->CTRL |= 1 << 0;                /* Ê¹ÄÜSystick */
+  44              		.loc 1 123 5 is_stmt 1 view .LVU6
+  45              		.loc 1 123 12 is_stmt 0 view .LVU7
+  46 0010 1A69     		ldr	r2, [r3, #16]
+  47              		.loc 1 123 19 view .LVU8
+  48 0012 42F00102 		orr	r2, r2, #1
+  49 0016 1A61     		str	r2, [r3, #16]
+ARM GAS  /tmp/ccJxRaTE.s 			page 4
+
+
+ 124:Core/system/delay.c ****     SysTick->LOAD = 0X0FFFFFFF;             /* ×¢Òâsystick¼ÆÊýÆ÷24Î»£¬ËùÒÔÕâÀïÉèÖÃ×î´óÖØ×°ÔØÖµ */
+  50              		.loc 1 124 5 is_stmt 1 view .LVU9
+  51              		.loc 1 124 19 is_stmt 0 view .LVU10
+  52 0018 6FF07042 		mvn	r2, #-268435456
+  53 001c 5A61     		str	r2, [r3, #20]
+ 125:Core/system/delay.c **** #if SYS_SUPPORT_OS                          /* Èç¹ûÐèÒªÖ§³ÖOS. */
+ 126:Core/system/delay.c ****     reload = sysclk;                        /* Ã¿ÃëÖÓµÄ¼ÆÊý´ÎÊý µ¥Î»ÎªM */
+ 127:Core/system/delay.c ****     reload *= 1000000 / delay_ostickspersec;/* ¸ù¾Ýdelay_ostickspersecÉè¶¨Òç³öÊ±¼ä
+ 128:Core/system/delay.c ****                                              * reloadÎª24Î»¼Ä´æÆ÷,×î´óÖµ:16777216,ÔÚ72MÏÂ,Ô¼ºÏ0.233
+ 129:Core/system/delay.c ****                                              */
+ 130:Core/system/delay.c ****     g_fac_ms = 1000 / delay_ostickspersec;  /* ´ú±íOS¿ÉÒÔÑÓÊ±µÄ×îÉÙµ¥Î» */
+ 131:Core/system/delay.c ****     SysTick->CTRL |= 1 << 1;                /* ¿ªÆôSYSTICKÖÐ¶Ï */
+ 132:Core/system/delay.c ****     SysTick->LOAD = reload;                 /* Ã¿1/delay_ostickspersecÃëÖÐ¶ÏÒ»´Î */
+ 133:Core/system/delay.c **** #endif
+ 134:Core/system/delay.c **** }
+  54              		.loc 1 134 1 view .LVU11
+  55 001e 7047     		bx	lr
+  56              	.L3:
+  57              		.align	2
+  58              	.L2:
+  59 0020 00000000 		.word	g_fac_us
+  60              		.cfi_endproc
+  61              	.LFE65:
+  63              		.section	.text.delay_us,"ax",%progbits
+  64              		.align	1
+  65              		.global	delay_us
+  66              		.syntax unified
+  67              		.thumb
+  68              		.thumb_func
+  70              	delay_us:
+  71              	.LVL1:
+  72              	.LFB66:
+ 135:Core/system/delay.c **** 
+ 136:Core/system/delay.c **** 
+ 137:Core/system/delay.c **** /**
+ 138:Core/system/delay.c ****  * @brief     ÑÓÊ±nus
+ 139:Core/system/delay.c ****  * @note      ÎÞÂÛÊÇ·ñÊ¹ÓÃOS, ¶¼ÊÇÓÃÊ±ÖÓÕªÈ¡·¨À´×öusÑÓÊ±
+ 140:Core/system/delay.c ****  * @param     nus: ÒªÑÓÊ±µÄusÊý
+ 141:Core/system/delay.c ****  * @note      nusÈ¡Öµ·¶Î§: 0 ~ (2^32 / fac_us) (fac_usÒ»°ãµÈÓÚÏµÍ³Ö÷Æµ, ×ÔÐÐÌ×Èë¼ÆËã)
+ 142:Core/system/delay.c ****  * @retval    ÎÞ
+ 143:Core/system/delay.c ****  */
+ 144:Core/system/delay.c **** void delay_us(uint32_t nus)
+ 145:Core/system/delay.c **** {
+  73              		.loc 1 145 1 is_stmt 1 view -0
+  74              		.cfi_startproc
+  75              		@ args = 0, pretend = 0, frame = 0
+  76              		@ frame_needed = 0, uses_anonymous_args = 0
+  77              		@ link register save eliminated.
+  78              		.loc 1 145 1 is_stmt 0 view .LVU13
+  79 0000 10B4     		push	{r4}
+  80              	.LCFI0:
+  81              		.cfi_def_cfa_offset 4
+  82              		.cfi_offset 4, -4
+ 146:Core/system/delay.c ****     uint32_t ticks;
+  83              		.loc 1 146 5 is_stmt 1 view .LVU14
+ 147:Core/system/delay.c ****     uint32_t told, tnow, tcnt = 0;
+  84              		.loc 1 147 5 view .LVU15
+ARM GAS  /tmp/ccJxRaTE.s 			page 5
+
+
+  85              	.LVL2:
+ 148:Core/system/delay.c ****     uint32_t reload = SysTick->LOAD;        /* LOADµÄÖµ */
+  86              		.loc 1 148 5 view .LVU16
+  87              		.loc 1 148 14 is_stmt 0 view .LVU17
+  88 0002 4FF0E022 		mov	r2, #-536813568
+  89 0006 5469     		ldr	r4, [r2, #20]
+  90              	.LVL3:
+ 149:Core/system/delay.c ****     ticks = nus * g_fac_us;                 /* ÐèÒªµÄ½ÚÅÄÊý */
+  91              		.loc 1 149 5 is_stmt 1 view .LVU18
+  92              		.loc 1 149 17 is_stmt 0 view .LVU19
+  93 0008 0B4B     		ldr	r3, .L11
+  94 000a 1B68     		ldr	r3, [r3]
+  95              		.loc 1 149 11 view .LVU20
+  96 000c 00FB03FC 		mul	ip, r0, r3
+  97              	.LVL4:
+ 150:Core/system/delay.c ****     
+ 151:Core/system/delay.c **** #if SYS_SUPPORT_OS                          /* Èç¹ûÐèÒªÖ§³ÖOS */
+ 152:Core/system/delay.c ****     delay_osschedlock();                    /* Ëø¶¨ OS µÄÈÎÎñµ÷¶ÈÆ÷ */
+ 153:Core/system/delay.c **** #endif
+ 154:Core/system/delay.c **** 
+ 155:Core/system/delay.c ****     told = SysTick->VAL;                    /* ¸Õ½øÈëÊ±µÄ¼ÆÊýÆ÷Öµ */
+  98              		.loc 1 155 5 is_stmt 1 view .LVU21
+  99              		.loc 1 155 10 is_stmt 0 view .LVU22
+ 100 0010 9369     		ldr	r3, [r2, #24]
+ 101              	.LVL5:
+ 147:Core/system/delay.c ****     uint32_t reload = SysTick->LOAD;        /* LOADµÄÖµ */
+ 102              		.loc 1 147 26 view .LVU23
+ 103 0012 0021     		movs	r1, #0
+ 104 0014 04E0     		b	.L8
+ 105              	.LVL6:
+ 106              	.L6:
+ 156:Core/system/delay.c ****     while (1)
+ 157:Core/system/delay.c ****     {
+ 158:Core/system/delay.c ****         tnow = SysTick->VAL;
+ 159:Core/system/delay.c ****         if (tnow != told)
+ 160:Core/system/delay.c ****         {
+ 161:Core/system/delay.c ****             if (tnow < told)
+ 162:Core/system/delay.c ****             {
+ 163:Core/system/delay.c ****                 tcnt += told - tnow;        /* ÕâÀï×¢ÒâÒ»ÏÂSYSTICKÊÇÒ»¸öµÝ¼õµÄ¼ÆÊýÆ÷¾Í¿ÉÒÔÁË */
+ 164:Core/system/delay.c ****             }
+ 165:Core/system/delay.c ****             else
+ 166:Core/system/delay.c ****             {
+ 167:Core/system/delay.c ****                 tcnt += reload - tnow + told;
+ 107              		.loc 1 167 17 is_stmt 1 view .LVU24
+ 108              		.loc 1 167 32 is_stmt 0 view .LVU25
+ 109 0016 E01A     		subs	r0, r4, r3
+ 110              		.loc 1 167 39 view .LVU26
+ 111 0018 0244     		add	r2, r2, r0
+ 112              	.LVL7:
+ 113              		.loc 1 167 22 view .LVU27
+ 114 001a 1144     		add	r1, r1, r2
+ 115              	.LVL8:
+ 116              	.L7:
+ 168:Core/system/delay.c ****             }
+ 169:Core/system/delay.c ****             told = tnow;
+ 117              		.loc 1 169 13 is_stmt 1 view .LVU28
+ 170:Core/system/delay.c ****             if (tcnt >= ticks) 
+ARM GAS  /tmp/ccJxRaTE.s 			page 6
+
+
+ 118              		.loc 1 170 13 view .LVU29
+ 119              		.loc 1 170 16 is_stmt 0 view .LVU30
+ 120 001c 6145     		cmp	r1, ip
+ 121 001e 09D2     		bcs	.L10
+ 122              	.LVL9:
+ 123              	.L8:
+ 147:Core/system/delay.c ****     uint32_t reload = SysTick->LOAD;        /* LOADµÄÖµ */
+ 124              		.loc 1 147 26 view .LVU31
+ 125 0020 1A46     		mov	r2, r3
+ 126              	.LVL10:
+ 127              	.L5:
+ 156:Core/system/delay.c ****     {
+ 128              		.loc 1 156 5 is_stmt 1 view .LVU32
+ 158:Core/system/delay.c ****         if (tnow != told)
+ 129              		.loc 1 158 9 view .LVU33
+ 158:Core/system/delay.c ****         if (tnow != told)
+ 130              		.loc 1 158 14 is_stmt 0 view .LVU34
+ 131 0022 4FF0E023 		mov	r3, #-536813568
+ 132 0026 9B69     		ldr	r3, [r3, #24]
+ 133              	.LVL11:
+ 159:Core/system/delay.c ****         {
+ 134              		.loc 1 159 9 is_stmt 1 view .LVU35
+ 159:Core/system/delay.c ****         {
+ 135              		.loc 1 159 12 is_stmt 0 view .LVU36
+ 136 0028 9A42     		cmp	r2, r3
+ 137 002a FAD0     		beq	.L5
+ 161:Core/system/delay.c ****             {
+ 138              		.loc 1 161 13 is_stmt 1 view .LVU37
+ 161:Core/system/delay.c ****             {
+ 139              		.loc 1 161 16 is_stmt 0 view .LVU38
+ 140 002c F3D9     		bls	.L6
+ 163:Core/system/delay.c ****             }
+ 141              		.loc 1 163 17 is_stmt 1 view .LVU39
+ 163:Core/system/delay.c ****             }
+ 142              		.loc 1 163 30 is_stmt 0 view .LVU40
+ 143 002e D21A     		subs	r2, r2, r3
+ 144              	.LVL12:
+ 163:Core/system/delay.c ****             }
+ 145              		.loc 1 163 22 view .LVU41
+ 146 0030 1144     		add	r1, r1, r2
+ 147              	.LVL13:
+ 163:Core/system/delay.c ****             }
+ 148              		.loc 1 163 22 view .LVU42
+ 149 0032 F3E7     		b	.L7
+ 150              	.LVL14:
+ 151              	.L10:
+ 171:Core/system/delay.c ****             {
+ 172:Core/system/delay.c ****                 break;                      /* Ê±¼ä³¬¹ý/µÈÓÚÒªÑÓ³ÙµÄÊ±¼ä,ÔòÍË³ö */
+ 173:Core/system/delay.c ****             }
+ 174:Core/system/delay.c ****         }
+ 175:Core/system/delay.c ****     }
+ 176:Core/system/delay.c **** 
+ 177:Core/system/delay.c **** #if SYS_SUPPORT_OS                          /* Èç¹ûÐèÒªÖ§³ÖOS */
+ 178:Core/system/delay.c ****     delay_osschedunlock();                  /* »Ö¸´ OS µÄÈÎÎñµ÷¶ÈÆ÷ */
+ 179:Core/system/delay.c **** #endif 
+ 180:Core/system/delay.c **** 
+ 181:Core/system/delay.c **** }
+ARM GAS  /tmp/ccJxRaTE.s 			page 7
+
+
+ 152              		.loc 1 181 1 view .LVU43
+ 153 0034 10BC     		pop	{r4}
+ 154              	.LCFI1:
+ 155              		.cfi_restore 4
+ 156              		.cfi_def_cfa_offset 0
+ 157              	.LVL15:
+ 158              		.loc 1 181 1 view .LVU44
+ 159 0036 7047     		bx	lr
+ 160              	.L12:
+ 161              		.align	2
+ 162              	.L11:
+ 163 0038 00000000 		.word	g_fac_us
+ 164              		.cfi_endproc
+ 165              	.LFE66:
+ 167              		.section	.text.delay_ms,"ax",%progbits
+ 168              		.align	1
+ 169              		.global	delay_ms
+ 170              		.syntax unified
+ 171              		.thumb
+ 172              		.thumb_func
+ 174              	delay_ms:
+ 175              	.LVL16:
+ 176              	.LFB67:
+ 182:Core/system/delay.c **** 
+ 183:Core/system/delay.c **** /**
+ 184:Core/system/delay.c ****  * @brief     ÑÓÊ±nms
+ 185:Core/system/delay.c ****  * @param     nms: ÒªÑÓÊ±µÄmsÊý (0< nms <= (2^32 / fac_us / 1000))(fac_usÒ»°ãµÈÓÚÏµÍ³Ö÷Æµ, ×ÔÐÐÌ×Èë
+ 186:Core/system/delay.c ****  * @retval    ÎÞ
+ 187:Core/system/delay.c ****  */
+ 188:Core/system/delay.c **** void delay_ms(uint16_t nms)
+ 189:Core/system/delay.c **** {
+ 177              		.loc 1 189 1 is_stmt 1 view -0
+ 178              		.cfi_startproc
+ 179              		@ args = 0, pretend = 0, frame = 0
+ 180              		@ frame_needed = 0, uses_anonymous_args = 0
+ 181              		.loc 1 189 1 is_stmt 0 view .LVU46
+ 182 0000 08B5     		push	{r3, lr}
+ 183              	.LCFI2:
+ 184              		.cfi_def_cfa_offset 8
+ 185              		.cfi_offset 3, -8
+ 186              		.cfi_offset 14, -4
+ 190:Core/system/delay.c ****     
+ 191:Core/system/delay.c **** #if SYS_SUPPORT_OS  /* Èç¹ûÐèÒªÖ§³ÖOS, Ôò¸ù¾ÝÇé¿öµ÷ÓÃosÑÓÊ±ÒÔÊÍ·ÅCPU */
+ 192:Core/system/delay.c ****     if (delay_osrunning && delay_osintnesting == 0)     /* Èç¹ûOSÒÑ¾­ÔÚÅÜÁË,²¢ÇÒ²»ÊÇÔÚÖÐ¶ÏÀïÃæ(ÖÐ¶Ï
+ 193:Core/system/delay.c ****     {
+ 194:Core/system/delay.c ****         if (nms >= g_fac_ms)                            /* ÑÓÊ±µÄÊ±¼ä´óÓÚOSµÄ×îÉÙÊ±¼äÖÜÆÚ */
+ 195:Core/system/delay.c ****         {
+ 196:Core/system/delay.c ****             delay_ostimedly(nms / g_fac_ms);            /* OSÑÓÊ± */
+ 197:Core/system/delay.c ****         }
+ 198:Core/system/delay.c **** 
+ 199:Core/system/delay.c ****         nms %= g_fac_ms;                                /* OSÒÑ¾­ÎÞ·¨Ìá¹©ÕâÃ´Ð¡µÄÑÓÊ±ÁË,²ÉÓÃÆÕÍ¨·½Ê
+ 200:Core/system/delay.c ****     }
+ 201:Core/system/delay.c **** #endif
+ 202:Core/system/delay.c **** 
+ 203:Core/system/delay.c ****     delay_us((uint32_t)(nms * 1000));                   /* ÆÕÍ¨·½Ê½ÑÓÊ± */
+ 187              		.loc 1 203 5 is_stmt 1 view .LVU47
+ 188 0002 4FF47A73 		mov	r3, #1000
+ARM GAS  /tmp/ccJxRaTE.s 			page 8
+
+
+ 189 0006 03FB00F0 		mul	r0, r3, r0
+ 190              	.LVL17:
+ 191              		.loc 1 203 5 is_stmt 0 view .LVU48
+ 192 000a FFF7FEFF 		bl	delay_us
+ 193              	.LVL18:
+ 204:Core/system/delay.c **** }
+ 194              		.loc 1 204 1 view .LVU49
+ 195 000e 08BD     		pop	{r3, pc}
+ 196              		.cfi_endproc
+ 197              	.LFE67:
+ 199              		.section	.bss.g_fac_us,"aw",%nobits
+ 200              		.align	2
+ 203              	g_fac_us:
+ 204 0000 00000000 		.space	4
+ 205              		.text
+ 206              	.Letext0:
+ 207              		.file 2 "/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 208              		.file 3 "/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 209              		.file 4 "CMSIS/Include/core_cm3.h"
+ARM GAS  /tmp/ccJxRaTE.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 delay.c
+     /tmp/ccJxRaTE.s:19     .text.delay_init:00000000 $t
+     /tmp/ccJxRaTE.s:25     .text.delay_init:00000000 delay_init
+     /tmp/ccJxRaTE.s:59     .text.delay_init:00000020 $d
+     /tmp/ccJxRaTE.s:203    .bss.g_fac_us:00000000 g_fac_us
+     /tmp/ccJxRaTE.s:64     .text.delay_us:00000000 $t
+     /tmp/ccJxRaTE.s:70     .text.delay_us:00000000 delay_us
+     /tmp/ccJxRaTE.s:163    .text.delay_us:00000038 $d
+     /tmp/ccJxRaTE.s:168    .text.delay_ms:00000000 $t
+     /tmp/ccJxRaTE.s:174    .text.delay_ms:00000000 delay_ms
+     /tmp/ccJxRaTE.s:200    .bss.g_fac_us:00000000 $d
+
+NO UNDEFINED SYMBOLS

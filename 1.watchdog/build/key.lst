@@ -1,0 +1,484 @@
+ARM GAS  /tmp/ccEXdtc5.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"key.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/bsp/key.c"
+  18              		.section	.text.key_init,"ax",%progbits
+  19              		.align	1
+  20              		.global	key_init
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	key_init:
+  26              	.LFB65:
+   1:Core/bsp/key.c **** /**
+   2:Core/bsp/key.c ****  **************************************************************************************************
+   3:Core/bsp/key.c ****  * @file        key.c
+   4:Core/bsp/key.c ****  * @author      ÕýµãÔ­×ÓÍÅ¶Ó(ALIENTEK)
+   5:Core/bsp/key.c ****  * @version     V1.0
+   6:Core/bsp/key.c ****  * @date        2020-04-19
+   7:Core/bsp/key.c ****  * @brief       °´¼üÊäÈë Çý¶¯´úÂë
+   8:Core/bsp/key.c ****  * @license     Copyright (c) 2020-2032, ¹ãÖÝÊÐÐÇÒíµç×Ó¿Æ¼¼ÓÐÏÞ¹«Ë¾
+   9:Core/bsp/key.c ****  **************************************************************************************************
+  10:Core/bsp/key.c ****  * @attention
+  11:Core/bsp/key.c ****  *
+  12:Core/bsp/key.c ****  * ÊµÑéÆ½Ì¨:ÕýµãÔ­×Ó STM32F103¿ª·¢°å
+  13:Core/bsp/key.c ****  * ÔÚÏßÊÓÆµ:www.yuanzige.com
+  14:Core/bsp/key.c ****  * ¼¼ÊõÂÛÌ³:www.openedv.com
+  15:Core/bsp/key.c ****  * ¹«Ë¾ÍøÖ·:www.alientek.com
+  16:Core/bsp/key.c ****  * ¹ºÂòµØÖ·:openedv.taobao.com
+  17:Core/bsp/key.c ****  *
+  18:Core/bsp/key.c ****  * ÐÞ¸ÄËµÃ÷
+  19:Core/bsp/key.c ****  * V1.0 20200419
+  20:Core/bsp/key.c ****  * µÚÒ»´Î·¢²¼
+  21:Core/bsp/key.c ****  *
+  22:Core/bsp/key.c ****  **************************************************************************************************
+  23:Core/bsp/key.c ****  */
+  24:Core/bsp/key.c **** 
+  25:Core/bsp/key.c **** #include "key.h"
+  26:Core/bsp/key.c **** #include "delay.h"
+  27:Core/bsp/key.c **** 
+  28:Core/bsp/key.c **** 
+  29:Core/bsp/key.c **** /**
+  30:Core/bsp/key.c ****  * @brief       °´¼ü³õÊ¼»¯º¯Êý
+  31:Core/bsp/key.c ****  * @param       ÎÞ
+  32:Core/bsp/key.c ****  * @retval      ÎÞ
+ARM GAS  /tmp/ccEXdtc5.s 			page 2
+
+
+  33:Core/bsp/key.c ****  */
+  34:Core/bsp/key.c **** void key_init(void)
+  35:Core/bsp/key.c **** {
+  27              		.loc 1 35 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 30B5     		push	{r4, r5, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 12
+  34              		.cfi_offset 4, -12
+  35              		.cfi_offset 5, -8
+  36              		.cfi_offset 14, -4
+  37 0002 83B0     		sub	sp, sp, #12
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 24
+  36:Core/bsp/key.c ****     KEY0_GPIO_CLK_ENABLE(); /* KEY0Ê±ÖÓÊ¹ÄÜ */
+  40              		.loc 1 36 5 view .LVU1
+  41              		.loc 1 36 5 view .LVU2
+  42 0004 1A4B     		ldr	r3, .L3
+  43 0006 9A69     		ldr	r2, [r3, #24]
+  44 0008 42F04002 		orr	r2, r2, #64
+  45 000c 9A61     		str	r2, [r3, #24]
+  46              		.loc 1 36 5 view .LVU3
+  37:Core/bsp/key.c ****     KEY1_GPIO_CLK_ENABLE(); /* KEY1Ê±ÖÓÊ¹ÄÜ */
+  47              		.loc 1 37 5 view .LVU4
+  48              		.loc 1 37 5 view .LVU5
+  49 000e 9A69     		ldr	r2, [r3, #24]
+  50 0010 42F04002 		orr	r2, r2, #64
+  51 0014 9A61     		str	r2, [r3, #24]
+  52              		.loc 1 37 5 view .LVU6
+  38:Core/bsp/key.c ****     KEY2_GPIO_CLK_ENABLE(); /* KEY2Ê±ÖÓÊ¹ÄÜ */
+  53              		.loc 1 38 5 view .LVU7
+  54              		.loc 1 38 5 view .LVU8
+  55 0016 9A69     		ldr	r2, [r3, #24]
+  56 0018 42F04002 		orr	r2, r2, #64
+  57 001c 9A61     		str	r2, [r3, #24]
+  58              		.loc 1 38 5 view .LVU9
+  39:Core/bsp/key.c ****     WKUP_GPIO_CLK_ENABLE(); /* WKUPÊ±ÖÓÊ¹ÄÜ */
+  59              		.loc 1 39 5 view .LVU10
+  60              		.loc 1 39 5 view .LVU11
+  61 001e 9A69     		ldr	r2, [r3, #24]
+  62 0020 42F00402 		orr	r2, r2, #4
+  63 0024 9A61     		str	r2, [r3, #24]
+  64              		.loc 1 39 5 view .LVU12
+  40:Core/bsp/key.c **** 
+  41:Core/bsp/key.c ****     sys_gpio_set(KEY0_GPIO_PORT, KEY0_GPIO_PIN,
+  65              		.loc 1 41 5 view .LVU13
+  66 0026 134D     		ldr	r5, .L3+4
+  67 0028 0124     		movs	r4, #1
+  68 002a 0194     		str	r4, [sp, #4]
+  69 002c 0094     		str	r4, [sp]
+  70 002e 0023     		movs	r3, #0
+  71 0030 1A46     		mov	r2, r3
+  72 0032 1021     		movs	r1, #16
+  73 0034 2846     		mov	r0, r5
+  74 0036 FFF7FEFF 		bl	sys_gpio_set
+ARM GAS  /tmp/ccEXdtc5.s 			page 3
+
+
+  75              	.LVL0:
+  42:Core/bsp/key.c ****                  SYS_GPIO_MODE_IN, SYS_GPIO_OTYPE_PP, SYS_GPIO_SPEED_MID, SYS_GPIO_PUPD_PU);    /* 
+  43:Core/bsp/key.c **** 
+  44:Core/bsp/key.c ****     sys_gpio_set(KEY1_GPIO_PORT, KEY1_GPIO_PIN,
+  76              		.loc 1 44 5 view .LVU14
+  77 003a 0194     		str	r4, [sp, #4]
+  78 003c 0094     		str	r4, [sp]
+  79 003e 0023     		movs	r3, #0
+  80 0040 1A46     		mov	r2, r3
+  81 0042 0821     		movs	r1, #8
+  82 0044 2846     		mov	r0, r5
+  83 0046 FFF7FEFF 		bl	sys_gpio_set
+  84              	.LVL1:
+  45:Core/bsp/key.c ****                  SYS_GPIO_MODE_IN, SYS_GPIO_OTYPE_PP, SYS_GPIO_SPEED_MID, SYS_GPIO_PUPD_PU);    /* 
+  46:Core/bsp/key.c **** 
+  47:Core/bsp/key.c ****     sys_gpio_set(KEY2_GPIO_PORT, KEY2_GPIO_PIN,
+  85              		.loc 1 47 5 view .LVU15
+  86 004a 0194     		str	r4, [sp, #4]
+  87 004c 0094     		str	r4, [sp]
+  88 004e 0023     		movs	r3, #0
+  89 0050 1A46     		mov	r2, r3
+  90 0052 0421     		movs	r1, #4
+  91 0054 2846     		mov	r0, r5
+  92 0056 FFF7FEFF 		bl	sys_gpio_set
+  93              	.LVL2:
+  48:Core/bsp/key.c ****                  SYS_GPIO_MODE_IN, SYS_GPIO_OTYPE_PP, SYS_GPIO_SPEED_MID, SYS_GPIO_PUPD_PU);    /* 
+  49:Core/bsp/key.c **** 
+  50:Core/bsp/key.c ****     sys_gpio_set(WKUP_GPIO_PORT, WKUP_GPIO_PIN,
+  94              		.loc 1 50 5 view .LVU16
+  95 005a 0223     		movs	r3, #2
+  96 005c 0193     		str	r3, [sp, #4]
+  97 005e 0094     		str	r4, [sp]
+  98 0060 0023     		movs	r3, #0
+  99 0062 1A46     		mov	r2, r3
+ 100 0064 2146     		mov	r1, r4
+ 101 0066 0448     		ldr	r0, .L3+8
+ 102 0068 FFF7FEFF 		bl	sys_gpio_set
+ 103              	.LVL3:
+  51:Core/bsp/key.c ****                  SYS_GPIO_MODE_IN, SYS_GPIO_OTYPE_PP, SYS_GPIO_SPEED_MID, SYS_GPIO_PUPD_PD);    /* 
+  52:Core/bsp/key.c **** }
+ 104              		.loc 1 52 1 is_stmt 0 view .LVU17
+ 105 006c 03B0     		add	sp, sp, #12
+ 106              	.LCFI2:
+ 107              		.cfi_def_cfa_offset 12
+ 108              		@ sp needed
+ 109 006e 30BD     		pop	{r4, r5, pc}
+ 110              	.L4:
+ 111              		.align	2
+ 112              	.L3:
+ 113 0070 00100240 		.word	1073876992
+ 114 0074 00180140 		.word	1073813504
+ 115 0078 00080140 		.word	1073809408
+ 116              		.cfi_endproc
+ 117              	.LFE65:
+ 119              		.section	.text.key_scan,"ax",%progbits
+ 120              		.align	1
+ 121              		.global	key_scan
+ARM GAS  /tmp/ccEXdtc5.s 			page 4
+
+
+ 122              		.syntax unified
+ 123              		.thumb
+ 124              		.thumb_func
+ 126              	key_scan:
+ 127              	.LVL4:
+ 128              	.LFB66:
+  53:Core/bsp/key.c **** 
+  54:Core/bsp/key.c **** /**
+  55:Core/bsp/key.c ****  * @brief       °´¼üÉ¨Ãèº¯Êý
+  56:Core/bsp/key.c ****  * @note        ¸Ãº¯ÊýÓÐÏìÓ¦ÓÅÏÈ¼¶(Í¬Ê±°´ÏÂ¶à¸ö°´¼ü): WK_UP > KEY2 > KEY1 > KEY0!!
+  57:Core/bsp/key.c ****  * @param       mode:0 / 1, ¾ßÌåº¬ÒåÈçÏÂ:
+  58:Core/bsp/key.c ****  *   @arg       0,  ²»Ö§³ÖÁ¬Ðø°´(µ±°´¼ü°´ÏÂ²»·ÅÊ±, Ö»ÓÐµÚÒ»´Îµ÷ÓÃ»á·µ»Ø¼üÖµ,
+  59:Core/bsp/key.c ****  *                  ±ØÐëËÉ¿ªÒÔºó, ÔÙ´Î°´ÏÂ²Å»á·µ»ØÆäËû¼üÖµ)
+  60:Core/bsp/key.c ****  *   @arg       1,  Ö§³ÖÁ¬Ðø°´(µ±°´¼ü°´ÏÂ²»·ÅÊ±, Ã¿´Îµ÷ÓÃ¸Ãº¯Êý¶¼»á·µ»Ø¼üÖµ)
+  61:Core/bsp/key.c ****  * @retval      ¼üÖµ, ¶¨ÒåÈçÏÂ:
+  62:Core/bsp/key.c ****  *              KEY0_PRES, 1, KEY0°´ÏÂ
+  63:Core/bsp/key.c ****  *              KEY1_PRES, 2, KEY1°´ÏÂ
+  64:Core/bsp/key.c ****  *              KEY2_PRES, 3, KEY2°´ÏÂ
+  65:Core/bsp/key.c ****  *              WKUP_PRES, 4, WKUP°´ÏÂ
+  66:Core/bsp/key.c ****  */
+  67:Core/bsp/key.c **** uint8_t key_scan(uint8_t mode)
+  68:Core/bsp/key.c **** {
+ 129              		.loc 1 68 1 is_stmt 1 view -0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133              		.loc 1 68 1 is_stmt 0 view .LVU19
+ 134 0000 10B5     		push	{r4, lr}
+ 135              	.LCFI3:
+ 136              		.cfi_def_cfa_offset 8
+ 137              		.cfi_offset 4, -8
+ 138              		.cfi_offset 14, -4
+  69:Core/bsp/key.c ****     static uint8_t key_up = 1;  /* °´¼ü°´ËÉ¿ª±êÖ¾ */
+ 139              		.loc 1 69 5 is_stmt 1 view .LVU20
+  70:Core/bsp/key.c ****     uint8_t keyval = 0;
+ 140              		.loc 1 70 5 view .LVU21
+ 141              	.LVL5:
+  71:Core/bsp/key.c **** 
+  72:Core/bsp/key.c ****     if (mode) key_up = 1;   /* Ö§³ÖÁ¬°´ */
+ 142              		.loc 1 72 5 view .LVU22
+ 143              		.loc 1 72 8 is_stmt 0 view .LVU23
+ 144 0002 10B1     		cbz	r0, .L6
+ 145              		.loc 1 72 15 is_stmt 1 discriminator 1 view .LVU24
+ 146              		.loc 1 72 22 is_stmt 0 discriminator 1 view .LVU25
+ 147 0004 314B     		ldr	r3, .L26
+ 148 0006 0122     		movs	r2, #1
+ 149 0008 1A70     		strb	r2, [r3]
+ 150              	.L6:
+  73:Core/bsp/key.c **** 
+  74:Core/bsp/key.c ****     if (key_up && (KEY0 == 0 || KEY1 == 0 || KEY2 == 0 || WK_UP == 1))  /* °´¼üËÉ¿ª±êÖ¾Îª1, ÇÒÓÐÈÎÒ
+ 151              		.loc 1 74 5 is_stmt 1 view .LVU26
+ 152              		.loc 1 74 9 is_stmt 0 view .LVU27
+ 153 000a 304B     		ldr	r3, .L26
+ 154 000c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 155              		.loc 1 74 8 view .LVU28
+ 156 000e 002B     		cmp	r3, #0
+ 157 0010 35D0     		beq	.L7
+ARM GAS  /tmp/ccEXdtc5.s 			page 5
+
+
+ 158              		.loc 1 74 20 discriminator 1 view .LVU29
+ 159 0012 1021     		movs	r1, #16
+ 160 0014 2E48     		ldr	r0, .L26+4
+ 161              	.LVL6:
+ 162              		.loc 1 74 20 discriminator 1 view .LVU30
+ 163 0016 FFF7FEFF 		bl	sys_gpio_pin_get
+ 164              	.LVL7:
+ 165              		.loc 1 74 16 discriminator 1 view .LVU31
+ 166 001a 20B1     		cbz	r0, .L8
+ 167              		.loc 1 74 33 discriminator 2 view .LVU32
+ 168 001c 0821     		movs	r1, #8
+ 169 001e 2C48     		ldr	r0, .L26+4
+ 170 0020 FFF7FEFF 		bl	sys_gpio_pin_get
+ 171              	.LVL8:
+ 172              		.loc 1 74 30 discriminator 2 view .LVU33
+ 173 0024 F8B9     		cbnz	r0, .L22
+ 174              	.L8:
+  75:Core/bsp/key.c ****     {
+  76:Core/bsp/key.c ****         delay_ms(10);       /* È¥¶¶¶¯ */
+ 175              		.loc 1 76 9 is_stmt 1 view .LVU34
+ 176 0026 0A20     		movs	r0, #10
+ 177 0028 FFF7FEFF 		bl	delay_ms
+ 178              	.LVL9:
+  77:Core/bsp/key.c ****         key_up = 0;
+ 179              		.loc 1 77 9 view .LVU35
+ 180              		.loc 1 77 16 is_stmt 0 view .LVU36
+ 181 002c 274B     		ldr	r3, .L26
+ 182 002e 0022     		movs	r2, #0
+ 183 0030 1A70     		strb	r2, [r3]
+  78:Core/bsp/key.c **** 
+  79:Core/bsp/key.c ****         if (KEY0 == 0)  keyval = KEY0_PRES;
+ 184              		.loc 1 79 9 is_stmt 1 view .LVU37
+ 185              		.loc 1 79 13 is_stmt 0 view .LVU38
+ 186 0032 1021     		movs	r1, #16
+ 187 0034 2648     		ldr	r0, .L26+4
+ 188 0036 FFF7FEFF 		bl	sys_gpio_pin_get
+ 189              	.LVL10:
+ 190              		.loc 1 79 12 view .LVU39
+ 191 003a 48B3     		cbz	r0, .L13
+  70:Core/bsp/key.c **** 
+ 192              		.loc 1 70 13 view .LVU40
+ 193 003c 0024     		movs	r4, #0
+ 194              	.L9:
+ 195              	.LVL11:
+  80:Core/bsp/key.c **** 
+  81:Core/bsp/key.c ****         if (KEY1 == 0)  keyval = KEY1_PRES;
+ 196              		.loc 1 81 9 is_stmt 1 view .LVU41
+ 197              		.loc 1 81 13 is_stmt 0 view .LVU42
+ 198 003e 0821     		movs	r1, #8
+ 199 0040 2348     		ldr	r0, .L26+4
+ 200 0042 FFF7FEFF 		bl	sys_gpio_pin_get
+ 201              	.LVL12:
+ 202              		.loc 1 81 12 view .LVU43
+ 203 0046 00B9     		cbnz	r0, .L10
+ 204              		.loc 1 81 32 view .LVU44
+ 205 0048 0224     		movs	r4, #2
+ 206              	.LVL13:
+ARM GAS  /tmp/ccEXdtc5.s 			page 6
+
+
+ 207              	.L10:
+  82:Core/bsp/key.c **** 
+  83:Core/bsp/key.c ****         if (KEY2 == 0)  keyval = KEY2_PRES;
+ 208              		.loc 1 83 9 is_stmt 1 view .LVU45
+ 209              		.loc 1 83 13 is_stmt 0 view .LVU46
+ 210 004a 0421     		movs	r1, #4
+ 211 004c 2048     		ldr	r0, .L26+4
+ 212 004e FFF7FEFF 		bl	sys_gpio_pin_get
+ 213              	.LVL14:
+ 214              		.loc 1 83 12 view .LVU47
+ 215 0052 00B9     		cbnz	r0, .L11
+ 216              		.loc 1 83 32 view .LVU48
+ 217 0054 0324     		movs	r4, #3
+ 218              	.LVL15:
+ 219              	.L11:
+  84:Core/bsp/key.c **** 
+  85:Core/bsp/key.c ****         if (WK_UP == 1) keyval = WKUP_PRES;
+ 220              		.loc 1 85 9 is_stmt 1 view .LVU49
+ 221              		.loc 1 85 13 is_stmt 0 view .LVU50
+ 222 0056 0121     		movs	r1, #1
+ 223 0058 1E48     		ldr	r0, .L26+8
+ 224 005a FFF7FEFF 		bl	sys_gpio_pin_get
+ 225              	.LVL16:
+ 226              		.loc 1 85 12 view .LVU51
+ 227 005e 0128     		cmp	r0, #1
+ 228 0060 14D1     		bne	.L12
+ 229              		.loc 1 85 32 view .LVU52
+ 230 0062 0424     		movs	r4, #4
+ 231              	.LVL17:
+ 232              		.loc 1 85 32 view .LVU53
+ 233 0064 12E0     		b	.L12
+ 234              	.LVL18:
+ 235              	.L22:
+  74:Core/bsp/key.c ****     {
+ 236              		.loc 1 74 46 discriminator 3 view .LVU54
+ 237 0066 0421     		movs	r1, #4
+ 238 0068 1948     		ldr	r0, .L26+4
+ 239 006a FFF7FEFF 		bl	sys_gpio_pin_get
+ 240              	.LVL19:
+  74:Core/bsp/key.c ****     {
+ 241              		.loc 1 74 43 discriminator 3 view .LVU55
+ 242 006e 0028     		cmp	r0, #0
+ 243 0070 D9D0     		beq	.L8
+  74:Core/bsp/key.c ****     {
+ 244              		.loc 1 74 59 discriminator 4 view .LVU56
+ 245 0072 0121     		movs	r1, #1
+ 246 0074 1748     		ldr	r0, .L26+8
+ 247 0076 FFF7FEFF 		bl	sys_gpio_pin_get
+ 248              	.LVL20:
+  74:Core/bsp/key.c ****     {
+ 249              		.loc 1 74 56 discriminator 4 view .LVU57
+ 250 007a 0128     		cmp	r0, #1
+ 251 007c D3D0     		beq	.L8
+ 252              	.L7:
+  86:Core/bsp/key.c ****     }
+  87:Core/bsp/key.c ****     else if (KEY0 == 1 && KEY1 == 1 && KEY2 == 1 && WK_UP == 0) /* Ã»ÓÐÈÎºÎ°´¼ü°´ÏÂ, ±ê¼Ç°´¼üËÉ¿ª *
+ 253              		.loc 1 87 10 is_stmt 1 view .LVU58
+ARM GAS  /tmp/ccEXdtc5.s 			page 7
+
+
+ 254              		.loc 1 87 14 is_stmt 0 view .LVU59
+ 255 007e 1021     		movs	r1, #16
+ 256 0080 1348     		ldr	r0, .L26+4
+ 257 0082 FFF7FEFF 		bl	sys_gpio_pin_get
+ 258              	.LVL21:
+ 259              		.loc 1 87 13 view .LVU60
+ 260 0086 0128     		cmp	r0, #1
+ 261 0088 04D0     		beq	.L23
+  70:Core/bsp/key.c **** 
+ 262              		.loc 1 70 13 view .LVU61
+ 263 008a 0024     		movs	r4, #0
+ 264              	.LVL22:
+ 265              	.L12:
+  88:Core/bsp/key.c ****     {
+  89:Core/bsp/key.c ****         key_up = 1;
+  90:Core/bsp/key.c ****     }
+  91:Core/bsp/key.c **** 
+  92:Core/bsp/key.c ****     return keyval;  /* ·µ»Ø¼üÖµ */
+ 266              		.loc 1 92 5 is_stmt 1 view .LVU62
+  93:Core/bsp/key.c **** }
+ 267              		.loc 1 93 1 is_stmt 0 view .LVU63
+ 268 008c 2046     		mov	r0, r4
+ 269 008e 10BD     		pop	{r4, pc}
+ 270              	.LVL23:
+ 271              	.L13:
+  79:Core/bsp/key.c **** 
+ 272              		.loc 1 79 32 view .LVU64
+ 273 0090 0124     		movs	r4, #1
+ 274 0092 D4E7     		b	.L9
+ 275              	.L23:
+  87:Core/bsp/key.c ****     {
+ 276              		.loc 1 87 27 discriminator 1 view .LVU65
+ 277 0094 0821     		movs	r1, #8
+ 278 0096 0E48     		ldr	r0, .L26+4
+ 279 0098 FFF7FEFF 		bl	sys_gpio_pin_get
+ 280              	.LVL24:
+  87:Core/bsp/key.c ****     {
+ 281              		.loc 1 87 24 discriminator 1 view .LVU66
+ 282 009c 0128     		cmp	r0, #1
+ 283 009e 01D0     		beq	.L24
+  70:Core/bsp/key.c **** 
+ 284              		.loc 1 70 13 view .LVU67
+ 285 00a0 0024     		movs	r4, #0
+ 286 00a2 F3E7     		b	.L12
+ 287              	.L24:
+  87:Core/bsp/key.c ****     {
+ 288              		.loc 1 87 40 discriminator 2 view .LVU68
+ 289 00a4 0421     		movs	r1, #4
+ 290 00a6 0A48     		ldr	r0, .L26+4
+ 291 00a8 FFF7FEFF 		bl	sys_gpio_pin_get
+ 292              	.LVL25:
+  87:Core/bsp/key.c ****     {
+ 293              		.loc 1 87 37 discriminator 2 view .LVU69
+ 294 00ac 0128     		cmp	r0, #1
+ 295 00ae 01D0     		beq	.L25
+  70:Core/bsp/key.c **** 
+ 296              		.loc 1 70 13 view .LVU70
+ARM GAS  /tmp/ccEXdtc5.s 			page 8
+
+
+ 297 00b0 0024     		movs	r4, #0
+ 298 00b2 EBE7     		b	.L12
+ 299              	.L25:
+  87:Core/bsp/key.c ****     {
+ 300              		.loc 1 87 53 discriminator 3 view .LVU71
+ 301 00b4 0121     		movs	r1, #1
+ 302 00b6 0748     		ldr	r0, .L26+8
+ 303 00b8 FFF7FEFF 		bl	sys_gpio_pin_get
+ 304              	.LVL26:
+  87:Core/bsp/key.c ****     {
+ 305              		.loc 1 87 50 discriminator 3 view .LVU72
+ 306 00bc 0446     		mov	r4, r0
+ 307 00be 18B9     		cbnz	r0, .L20
+  89:Core/bsp/key.c ****     }
+ 308              		.loc 1 89 9 is_stmt 1 view .LVU73
+  89:Core/bsp/key.c ****     }
+ 309              		.loc 1 89 16 is_stmt 0 view .LVU74
+ 310 00c0 024B     		ldr	r3, .L26
+ 311 00c2 0122     		movs	r2, #1
+ 312 00c4 1A70     		strb	r2, [r3]
+ 313 00c6 E1E7     		b	.L12
+ 314              	.L20:
+  70:Core/bsp/key.c **** 
+ 315              		.loc 1 70 13 view .LVU75
+ 316 00c8 0024     		movs	r4, #0
+ 317 00ca DFE7     		b	.L12
+ 318              	.L27:
+ 319              		.align	2
+ 320              	.L26:
+ 321 00cc 00000000 		.word	key_up.0
+ 322 00d0 00180140 		.word	1073813504
+ 323 00d4 00080140 		.word	1073809408
+ 324              		.cfi_endproc
+ 325              	.LFE66:
+ 327              		.section	.data.key_up.0,"aw"
+ 330              	key_up.0:
+ 331 0000 01       		.byte	1
+ 332              		.text
+ 333              	.Letext0:
+ 334              		.file 2 "/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 335              		.file 3 "/opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 336              		.file 4 "CMSIS/Device/stm32f103xe.h"
+ 337              		.file 5 "Core/system/delay.h"
+ 338              		.file 6 "Core/system/sys.h"
+ARM GAS  /tmp/ccEXdtc5.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 key.c
+     /tmp/ccEXdtc5.s:19     .text.key_init:00000000 $t
+     /tmp/ccEXdtc5.s:25     .text.key_init:00000000 key_init
+     /tmp/ccEXdtc5.s:113    .text.key_init:00000070 $d
+     /tmp/ccEXdtc5.s:120    .text.key_scan:00000000 $t
+     /tmp/ccEXdtc5.s:126    .text.key_scan:00000000 key_scan
+     /tmp/ccEXdtc5.s:321    .text.key_scan:000000cc $d
+     /tmp/ccEXdtc5.s:330    .data.key_up.0:00000000 key_up.0
+
+UNDEFINED SYMBOLS
+sys_gpio_set
+sys_gpio_pin_get
+delay_ms
