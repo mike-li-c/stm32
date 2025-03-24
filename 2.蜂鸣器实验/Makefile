@@ -15,7 +15,7 @@ main.c
 ASM_SOURCES = startup_stm32f103xe.s
 
 # π§æﬂ¡¥≈‰÷√
-CC = arm-none-eabi-gcc
+CC = arm-none-eabi-gcc --specs=nosys.specs
 AS = arm-none-eabi-gcc -x assembler-with-cpp
 SZ = arm-none-eabi-size
 HEX = arm-none-eabi-objcopy -O ihex
