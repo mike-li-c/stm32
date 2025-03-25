@@ -60,19 +60,3 @@ extern uint16_t g_usart_rx_sta;                 /* 接收状态标记 */
 void usart_init(uint32_t pclk2, uint32_t bound);/* 串口初始化函数 */
 
 #endif  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

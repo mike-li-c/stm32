@@ -22,7 +22,7 @@
 #include "usart.h"
 #include "delay.h"
 #include "led.h"
-
+#include <stdio.h>
 
 int main(void)
 {
@@ -40,7 +40,7 @@ int main(void)
         if (g_usart_rx_sta & 0x8000)        /* 接收到了数据? */
         {
             len = g_usart_rx_sta & 0x3fff;  /* 得到此次接收到的数据长度 */
-            printf("\n您发送的消息为:\n");
+            printf("\r\n您发送的消息为:\r\n");
 
             for (t = 0; t < len; t++)
             {
@@ -49,7 +49,7 @@ int main(void)
                 while ((USART_UX->SR & 0X40) == 0); /* 等待发送结束 */
             }
 
-            printf("\n\n"); /* 插入换行 */
+            printf("\r\n\r\n"); /* 插入换行 */
             g_usart_rx_sta = 0;
         }
         else
@@ -58,11 +58,11 @@ int main(void)
 
             if (times % 5000 == 0)
             {
-                printf("\nuart experience\n");
-                printf("正点原子@ALIENTEK\n\n\n");
+                printf("\r\n正点原子 STM32开发板 串口实验\r\n");
+                printf("正点原子@ALIENTEK\r\n\r\n\r\n");
             }
 
-            if (times % 200 == 0) printf("请输入数据,以回车键结束\n");
+            if (times % 200 == 0) printf("请输入数据,以回车键结束\r\n");
 
             if (times % 30  == 0) LED0_TOGGLE(); /* 闪烁LED,提示系统正在运行. */
 

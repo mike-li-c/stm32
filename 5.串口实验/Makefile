@@ -15,7 +15,7 @@ main.c
 ASM_SOURCES = startup_stm32f103xe.s
 
 # 工具链配置
-CC = arm-none-eabi-gcc --specs=nosys.specs
+CC = arm-none-eabi-gcc -specs=nosys.specs --specs=nano.specs
 AS = arm-none-eabi-gcc -x assembler-with-cpp
 SZ = arm-none-eabi-size
 HEX = arm-none-eabi-objcopy -O ihex
@@ -35,7 +35,8 @@ endif
 
 # 链接配置
 LDSCRIPT = STM32F103ZETx_FLASH.ld
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref,--gc-sections
+# LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref,--gc-sections
+LDFLAGS = $(MCU) -T$(LDSCRIPT) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref,--gc-sections
 
 # 构建目标
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o))) \

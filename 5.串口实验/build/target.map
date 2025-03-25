@@ -590,46 +590,47 @@ LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eab
 .iplt           0x0800115c        0x0
  .iplt          0x0800115c        0x0 /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/crtbegin.o
 
-.rodata         0x0800115c       0x58
+.rodata         0x0800115c       0x70
                 0x0800115c                        . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
  .rodata.main.str1.4
-                0x0800115c       0x58 build/main.o
-                0x080011b4                        . = ALIGN (0x4)
-
-.rel.dyn        0x080011b4        0x0
- .rel.iplt      0x080011b4        0x0 /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/crtbegin.o
+                0x0800115c       0x6d build/main.o
+                0x080011cc                        . = ALIGN (0x4)
+ *fill*         0x080011c9        0x3 
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x080011b4        0x0
-                0x080011b4                        __exidx_start = .
+.ARM            0x080011cc        0x0
+                0x080011cc                        __exidx_start = .
  *(.ARM.exidx*)
-                0x080011b4                        __exidx_end = .
+                0x080011cc                        __exidx_end = .
 
-.preinit_array  0x080011b4        0x0
-                0x080011b4                        PROVIDE (__preinit_array_start = .)
+.preinit_array  0x080011cc        0x0
+                0x080011cc                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x080011b4                        PROVIDE (__preinit_array_end = .)
+                0x080011cc                        PROVIDE (__preinit_array_end = .)
 
-.init_array     0x080011b4        0x4
-                0x080011b4                        PROVIDE (__init_array_start = .)
+.init_array     0x080011cc        0x4
+                0x080011cc                        PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x080011b4        0x4 /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/crtbegin.o
-                0x080011b8                        PROVIDE (__init_array_end = .)
+ .init_array    0x080011cc        0x4 /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/crtbegin.o
+                0x080011d0                        PROVIDE (__init_array_end = .)
 
-.fini_array     0x080011b8        0x4
+.fini_array     0x080011d0        0x4
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x080011b8        0x4 /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/crtbegin.o
+ .fini_array    0x080011d0        0x4 /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x080011bc                        _sidata = LOADADDR (.data)
+                0x080011d4                        _sidata = LOADADDR (.data)
 
-.data           0x20000000       0x5c load address 0x080011bc
+.rel.dyn        0x080011d4        0x0
+ .rel.iplt      0x080011d4        0x0 /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/crtbegin.o
+
+.data           0x20000000       0x5c load address 0x080011d4
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -645,11 +646,11 @@ LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eab
                 0x2000005c                        . = ALIGN (0x4)
                 0x2000005c                        _edata = .
 
-.igot.plt       0x2000005c        0x0 load address 0x08001218
+.igot.plt       0x2000005c        0x0 load address 0x08001230
  .igot.plt      0x2000005c        0x0 /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/crtbegin.o
                 0x2000005c                        . = ALIGN (0x4)
 
-.bss            0x2000005c      0x23c load address 0x08001218
+.bss            0x2000005c      0x23c load address 0x08001230
                 0x2000005c                        _sbss = .
                 0x2000005c                        __bss_start__ = _sbss
  *(.bss)
@@ -691,7 +692,7 @@ LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eab
                 0x20000298                        __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x20000298      0x600 load address 0x08001218
+                0x20000298      0x600 load address 0x08001230
                 0x20000298                        . = ALIGN (0x8)
                 0x20000298                        PROVIDE (end = .)
                 [!provide]                        PROVIDE (_end = .)
