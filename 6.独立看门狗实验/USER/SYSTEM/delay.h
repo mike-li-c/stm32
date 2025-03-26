@@ -1,10 +1,11 @@
 /**
  ****************************************************************************************************
- * @file        main.c
+ * @file        delay.h
  * @author      正点原子团队(ALIENTEK)
  * @version     V1.0
- * @date        2020-04-18
- * @brief       蜂鸣器 实验
+ * @date        2020-04-17
+ * @brief       使用SysTick的普通计数模式对延迟进行管理(支持ucosii)
+ *              提供delay_init初始化函数， delay_us和delay_ms等延时函数
  * @license     Copyright (c) 2020-2032, 广州市星翼电子科技有限公司
  ****************************************************************************************************
  * @attention
@@ -15,30 +16,50 @@
  * 公司网址:www.alientek.com
  * 购买地址:openedv.taobao.com
  *
+ * 修改说明
+ * V1.0 20200417
+ * 第一次发布
+ *
  ****************************************************************************************************
  */
+ 
+#ifndef __DELAY_H
+#define __DELAY_H
 
 #include "sys.h"
-#include "usart.h"
-#include "delay.h"
-#include "led.h"
-#include "beep.h"
 
 
-int main(void)
-{
-    sys_stm32_clock_init(9);    /* 设置时钟, 72Mhz */
-    delay_init(72);             /* 延时初始化 */
-    led_init();                 /* 初始化LED */
-    beep_init();                /* 初始化蜂鸣器 */
-    
-    while (1)
-    {
-        LED0(0);
-        BEEP(0);
-        delay_ms(300);
-        LED0(1);
-        BEEP(1);
-        delay_ms(300);
-    }
-}
+void delay_init(uint16_t sysclk);   /* 初始化延迟函数 */
+void delay_ms(uint16_t nms);        /* 延时nms */
+void delay_us(uint32_t nus);        /* 延时nus */
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

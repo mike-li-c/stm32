@@ -1,10 +1,10 @@
 /**
  ****************************************************************************************************
- * @file        main.c
+ * @file        beep.c
  * @author      正点原子团队(ALIENTEK)
  * @version     V1.0
  * @date        2020-04-18
- * @brief       蜂鸣器 实验
+ * @brief       蜂鸣器 驱动代码
  * @license     Copyright (c) 2020-2032, 广州市星翼电子科技有限公司
  ****************************************************************************************************
  * @attention
@@ -15,30 +15,32 @@
  * 公司网址:www.alientek.com
  * 购买地址:openedv.taobao.com
  *
+ * 修改说明
+ * V1.0 20200418
+ * 第一次发布
+ *
  ****************************************************************************************************
  */
 
-#include "sys.h"
-#include "usart.h"
-#include "delay.h"
-#include "led.h"
 #include "beep.h"
 
-
-int main(void)
+/**
+ * @brief       初始化BEEP相关IO口, 并使能时钟
+ * @param       无
+ * @retval      无
+ */
+void beep_init(void)
 {
-    sys_stm32_clock_init(9);    /* 设置时钟, 72Mhz */
-    delay_init(72);             /* 延时初始化 */
-    led_init();                 /* 初始化LED */
-    beep_init();                /* 初始化蜂鸣器 */
-    
-    while (1)
-    {
-        LED0(0);
-        BEEP(0);
-        delay_ms(300);
-        LED0(1);
-        BEEP(1);
-        delay_ms(300);
-    }
+    BEEP_GPIO_CLK_ENABLE(); /* BEEP时钟使能 */
+
+    sys_gpio_set(BEEP_GPIO_PORT, BEEP_GPIO_PIN,
+                 SYS_GPIO_MODE_OUT, SYS_GPIO_OTYPE_PP, SYS_GPIO_SPEED_MID, SYS_GPIO_PUPD_PU);   /* BEEP引脚模式设置 */
+
+    BEEP(0);    /* 关闭蜂鸣器 */
 }
+
+
+
+
+
+

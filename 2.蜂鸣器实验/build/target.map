@@ -400,9 +400,6 @@ LOAD build/sys.o
 LOAD build/beep.o
 LOAD build/main.o
 LOAD build/startup_stm32f103xe.o
-LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc_nano.a
-LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libm.a
-LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libnosys.a
 START GROUP
 LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/libgcc.a
 LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc_nano.a
@@ -410,6 +407,12 @@ END GROUP
 START GROUP
 LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/libgcc.a
 LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc_nano.a
+LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libnosys.a
+END GROUP
+START GROUP
+LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/libgcc.a
+LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc_nano.a
+LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libnosys.a
 END GROUP
 LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/crtend.o
 LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eabi/12.3.1/thumb/v7-m/nofp/crtn.o
@@ -728,16 +731,16 @@ LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eab
  .debug_ranges  0x000000c8       0x10 build/main.o
  .debug_ranges  0x000000d8       0x20 build/startup_stm32f103xe.o
 
-.debug_line     0x00000000      0xea8
+.debug_line     0x00000000      0xe9f
  .debug_line    0x00000000      0x1fe build/system_stm32f1xx.o
  .debug_line    0x000001fe      0x13d build/led.o
  .debug_line    0x0000033b      0x1e4 build/delay.o
  .debug_line    0x0000051f      0x65b build/sys.o
  .debug_line    0x00000b7a      0x139 build/beep.o
- .debug_line    0x00000cb3      0x180 build/main.o
- .debug_line    0x00000e33       0x75 build/startup_stm32f103xe.o
+ .debug_line    0x00000cb3      0x177 build/main.o
+ .debug_line    0x00000e2a       0x75 build/startup_stm32f103xe.o
 
-.debug_str      0x00000000      0x587
+.debug_str      0x00000000      0x57e
  .debug_str     0x00000000      0x1d7 build/system_stm32f1xx.o
                                 0x21c (size before relaxing)
  .debug_str     0x000001d7       0x58 build/led.o
@@ -748,9 +751,9 @@ LOAD /opt/st/stm32cubeclt_1.16.0/GNU-tools-for-STM32/bin/../lib/gcc/arm-none-eab
                                 0x465 (size before relaxing)
  .debug_str     0x0000051a       0x1a build/beep.o
                                 0x1fa (size before relaxing)
- .debug_str     0x00000534       0x21 build/main.o
-                                0x1f6 (size before relaxing)
- .debug_str     0x00000555       0x32 build/startup_stm32f103xe.o
+ .debug_str     0x00000534       0x18 build/main.o
+                                0x1ed (size before relaxing)
+ .debug_str     0x0000054c       0x32 build/startup_stm32f103xe.o
                                  0x5b (size before relaxing)
 
 .comment        0x00000000       0x43
