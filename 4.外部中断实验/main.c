@@ -4,7 +4,7 @@
  * @author      正点原子团队(ALIENTEK)
  * @version     V1.0
  * @date        2020-04-19
- * @brief       外部中断 实验
+ * @brief       按键输入 实验
  * @license     Copyright (c) 2020-2032, 广州市星翼电子科技有限公司
  ****************************************************************************************************
  * @attention
@@ -23,22 +23,49 @@
 #include "delay.h"
 #include "led.h"
 #include "beep.h"
-#include "exti.h"
+#include "key.h"
 
 
 int main(void)
 {
+    uint8_t key;
+
     sys_stm32_clock_init(9);    /* 设置时钟, 72Mhz */
     delay_init(72);             /* 延时初始化 */
-    usart_init(72, 115200);     /* 串口初始化为115200 */
     led_init();                 /* 初始化LED */
     beep_init();                /* 初始化蜂鸣器 */
-    extix_init();               /* 初始化外部中断输入 */
-    LED0(0);                    /* 先点亮红灯 */
+    key_init();                 /* 初始化按键 */
+    LED0(0);                    /* 先点亮LED0 */
 
     while (1)
     {
-        printf("OK\r\n");
-        delay_ms(1000);
+        key = key_scan(0);      /* 得到键值 */
+
+        if (key)
+        {
+            switch (key)
+            {
+                case WKUP_PRES:     /* 控制蜂鸣器 */
+                    BEEP_TOGGLE();  /* BEEP状态取反 */
+                    break;
+
+                case KEY2_PRES:     /* 控制LED0(RED)翻转 */
+                    LED0_TOGGLE();  /* LED0状态取反 */
+                    break;
+
+                case KEY1_PRES:     /* 控制LED1(GREEN)翻转 */
+                    LED1_TOGGLE();  /* LED1状态取反 */
+                    break;
+
+                case KEY0_PRES:     /* 同时控制LED0, LED1翻转 */
+                    LED0_TOGGLE();  /* LED0状态取反 */
+                    LED1_TOGGLE();  /* LED1状态取反 */
+                    break;
+            } 
+        }
+        else
+        {
+            delay_ms(10);
+        }
     }
 }

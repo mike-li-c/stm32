@@ -6,12 +6,12 @@ BUILD_DIR = build
 # ‘¥Œƒº˛≈‰÷√
 C_SOURCES = \
 CMSIS/Device/system_stm32f1xx.c \
-USER/src/led.c \
-USER/src/delay.c \
-USER/src/sys.c \
-USER/src/beep.c \
-USER/src/key.c \
-USER/src/usart.c \
+USER/SYSTEM/usart.c \
+USER/SYSTEM/delay.c \
+USER/SYSTEM/sys.c \
+USER/BSP/led.c \
+USER/BSP/beep.c \
+USER/BSP/key.c \
 main.c
 
 ASM_SOURCES = startup_stm32f103xe.s
@@ -27,7 +27,7 @@ BIN = arm-none-eabi-objcopy -O binary -S
 CPU = -mcpu=cortex-m3
 MCU = $(CPU) -mthumb
 C_DEFS = -DSTM32F103xE
-C_INCLUDES = -ICMSIS/Device -ICMSIS/Include -IUSER/Include
+C_INCLUDES = -ICMSIS/Device -ICMSIS/Include -IUSER/BSP -IUSER/SYSTEM
 
 CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"

@@ -58,5 +58,5 @@ extern uint8_t  g_usart_rx_buf[USART_REC_LEN];  /* ½ÓÊÕ»º³å,×î´óUSART_REC_LEN¸ö×
 extern uint16_t g_usart_rx_sta;                 /* ½ÓÊÕ×´Ì¬±ê¼Ç */
 
 void usart_init(uint32_t pclk2, uint32_t bound);/* ´®¿Ú³õÊ¼»¯º¯Êı */
-
+#define printf (void)    /*ÎªÁËÇå³ı±àÒë¸æ¾¯£¬È¡ÏûÁËprintfµÄ¶¨Òå£¬ÈçĞè´ò¿ª×¢Ïú´ËĞĞ*/
 #endif  

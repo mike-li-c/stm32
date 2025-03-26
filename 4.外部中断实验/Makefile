@@ -9,9 +9,9 @@ CMSIS/Device/system_stm32f1xx.c \
 USER/SYSTEM/usart.c \
 USER/SYSTEM/delay.c \
 USER/SYSTEM/sys.c \
+USER/BSP/led.c \
 USER/BSP/beep.c \
 USER/BSP/key.c \
-USER/BSP/led.c \
 USER/BSP/exti.c \
 main.c
 

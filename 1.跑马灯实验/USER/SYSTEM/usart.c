@@ -35,16 +35,16 @@
 /******************************************************************************************/
 /* 加入以下代码, 支持printf函数*/
 #ifdef __GNUC__
-/* gcc重定义_write函数, printf函数最终会通过调用_write输出字符串到串口，与MDK不同 */
-int _write (int fd, char *pBuffer, int size)  
+int _write(int fd, char *ptr, int len)  
 {  
-    for (int i = 0; i < size; i++)  
-    {  
-        while((USART1->SR&0X40)==0);//等待上一次串口数据发送完成  
-        USART1->DR = (u8) pBuffer;       //写DR,串口1将发送数据
-    }  
-    return size;  
+    for (int t = 0; t < len; t++)
+    {
+        USART_UX->DR = ptr[t];
+        while ((USART_UX->SR & 0X40) == 0); /* 等待发送结束 */
+    }
+  return len;
 }
+
 #endif
 /******************************************************************************************/
 
@@ -69,48 +69,26 @@ uint16_t g_usart_rx_sta = 0;
 void USART_UX_IRQHandler(void)
 {
     uint8_t rxdata;
-#if SYS_SUPPORT_OS  /* 如果SYS_SUPPORT_OS为真，则需要支持OS. */
-    OSIntEnter();
-#endif
-
+ 
     if (USART_UX->SR & (1 << 5))                /* 接收到数据 */
     {
         rxdata = USART_UX->DR;
-
-        if ((g_usart_rx_sta & 0x8000) == 0)     /* 接收未完成? */
+            /* 接收未完成? */
+        if (rxdata == 10)    /*10 = 0x0d = \n, 10是\n的ascii码*/
         {
-            if (g_usart_rx_sta & 0x4000)        /* 接收到了0x0d? */
-            {
-                if (rxdata != 0x0a)             /* 接收到了0x0a? (必须先接收到到0x0d,才检查0x0a) */
-                {
-                    g_usart_rx_sta = 0;         /* 接收错误, 重新开始 */
-                }
-                else
-                {
-                    g_usart_rx_sta |= 0x8000;   /* 收到了0x0a,标记接收完成了 */
-                }
-            }
-            else      /* 还没收到0x0d */
-            {
-                if (rxdata == 0x0d)
-                {
-                    g_usart_rx_sta |= 0x4000;   /* 标记接收到了 0x0d */
-                }
-                else
-                {
-                    g_usart_rx_buf[g_usart_rx_sta & 0X3FFF] = rxdata;   /* 存储数据到 g_usart_rx_buf */
-                    g_usart_rx_sta++;
 
-                    if (g_usart_rx_sta > (USART_REC_LEN - 1))g_usart_rx_sta = 0;/* 接收数据溢出, 重新开始接收 */
-                }
-            }
+            g_usart_rx_sta |= 0x8000;   /* 接收到\n, 标记接收完成了 */
+        }
+        else      /* 还没收到\n*/
+        {
+            g_usart_rx_buf[g_usart_rx_sta & 0X3FFF] = rxdata;   /* 存储数据到 g_usart_rx_buf */
+            g_usart_rx_sta++;
+
+            if (g_usart_rx_sta > (USART_REC_LEN - 1))g_usart_rx_sta = 0;/* 接收数据溢出, 重新开始接收 */
         }
     }
-
-#if SYS_SUPPORT_OS  /* 如果SYS_SUPPORT_OS为真，则需要支持OS. */
-    OSIntExit();
-#endif
 }
+
 #endif
 
 /**

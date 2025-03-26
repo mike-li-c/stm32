@@ -19,7 +19,7 @@
  */
 
 #include "sys.h"
-// #include "usart.h"
+#include "usart.h"
 #include "delay.h"
 #include "led.h"
 
@@ -35,26 +35,8 @@ int main(void)
         LED0(0);                /* LED0 ÁÁ */
         LED1(1);                /* LED1 Ãð */
         delay_ms(1000);
-        // LED0_TOGGLE();             /* LED0 Ãð */
-        // LED1_TOGGLE();                /* LED1 ÁÁ */
-                LED0_TOGGLE();             /* LED0 Ãð */
+        LED0_TOGGLE();             /* LED0 Ãð */
         LED1_TOGGLE();                /* LED1 ÁÁ */
         delay_ms(1000);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
