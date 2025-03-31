@@ -89,11 +89,15 @@ void sys_gpio_set(GPIO_TypeDef *p_gpiox, uint16_t pinx, uint32_t mode,
                   uint32_t otype, uint32_t ospeed, uint32_t pupd);              /*  GPIO通用设置 */
 void sys_gpio_pin_set(GPIO_TypeDef *p_gpiox, uint16_t pinx, uint8_t status);    /* 设置GPIO某个引脚的输出状态 */
 uint8_t sys_gpio_pin_get(GPIO_TypeDef *p_gpiox, uint16_t pinx);                 /* 读取GPIO某个引脚的状态 */
-// void sys_standby(void);                     /* 进入待机模式 */
-// void sys_soft_reset(void);                  /* 系统软复位 */
+void sys_standby(void);                     /* 进入待机模式 */
+void sys_soft_reset(void);                  /* 系统软复位 */
 void sys_stm32_clock_init(uint32_t plln);   /* 系统时钟初始化函数 */
 
-
+/* 以下为汇编函数 */
+void sys_wfi_set(void);             /* 执行WFI指令 */
+void sys_intx_disable(void);        /* 关闭所有中断 */
+void sys_intx_enable(void);         /* 开启所有中断 */
+void sys_msr_msp(uint32_t addr);    /* 设置栈顶地址 */
 #endif
 
 

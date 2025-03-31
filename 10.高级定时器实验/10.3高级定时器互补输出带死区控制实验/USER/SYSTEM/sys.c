@@ -3,11 +3,7 @@
 /*函数申明*******************************************************************************************/
 /* 静态函数(仅在sys.c里面用到) */
 static void sys_nvic_priority_group_config(uint8_t group);                      /* 设置NVIC分组 */
-/* 以下为汇编函数 */
-static void sys_wfi_set(void);             /* 执行WFI指令 */
-// static void sys_intx_disable(void);        /* 关闭所有中断 */
-// static void sys_intx_enable(void);         /* 开启所有中断 */
-// static void sys_msr_msp(uint32_t addr);    /* 设置栈顶地址 */
+
 /**
  * @brief       设置中断向量表偏移地址
  * @param       baseaddr: 基址
@@ -371,41 +367,41 @@ When a processor executes a WFI instruction, it enters a low - power state and w
  * @param       无
  * @retval      无
  */
-static void sys_wfi_set(void)
+void sys_wfi_set(void)
 {
     __asm__ __volatile__("wfi");
 }
 
-// /**
-//  * @brief       关闭所有中断(但是不包括fault和NMI中断)
-//  * @param       无
-//  * @retval      无
-//  */
-// static void sys_intx_disable(void)
-// {
-//     __ASM volatile("cpsid i");
-// }
+/**
+ * @brief       关闭所有中断(但是不包括fault和NMI中断)
+ * @param       无
+ * @retval      无
+ */
+void sys_intx_disable(void)
+{
+    __asm__ volatile("cpsid i");
+}
 
-// /**
-//  * @brief       开启所有中断
-//  * @param       无
-//  * @retval      无
-//  */
-// static void sys_intx_enable(void)
-// {
-//     __ASM volatile("cpsie i");
-// }
+/**
+ * @brief       开启所有中断
+ * @param       无
+ * @retval      无
+ */
+void sys_intx_enable(void)
+{
+    __asm__ volatile("cpsie i");
+}
 
-// /**
-//  * @brief       设置栈顶地址
-//  * @note        左侧的红X, 属于MDK误报, 实际是没问题的
-//  * @param       addr: 栈顶地址
-//  * @retval      无
-//  */
-// static void sys_msr_msp(uint32_t addr)
-// {
-//     __set_MSP(addr);    /* 设置栈顶地址 */
-// }
+/**
+ * @brief       设置栈顶地址
+ * @note        左侧的红X, 属于MDK误报, 实际是没问题的
+ * @param       addr: 栈顶地址
+ * @retval      无
+ */
+void sys_msr_msp(uint32_t addr)
+{
+    __set_MSP(addr);    /* 设置栈顶地址 */
+}
 
 
 
