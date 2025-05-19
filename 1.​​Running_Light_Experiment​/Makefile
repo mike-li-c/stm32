@@ -5,14 +5,14 @@ BUILD_DIR = build
 
 # 源文件配置
 C_SOURCES = \
-CMSIS/Device/system_stm32f1xx.c \
-USER/SYSTEM/usart.c \
-USER/SYSTEM/delay.c \
-USER/SYSTEM/sys.c \
-USER/BSP/led.c \
+../Public/CMSIS/Device/system_stm32f1xx.c \
+../Public/SYSTEM/delay.c \
+../Public/SYSTEM/sys.c \
+../Public/SYSTEM/usart.c \
+BSP/led.c \
 main.c
 
-ASM_SOURCES = startup_stm32f103xe.s
+ASM_SOURCES = ../Public/startup_stm32f103xe.s
 
 # 工具链配置
 CC = arm-none-eabi-gcc
@@ -25,7 +25,7 @@ BIN = arm-none-eabi-objcopy -O binary -S
 CPU = -mcpu=cortex-m3
 MCU = $(CPU) -mthumb
 C_DEFS = -DSTM32F103xE
-C_INCLUDES = -ICMSIS/Device -ICMSIS/Include -IUSER/BSP -IUSER/SYSTEM
+C_INCLUDES = -I../Public/CMSIS/Device -I../Public/CMSIS/Include -IBSP -I../Public/SYSTEM
 
 CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
@@ -34,7 +34,7 @@ CFLAGS += -g -gdwarf-2
 endif
 
 # 链接配置
-LDSCRIPT = STM32F103ZETx_FLASH.ld
+LDSCRIPT = ../Public/STM32F103ZETx_FLASH.ld
 # LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref,--gc-sections
 LDFLAGS = $(MCU) -T$(LDSCRIPT) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref,--gc-sections
 
